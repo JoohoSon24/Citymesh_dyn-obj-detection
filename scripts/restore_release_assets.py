@@ -27,5 +27,6 @@ for item in meta['assets']:
     source=archive.extractfile(member)
     with target.open('xb') as out:
      for block in iter(lambda:source.read(4*1024**2),b''):out.write(block)
+    os.chmod(target, member.mode & 0o777)
  print('Verified',item['name'],flush=True)
 print('Release assets verified' if args.verify_only else 'Release data restored')
