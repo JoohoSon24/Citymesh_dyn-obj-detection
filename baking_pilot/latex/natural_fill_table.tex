@@ -1,0 +1,9 @@
+\begin{table}[htbp]\centering\scriptsize
+\caption{추가 채움 방법의 동일 평가 비교. 기존 학습형은3seed 평균$\pm$표본표준편차, 직접 재구성은 결정적1회다. PSNR은dB, LPIPS는전체 채택OBB의 객체 평균이다.}
+\begin{tabular}{lrrrr}\toprule 방법 & B 차량 PSNR & C 차량 PSNR & B / C LPIPS & B / C 정적 PSNR\\\midrule
+No removal (L2) & 19.01 $\pm$ 0.18 & 18.69 $\pm$ 0.24 & 0.149 / 0.338 & 21.97 / 24.40 \\
+Block & 19.94 $\pm$ 0.21 & 20.98 $\pm$ 0.19 & 0.136 / 0.165 & 21.85 / 24.80 \\
+UV fusion & 20.81 & 22.10 & 0.085 / 0.146 & 24.51 / 26.62 \\
+UV + shadow guard & 21.00 & 22.23 & 0.079 / 0.130 & 24.58 / 26.47 \\
+Gradient harmonize & 20.82 & 22.32 & 0.077 / 0.125 & 24.62 / 26.56 \\
+Patch transfer & 21.00 & 22.15 & 0.077 / 0.129 & 24.58 / 26.47 \\\bottomrule\end{tabular}\end{table}

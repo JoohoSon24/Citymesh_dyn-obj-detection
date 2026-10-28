@@ -1,0 +1,110 @@
+[
+  {
+    "slide": 1,
+    "title": "Goal"
+  },
+  {
+    "slide": 2,
+    "title": "Two possible paths"
+  },
+  {
+    "slide": 3,
+    "title": "Experiment : Dataset"
+  },
+  {
+    "slide": 4,
+    "title": "Pilot : What is the geometry?"
+  },
+  {
+    "slide": 5,
+    "title": "Experiment : Baking setup"
+  },
+  {
+    "slide": 6,
+    "title": "Main idea"
+  },
+  {
+    "slide": 7,
+    "title": "Experiment : Evaluation"
+  },
+  {
+    "slide": 8,
+    "title": "Baseline : L2"
+  },
+  {
+    "slide": 9,
+    "title": "Baseline : Temporal median"
+  },
+  {
+    "slide": 10,
+    "title": "S : Block-NeRF type"
+  },
+  {
+    "slide": 11,
+    "title": "S : NeRF-HuGS type"
+  },
+  {
+    "slide": 12,
+    "title": "S : RobustNeRF type"
+  },
+  {
+    "slide": 13,
+    "title": "S : Geometry mask"
+  },
+  {
+    "slide": 14,
+    "title": "Direct UV fusion"
+  },
+  {
+    "slide": 15,
+    "title": "UV fusion + Shadow guard"
+  },
+  {
+    "slide": 16,
+    "title": "Geometry + Fusion init"
+  },
+  {
+    "slide": 17,
+    "title": "Geometry + Spatial prior"
+  },
+  {
+    "slide": 18,
+    "title": "DINO : SSIM uncertainty"
+  },
+  {
+    "slide": 19,
+    "title": "DINO : Cosine soft S"
+  },
+  {
+    "slide": 20,
+    "title": "DINO : Cosine hard S"
+  },
+  {
+    "slide": 21,
+    "title": "S : SAM-region vote"
+  },
+  {
+    "slide": 22,
+    "title": "Reference : SpotLessSplats"
+  },
+  {
+    "slide": 23,
+    "title": "Reference : GS-W"
+  },
+  {
+    "slide": 24,
+    "title": "Reference : Robust GS"
+  },
+  {
+    "slide": 25,
+    "title": "Analysis / Next steps"
+  },
+  {
+    "slide": 26,
+    "title": "Result : All methods / Qualitative"
+  },
+  {
+    "slide": 27,
+    "title": "Result : All methods / Metrics"
+  }
+]

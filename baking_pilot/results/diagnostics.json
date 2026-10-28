@@ -1,0 +1,22 @@
+{
+  "roi_pixels": 531732,
+  "roi_fraction": 0.5070991516113281,
+  "dynamic_proxy_fraction": 0.28167761203012043,
+  "holdout_static_fraction": 0.7427914814229725,
+  "all_train_years_vehicle_fraction": 0.0,
+  "source_vehicle_counts_roi": [
+    3,
+    0,
+    0,
+    0,
+    223,
+    59
+  ],
+  "l2_unsupported_fraction": 0.0,
+  "block_unsupported_fraction": 0.0,
+  "hugs_unsupported_fraction": 0.0,
+  "robust_unsupported_fraction": 0.0016907013307455635,
+  "robust_or_unsupported_fraction": 1.504517313232982e-05,
+  "robust_car_unsupported_fraction": 0.001034355652847675,
+  "robust_depth_unsupported_fraction": 0.0019727983269767478
+}

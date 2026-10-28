@@ -1,0 +1,3170 @@
+[
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 18.075617794306474
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 18.362549241498193
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 22.5819807895485
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 3,
+    "occupancy": 3,
+    "PSNR": 18.68862228821233
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 5,
+    "occupancy": 5,
+    "PSNR": 17.134919489025428
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 6,
+    "occupancy": 2,
+    "PSNR": 19.584175741253148
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 7,
+    "occupancy": 2,
+    "PSNR": 20.268856637994837
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 8,
+    "occupancy": 2,
+    "PSNR": 26.423870837400276
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 9,
+    "occupancy": 2,
+    "PSNR": 21.806842921090947
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 10,
+    "occupancy": 2,
+    "PSNR": 21.201762028000427
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 12,
+    "occupancy": 1,
+    "PSNR": 21.00130839597368
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 13,
+    "occupancy": 1,
+    "PSNR": 19.334688669540036
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 14,
+    "occupancy": 1,
+    "PSNR": 23.314088076878676
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 15,
+    "occupancy": 1,
+    "PSNR": 24.928826260277912
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 16,
+    "occupancy": 1,
+    "PSNR": 22.809516502759433
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 17,
+    "occupancy": 1,
+    "PSNR": 19.726106259580305
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 17.714179666342915
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 17.70178941267976
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 22.202613350668607
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 3,
+    "occupancy": 3,
+    "PSNR": 18.844732669697738
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 5,
+    "occupancy": 5,
+    "PSNR": 16.92252143869927
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 6,
+    "occupancy": 2,
+    "PSNR": 20.059400334609272
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 7,
+    "occupancy": 2,
+    "PSNR": 20.62101555930177
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 8,
+    "occupancy": 2,
+    "PSNR": 26.286888780457392
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 9,
+    "occupancy": 2,
+    "PSNR": 22.02415330342822
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 10,
+    "occupancy": 2,
+    "PSNR": 20.854630159804234
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 12,
+    "occupancy": 1,
+    "PSNR": 20.54511625423441
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 13,
+    "occupancy": 1,
+    "PSNR": 19.067119015822307
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 14,
+    "occupancy": 1,
+    "PSNR": 24.659027786288963
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 15,
+    "occupancy": 1,
+    "PSNR": 25.28465741002984
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 16,
+    "occupancy": 1,
+    "PSNR": 22.66269402819088
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 17,
+    "occupancy": 1,
+    "PSNR": 19.414159586009326
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 19.796836764242403
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 18.984810323601355
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 22.51113347038508
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 3,
+    "occupancy": 3,
+    "PSNR": 18.181868434947535
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 5,
+    "occupancy": 5,
+    "PSNR": 18.27233867795271
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 6,
+    "occupancy": 2,
+    "PSNR": 19.680965072539585
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 7,
+    "occupancy": 2,
+    "PSNR": 22.038161016756575
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 8,
+    "occupancy": 2,
+    "PSNR": 22.260799855516762
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 9,
+    "occupancy": 2,
+    "PSNR": 20.111686601138157
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 10,
+    "occupancy": 2,
+    "PSNR": 28.498546002273756
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 12,
+    "occupancy": 1,
+    "PSNR": 23.106785564743255
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 13,
+    "occupancy": 1,
+    "PSNR": 24.105383495181453
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 14,
+    "occupancy": 1,
+    "PSNR": 23.047658494964395
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 15,
+    "occupancy": 1,
+    "PSNR": 30.42482759141166
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 16,
+    "occupancy": 1,
+    "PSNR": 23.755499299498016
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 17,
+    "occupancy": 1,
+    "PSNR": 25.715993086691206
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 15.768563961643615
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 17.54457493812964
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 22.024314405078876
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 3,
+    "occupancy": 3,
+    "PSNR": 17.100798513973142
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 5,
+    "occupancy": 5,
+    "PSNR": 17.31781055413514
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 6,
+    "occupancy": 2,
+    "PSNR": 18.85080441545479
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 7,
+    "occupancy": 2,
+    "PSNR": 20.468645726357945
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 8,
+    "occupancy": 2,
+    "PSNR": 26.60411652140839
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 9,
+    "occupancy": 2,
+    "PSNR": 21.81132824399286
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 10,
+    "occupancy": 2,
+    "PSNR": 16.28683685983049
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 12,
+    "occupancy": 1,
+    "PSNR": 19.42148356362097
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 13,
+    "occupancy": 1,
+    "PSNR": 17.560745866244957
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 14,
+    "occupancy": 1,
+    "PSNR": 20.427909123099383
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 15,
+    "occupancy": 1,
+    "PSNR": 23.790728609381368
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 16,
+    "occupancy": 1,
+    "PSNR": 21.591394750663454
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 17,
+    "occupancy": 1,
+    "PSNR": 22.801611677413515
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 18.635737121902743
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 17.388910847338924
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 21.086326422879043
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 3,
+    "occupancy": 3,
+    "PSNR": 19.462292748201385
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 5,
+    "occupancy": 5,
+    "PSNR": 16.90575653064783
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 6,
+    "occupancy": 2,
+    "PSNR": 19.47897102049392
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 7,
+    "occupancy": 2,
+    "PSNR": 20.416331389384897
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 8,
+    "occupancy": 2,
+    "PSNR": 24.606905061294594
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 9,
+    "occupancy": 2,
+    "PSNR": 22.231019101666618
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 10,
+    "occupancy": 2,
+    "PSNR": 21.309284846130957
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 12,
+    "occupancy": 1,
+    "PSNR": 21.498855748672664
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 13,
+    "occupancy": 1,
+    "PSNR": 18.7732894521248
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 14,
+    "occupancy": 1,
+    "PSNR": 21.5859703117134
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 15,
+    "occupancy": 1,
+    "PSNR": 25.74937809628263
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 16,
+    "occupancy": 1,
+    "PSNR": 24.540998243129913
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 17,
+    "occupancy": 1,
+    "PSNR": 21.75542284718597
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 18.36495704105275
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 17.074134421633783
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 21.217074351388714
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 3,
+    "occupancy": 3,
+    "PSNR": 19.120607638840838
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 5,
+    "occupancy": 5,
+    "PSNR": 16.699568978001544
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 6,
+    "occupancy": 2,
+    "PSNR": 19.791899209926015
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 7,
+    "occupancy": 2,
+    "PSNR": 20.364223314639908
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 8,
+    "occupancy": 2,
+    "PSNR": 24.69442136769922
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 9,
+    "occupancy": 2,
+    "PSNR": 21.906903133234252
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 10,
+    "occupancy": 2,
+    "PSNR": 20.790730347040412
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 12,
+    "occupancy": 1,
+    "PSNR": 20.585673042171408
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 13,
+    "occupancy": 1,
+    "PSNR": 18.64159590453968
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 14,
+    "occupancy": 1,
+    "PSNR": 21.9872197567692
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 15,
+    "occupancy": 1,
+    "PSNR": 25.413677005303082
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 16,
+    "occupancy": 1,
+    "PSNR": 24.05710907307263
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 17,
+    "occupancy": 1,
+    "PSNR": 20.953381424957843
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 19.796836764242403
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 18.984810323601355
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 22.51113347038508
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 3,
+    "occupancy": 3,
+    "PSNR": 18.181868434947535
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 5,
+    "occupancy": 5,
+    "PSNR": 18.27233867795271
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 6,
+    "occupancy": 2,
+    "PSNR": 19.680965072539585
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 7,
+    "occupancy": 2,
+    "PSNR": 22.038161016756575
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 8,
+    "occupancy": 2,
+    "PSNR": 22.260799855516762
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 9,
+    "occupancy": 2,
+    "PSNR": 20.111686601138157
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 10,
+    "occupancy": 2,
+    "PSNR": 28.498546002273756
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 12,
+    "occupancy": 1,
+    "PSNR": 23.106785564743255
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 13,
+    "occupancy": 1,
+    "PSNR": 24.105383495181453
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 14,
+    "occupancy": 1,
+    "PSNR": 23.047658494964395
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 15,
+    "occupancy": 1,
+    "PSNR": 30.42482759141166
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 16,
+    "occupancy": 1,
+    "PSNR": 23.755499299498016
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 17,
+    "occupancy": 1,
+    "PSNR": 25.717274246071714
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 15.715769685496328
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 17.623897856024975
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 22.160952831453077
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 3,
+    "occupancy": 3,
+    "PSNR": 17.11090997553394
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 5,
+    "occupancy": 5,
+    "PSNR": 17.252805527980474
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 6,
+    "occupancy": 2,
+    "PSNR": 18.869220934305762
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 7,
+    "occupancy": 2,
+    "PSNR": 20.477080009036275
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 8,
+    "occupancy": 2,
+    "PSNR": 26.577639595784014
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 9,
+    "occupancy": 2,
+    "PSNR": 21.804492569095586
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 10,
+    "occupancy": 2,
+    "PSNR": 16.285296845292233
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 12,
+    "occupancy": 1,
+    "PSNR": 19.399886756186163
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 13,
+    "occupancy": 1,
+    "PSNR": 17.56032997395583
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 14,
+    "occupancy": 1,
+    "PSNR": 20.437513817503877
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 15,
+    "occupancy": 1,
+    "PSNR": 23.864566686912898
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 16,
+    "occupancy": 1,
+    "PSNR": 21.545905545770715
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 17,
+    "occupancy": 1,
+    "PSNR": 22.785142264776002
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 18.60443325588695
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 19.349237589838197
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 21.05876063674271
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 3,
+    "occupancy": 3,
+    "PSNR": 18.718088118708838
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 5,
+    "occupancy": 5,
+    "PSNR": 18.78303848533889
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 6,
+    "occupancy": 2,
+    "PSNR": 18.79548716067353
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 7,
+    "occupancy": 2,
+    "PSNR": 19.00288222437431
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 8,
+    "occupancy": 2,
+    "PSNR": 26.63040432996876
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 9,
+    "occupancy": 2,
+    "PSNR": 21.508809162576846
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 10,
+    "occupancy": 2,
+    "PSNR": 20.717125867422347
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 12,
+    "occupancy": 1,
+    "PSNR": 21.899714045683076
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 13,
+    "occupancy": 1,
+    "PSNR": 20.114178256256558
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 14,
+    "occupancy": 1,
+    "PSNR": 20.04152527464661
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 15,
+    "occupancy": 1,
+    "PSNR": 24.641898223786576
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 16,
+    "occupancy": 1,
+    "PSNR": 23.11019131075731
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 17,
+    "occupancy": 1,
+    "PSNR": 20.508259648143316
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 18.147734124155527
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 18.596580671506302
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 21.117697269228444
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 3,
+    "occupancy": 3,
+    "PSNR": 18.39575293294572
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 5,
+    "occupancy": 5,
+    "PSNR": 18.373034901422088
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 6,
+    "occupancy": 2,
+    "PSNR": 18.811127723629216
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 7,
+    "occupancy": 2,
+    "PSNR": 18.271550111027935
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 8,
+    "occupancy": 2,
+    "PSNR": 27.105229168587414
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 9,
+    "occupancy": 2,
+    "PSNR": 20.58598076940298
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 10,
+    "occupancy": 2,
+    "PSNR": 19.73386231988911
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 12,
+    "occupancy": 1,
+    "PSNR": 21.409833470812973
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 13,
+    "occupancy": 1,
+    "PSNR": 19.704753029564962
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 14,
+    "occupancy": 1,
+    "PSNR": 19.98353359157601
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 15,
+    "occupancy": 1,
+    "PSNR": 24.440678468939566
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 16,
+    "occupancy": 1,
+    "PSNR": 21.260893578939122
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 17,
+    "occupancy": 1,
+    "PSNR": 19.006133937182522
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 19.796836764242403
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 18.984810323601355
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 22.51113347038508
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 3,
+    "occupancy": 3,
+    "PSNR": 18.181868434947535
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 5,
+    "occupancy": 5,
+    "PSNR": 18.27233867795271
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 6,
+    "occupancy": 2,
+    "PSNR": 19.680965072539585
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 7,
+    "occupancy": 2,
+    "PSNR": 22.038161016756575
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 8,
+    "occupancy": 2,
+    "PSNR": 22.260799855516762
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 9,
+    "occupancy": 2,
+    "PSNR": 20.111686601138157
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 10,
+    "occupancy": 2,
+    "PSNR": 28.498546002273756
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 12,
+    "occupancy": 1,
+    "PSNR": 23.106785564743255
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 13,
+    "occupancy": 1,
+    "PSNR": 24.105383495181453
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 14,
+    "occupancy": 1,
+    "PSNR": 23.047658494964395
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 15,
+    "occupancy": 1,
+    "PSNR": 30.42482759141166
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 16,
+    "occupancy": 1,
+    "PSNR": 23.755499299498016
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 17,
+    "occupancy": 1,
+    "PSNR": 25.707181906297567
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 15.78941647437961
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 16.093860207995185
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 22.210671830873302
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 3,
+    "occupancy": 3,
+    "PSNR": 17.138395567538097
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 5,
+    "occupancy": 5,
+    "PSNR": 17.356372174884065
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 6,
+    "occupancy": 2,
+    "PSNR": 18.85498060956369
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 7,
+    "occupancy": 2,
+    "PSNR": 20.46410741375879
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 8,
+    "occupancy": 2,
+    "PSNR": 26.61899595218262
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 9,
+    "occupancy": 2,
+    "PSNR": 21.822099050460622
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 10,
+    "occupancy": 2,
+    "PSNR": 16.286787726480462
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 12,
+    "occupancy": 1,
+    "PSNR": 19.439067561358186
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 13,
+    "occupancy": 1,
+    "PSNR": 17.560920154144533
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 14,
+    "occupancy": 1,
+    "PSNR": 20.452781340889672
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 15,
+    "occupancy": 1,
+    "PSNR": 23.880064113476966
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 16,
+    "occupancy": 1,
+    "PSNR": 21.62282857612201
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 17,
+    "occupancy": 1,
+    "PSNR": 22.802272219781127
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 22.757249099077242
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 20.522776306039276
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 15.580232262957999
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 4,
+    "occupancy": 4,
+    "PSNR": 21.277731185854712
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 5,
+    "occupancy": 4,
+    "PSNR": 19.74460661704234
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 6,
+    "occupancy": 4,
+    "PSNR": 18.07274207020417
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 7,
+    "occupancy": 4,
+    "PSNR": 14.107686627204071
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 8,
+    "occupancy": 4,
+    "PSNR": 17.739275046278742
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 9,
+    "occupancy": 4,
+    "PSNR": 20.588172913969252
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 10,
+    "occupancy": 3,
+    "PSNR": 16.890383061202044
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 11,
+    "occupancy": 3,
+    "PSNR": 17.765222743974903
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 12,
+    "occupancy": 3,
+    "PSNR": 21.210079575012447
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 13,
+    "occupancy": 3,
+    "PSNR": 23.57460299789786
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 14,
+    "occupancy": 3,
+    "PSNR": 19.512085549930195
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 15,
+    "occupancy": 3,
+    "PSNR": 24.90810600707242
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 16,
+    "occupancy": 3,
+    "PSNR": 20.17363347585792
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_ssim_soft",
+    "id": 17,
+    "occupancy": 3,
+    "PSNR": 19.8942157297868
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 22.100747471565594
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 20.739221969075658
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 15.944359387276144
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 4,
+    "occupancy": 4,
+    "PSNR": 20.275185022758816
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 5,
+    "occupancy": 4,
+    "PSNR": 18.51085106223868
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 6,
+    "occupancy": 4,
+    "PSNR": 17.91393235132924
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 7,
+    "occupancy": 4,
+    "PSNR": 14.180270183404923
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 8,
+    "occupancy": 4,
+    "PSNR": 17.566433246300527
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 9,
+    "occupancy": 4,
+    "PSNR": 20.19322481504277
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 10,
+    "occupancy": 3,
+    "PSNR": 16.99144214309292
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 11,
+    "occupancy": 3,
+    "PSNR": 16.9859223759188
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 12,
+    "occupancy": 3,
+    "PSNR": 20.881364280370644
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 13,
+    "occupancy": 3,
+    "PSNR": 23.657163720525077
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 14,
+    "occupancy": 3,
+    "PSNR": 18.4807411769319
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 15,
+    "occupancy": 3,
+    "PSNR": 24.465233162529604
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 16,
+    "occupancy": 3,
+    "PSNR": 19.903941566371635
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_soft",
+    "id": 17,
+    "occupancy": 3,
+    "PSNR": 19.1878680245412
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 23.67202757326808
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 22.689019359816605
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 16.443910650265053
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 4,
+    "occupancy": 4,
+    "PSNR": 23.085484528879302
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 5,
+    "occupancy": 4,
+    "PSNR": 18.998933215454546
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 6,
+    "occupancy": 4,
+    "PSNR": 19.138174782318206
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 7,
+    "occupancy": 4,
+    "PSNR": 15.16345268321141
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 8,
+    "occupancy": 4,
+    "PSNR": 19.518713813200907
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 9,
+    "occupancy": 4,
+    "PSNR": 20.421535489721183
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 10,
+    "occupancy": 3,
+    "PSNR": 18.466967121375077
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 11,
+    "occupancy": 3,
+    "PSNR": 19.1727915180532
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 12,
+    "occupancy": 3,
+    "PSNR": 25.7508540863741
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 13,
+    "occupancy": 3,
+    "PSNR": 26.5867120692163
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 14,
+    "occupancy": 3,
+    "PSNR": 19.484022784036476
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 15,
+    "occupancy": 3,
+    "PSNR": 23.93762533578077
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 16,
+    "occupancy": 3,
+    "PSNR": 22.804503995967874
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "dino_cosine_hard",
+    "id": 17,
+    "occupancy": 3,
+    "PSNR": 23.857874003796184
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 23.573238481843966
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 22.689019359816605
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 16.443910650265053
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 4,
+    "occupancy": 4,
+    "PSNR": 24.850062831981887
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 5,
+    "occupancy": 4,
+    "PSNR": 18.998933215454546
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 6,
+    "occupancy": 4,
+    "PSNR": 18.397640043580722
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 7,
+    "occupancy": 4,
+    "PSNR": 13.684815126277135
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 8,
+    "occupancy": 4,
+    "PSNR": 19.518713813200907
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 9,
+    "occupancy": 4,
+    "PSNR": 20.421535489721183
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 10,
+    "occupancy": 3,
+    "PSNR": 18.532024543112662
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 11,
+    "occupancy": 3,
+    "PSNR": 21.29270433000585
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 12,
+    "occupancy": 3,
+    "PSNR": 25.7508540863741
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 13,
+    "occupancy": 3,
+    "PSNR": 26.5867120692163
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 14,
+    "occupancy": 3,
+    "PSNR": 22.19648964805271
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 15,
+    "occupancy": 3,
+    "PSNR": 23.93762533578077
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 16,
+    "occupancy": 3,
+    "PSNR": 22.804503995967874
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "sam_region_median",
+    "id": 17,
+    "occupancy": 3,
+    "PSNR": 22.300006684232706
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 21.2928687906931
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 21.42341838452897
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 14.982476574025734
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 4,
+    "occupancy": 4,
+    "PSNR": 22.031579056367345
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 5,
+    "occupancy": 4,
+    "PSNR": 18.960952468405356
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 6,
+    "occupancy": 4,
+    "PSNR": 16.9602466969067
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 7,
+    "occupancy": 4,
+    "PSNR": 14.1833854104913
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 8,
+    "occupancy": 4,
+    "PSNR": 17.125561667123968
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 9,
+    "occupancy": 4,
+    "PSNR": 19.879754734178025
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 10,
+    "occupancy": 3,
+    "PSNR": 17.550655743470383
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 11,
+    "occupancy": 3,
+    "PSNR": 18.63391432529405
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 12,
+    "occupancy": 3,
+    "PSNR": 21.508106003170667
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 13,
+    "occupancy": 3,
+    "PSNR": 23.127957783185757
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 14,
+    "occupancy": 3,
+    "PSNR": 19.23947279464956
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 15,
+    "occupancy": 3,
+    "PSNR": 25.207156172745574
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 16,
+    "occupancy": 3,
+    "PSNR": 20.38825081058694
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_ssim_soft",
+    "id": 17,
+    "occupancy": 3,
+    "PSNR": 21.770995286205018
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 20.75762971737892
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 21.29202189127104
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 14.94930883382305
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 4,
+    "occupancy": 4,
+    "PSNR": 21.55451844712683
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 5,
+    "occupancy": 4,
+    "PSNR": 17.82708640033935
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 6,
+    "occupancy": 4,
+    "PSNR": 17.117143451452975
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 7,
+    "occupancy": 4,
+    "PSNR": 14.269703072588038
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 8,
+    "occupancy": 4,
+    "PSNR": 17.3434916549581
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 9,
+    "occupancy": 4,
+    "PSNR": 19.401171896202566
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 10,
+    "occupancy": 3,
+    "PSNR": 17.593088039344003
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 11,
+    "occupancy": 3,
+    "PSNR": 17.35837005552857
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 12,
+    "occupancy": 3,
+    "PSNR": 20.716527289590037
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 13,
+    "occupancy": 3,
+    "PSNR": 23.44025869564872
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 14,
+    "occupancy": 3,
+    "PSNR": 18.16395264376757
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 15,
+    "occupancy": 3,
+    "PSNR": 24.589393559683423
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 16,
+    "occupancy": 3,
+    "PSNR": 20.45862238136842
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_soft",
+    "id": 17,
+    "occupancy": 3,
+    "PSNR": 20.3342017141923
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 23.67202757326808
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 22.689019359816605
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 16.443910650265053
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 4,
+    "occupancy": 4,
+    "PSNR": 23.085484528879302
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 5,
+    "occupancy": 4,
+    "PSNR": 18.998933215454546
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 6,
+    "occupancy": 4,
+    "PSNR": 19.138174782318206
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 7,
+    "occupancy": 4,
+    "PSNR": 15.16345268321141
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 8,
+    "occupancy": 4,
+    "PSNR": 19.518713813200907
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 9,
+    "occupancy": 4,
+    "PSNR": 20.421535489721183
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 10,
+    "occupancy": 3,
+    "PSNR": 18.466967121375077
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 11,
+    "occupancy": 3,
+    "PSNR": 19.155821096334172
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 12,
+    "occupancy": 3,
+    "PSNR": 25.7508540863741
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 13,
+    "occupancy": 3,
+    "PSNR": 26.5867120692163
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 14,
+    "occupancy": 3,
+    "PSNR": 19.560492568232487
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 15,
+    "occupancy": 3,
+    "PSNR": 23.93762533578077
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 16,
+    "occupancy": 3,
+    "PSNR": 22.804503995967874
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "dino_cosine_hard",
+    "id": 17,
+    "occupancy": 3,
+    "PSNR": 23.857874003796184
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 23.568816906086273
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 22.689019359816605
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 16.443910650265053
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 4,
+    "occupancy": 4,
+    "PSNR": 24.30878405270772
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 5,
+    "occupancy": 4,
+    "PSNR": 18.998933215454546
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 6,
+    "occupancy": 4,
+    "PSNR": 18.43430377734608
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 7,
+    "occupancy": 4,
+    "PSNR": 13.613743974789243
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 8,
+    "occupancy": 4,
+    "PSNR": 19.518713813200907
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 9,
+    "occupancy": 4,
+    "PSNR": 20.421535489721183
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 10,
+    "occupancy": 3,
+    "PSNR": 18.532900271783376
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 11,
+    "occupancy": 3,
+    "PSNR": 21.285237598549816
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 12,
+    "occupancy": 3,
+    "PSNR": 25.7508540863741
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 13,
+    "occupancy": 3,
+    "PSNR": 26.5867120692163
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 14,
+    "occupancy": 3,
+    "PSNR": 22.19909804565021
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 15,
+    "occupancy": 3,
+    "PSNR": 23.93762533578077
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 16,
+    "occupancy": 3,
+    "PSNR": 22.804503995967874
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 43,
+    "method": "sam_region_median",
+    "id": 17,
+    "occupancy": 3,
+    "PSNR": 22.2134586698412
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 19.797519005152047
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 20.269646480739194
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 14.139279151113051
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 4,
+    "occupancy": 4,
+    "PSNR": 20.99990726183695
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 5,
+    "occupancy": 4,
+    "PSNR": 20.433352799898277
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 6,
+    "occupancy": 4,
+    "PSNR": 17.29285193643384
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 7,
+    "occupancy": 4,
+    "PSNR": 14.041588687988384
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 8,
+    "occupancy": 4,
+    "PSNR": 18.493741361798378
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 9,
+    "occupancy": 4,
+    "PSNR": 19.662451739080744
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 10,
+    "occupancy": 3,
+    "PSNR": 16.94351440291746
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 11,
+    "occupancy": 3,
+    "PSNR": 18.37345461935562
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 12,
+    "occupancy": 3,
+    "PSNR": 18.579729274199355
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 13,
+    "occupancy": 3,
+    "PSNR": 21.361716135426462
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 14,
+    "occupancy": 3,
+    "PSNR": 20.410156892841268
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 15,
+    "occupancy": 3,
+    "PSNR": 24.008900998577737
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 16,
+    "occupancy": 3,
+    "PSNR": 21.74990949904692
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_ssim_soft",
+    "id": 17,
+    "occupancy": 3,
+    "PSNR": 21.852540185128543
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 19.16188424933626
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 20.26857971396156
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 13.92929486625123
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 4,
+    "occupancy": 4,
+    "PSNR": 20.872168378457943
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 5,
+    "occupancy": 4,
+    "PSNR": 19.31256362351007
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 6,
+    "occupancy": 4,
+    "PSNR": 17.287206974343363
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 7,
+    "occupancy": 4,
+    "PSNR": 14.129658960184363
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 8,
+    "occupancy": 4,
+    "PSNR": 18.570407485961194
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 9,
+    "occupancy": 4,
+    "PSNR": 18.922582564314705
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 10,
+    "occupancy": 3,
+    "PSNR": 17.14359952952372
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 11,
+    "occupancy": 3,
+    "PSNR": 17.013529321842466
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 12,
+    "occupancy": 3,
+    "PSNR": 17.763475378494967
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 13,
+    "occupancy": 3,
+    "PSNR": 22.022970236490963
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 14,
+    "occupancy": 3,
+    "PSNR": 18.87015492225149
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 15,
+    "occupancy": 3,
+    "PSNR": 23.45402343366862
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 16,
+    "occupancy": 3,
+    "PSNR": 22.03200070703714
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_soft",
+    "id": 17,
+    "occupancy": 3,
+    "PSNR": 20.75394194075862
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 23.67202757326808
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 22.689019359816605
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 16.443910650265053
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 4,
+    "occupancy": 4,
+    "PSNR": 23.085484528879302
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 5,
+    "occupancy": 4,
+    "PSNR": 18.998933215454546
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 6,
+    "occupancy": 4,
+    "PSNR": 19.138174782318206
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 7,
+    "occupancy": 4,
+    "PSNR": 15.16345268321141
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 8,
+    "occupancy": 4,
+    "PSNR": 19.518713813200907
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 9,
+    "occupancy": 4,
+    "PSNR": 20.421535489721183
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 10,
+    "occupancy": 3,
+    "PSNR": 18.466967121375077
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 11,
+    "occupancy": 3,
+    "PSNR": 19.19230738561433
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 12,
+    "occupancy": 3,
+    "PSNR": 25.7508540863741
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 13,
+    "occupancy": 3,
+    "PSNR": 26.5867120692163
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 14,
+    "occupancy": 3,
+    "PSNR": 19.49961350102344
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 15,
+    "occupancy": 3,
+    "PSNR": 23.93762533578077
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 16,
+    "occupancy": 3,
+    "PSNR": 22.804503995967874
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "dino_cosine_hard",
+    "id": 17,
+    "occupancy": 3,
+    "PSNR": 23.857874003796184
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 23.560953653262033
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 22.689019359816605
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 16.443910650265053
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 4,
+    "occupancy": 4,
+    "PSNR": 24.84538110744627
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 5,
+    "occupancy": 4,
+    "PSNR": 18.998933215454546
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 6,
+    "occupancy": 4,
+    "PSNR": 18.421125480830636
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 7,
+    "occupancy": 4,
+    "PSNR": 13.706131471708654
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 8,
+    "occupancy": 4,
+    "PSNR": 19.518713813200907
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 9,
+    "occupancy": 4,
+    "PSNR": 20.421535489721183
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 10,
+    "occupancy": 3,
+    "PSNR": 18.53241656662135
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 11,
+    "occupancy": 3,
+    "PSNR": 21.289785661102375
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 12,
+    "occupancy": 3,
+    "PSNR": 25.7508540863741
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 13,
+    "occupancy": 3,
+    "PSNR": 26.5867120692163
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 14,
+    "occupancy": 3,
+    "PSNR": 22.27326788222987
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 15,
+    "occupancy": 3,
+    "PSNR": 23.93762533578077
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 16,
+    "occupancy": 3,
+    "PSNR": 22.804503995967874
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 44,
+    "method": "sam_region_median",
+    "id": 17,
+    "occupancy": 3,
+    "PSNR": 22.30262367512117
+  }
+]

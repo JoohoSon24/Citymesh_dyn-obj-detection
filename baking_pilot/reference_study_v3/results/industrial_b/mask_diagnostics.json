@@ -1,0 +1,61 @@
+{
+  "stats": {
+    "dino_ssim_soft": {
+      "positive_fraction": 1.0,
+      "mean_weight": 50.000003814697266,
+      "min": 49.99999237060547,
+      "max": 50.00000762939453,
+      "fraction_weight_gt_1": 1.0
+    },
+    "dino_cosine_soft": {
+      "positive_fraction": 1.0,
+      "mean_weight": 0.6407693028450012,
+      "min": 0.1372826248407364,
+      "max": 5.69655704498291,
+      "fraction_weight_gt_1": 0.10165613920420213
+    },
+    "dino_cosine_hard": {
+      "positive_fraction": 0.10165613920420213,
+      "mean_weight": 0.10165613889694214,
+      "min": 0.0,
+      "max": 1.0,
+      "fraction_weight_gt_1": 0.0
+    },
+    "sam_region_median": {
+      "positive_fraction": 0.27011749567242144,
+      "mean_weight": 0.27011749148368835,
+      "min": 0.0,
+      "max": 1.0,
+      "fraction_weight_gt_1": 0.0
+    }
+  },
+  "ssim_trace": [
+    {
+      "step": 0,
+      "loss": -0.17138105630874634
+    },
+    {
+      "step": 499,
+      "loss": -1.1289727687835693
+    },
+    {
+      "step": 999,
+      "loss": -1.1283838748931885
+    }
+  ],
+  "cosine_trace": [
+    {
+      "step": 0,
+      "loss": 0.5803746581077576
+    },
+    {
+      "step": 499,
+      "loss": 0.12465806305408478
+    },
+    {
+      "step": 999,
+      "loss": 0.1258116364479065
+    }
+  ],
+  "training_only": true
+}

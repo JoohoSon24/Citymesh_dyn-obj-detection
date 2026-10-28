@@ -1,0 +1,22 @@
+{
+  "PROJECT_EASY_PILOT.md": "36fa034f9a6de112697f132d68822631ce993170a6b496fbbbfcebe927590f9f",
+  "PROJECT_HARD_BASELINES.md": "8c1a24cc0bf28e49253157eae42719bb834e9275d8b2cd3530b5898f43bba8d3",
+  "PROJECT.md": "f73decd5a16bdc666842061f87adf21ba5482357ab644dc43a85ef6b2a778a11",
+  "pilot.py": "dae22a06270e4cec875cf5886157b188513a4ec8fa72c87a2f3338b94a285082",
+  "harder_dataset/improved_baselines/train.py": "45ffb992730b7b30cac17a6084f59d93f2e8ccbdf9289512e306ee268bdcede0",
+  "harder_dataset/improved_baselines/shadow_guard.py": "9e16d9634233ee54af34704a0d2fa10c6e5ec9fe98df862b2fce6ea9d597ff34",
+  "harder_dataset/improved_baselines/protocol.json": "9a2cbc92d9ddd3e2f8b8a1a7619cc8ab7483060f78e44dad742a2cab62f65f7a",
+  "harder_dataset/improved_baselines/shadow_protocol.json": "2ce80a02ec0cfaa00b1b6f0f2cb5527fca1562da3089e8ae6ba65985acff8021",
+  "results/metrics.csv": "b3d4015e95f67d96c286c735f9f344e92741d9fe98d222ccfd01880a7d858a27",
+  "results/manual_metrics.csv": "21131c2ff01f67e2262704854f192dad46a1dbe59fd737f909a7db23812bb389",
+  "harder_dataset/results/metrics.csv": "83e4797998717d694632e8b3c71196726c9168196bfbc2aa2e32a522164bc6fa",
+  "harder_dataset/improved_baselines/results/combined_metrics.csv": "78bf69629402edbda6ce5a369fa6b31378a77217229fa8ce2d98c1e1d577ee92",
+  "harder_dataset/natural_fill/protocol.json": "e3c0127e626730ba45ae25d57edf163d342229ba31be7bc5cff2887240195e3e",
+  "harder_dataset/natural_fill/run_methods.py": "02642d70f6bebb7b9df2f5e0a79d58da7621db6be7f6cee307a26c84d6ab0bbf",
+  "harder_dataset/natural_fill/evaluate.py": "d3636dd927e2cc189f52671a8ebb1c1bed1719dcb66bc60788e1cf5f47a10777",
+  "harder_dataset/natural_fill/validate.py": "e436ee46f0c4bb13141fd2595d6d6d70629eb7093dc9cb65788d45ac63388cfe",
+  "harder_dataset/natural_fill/make_report.py": "461745cce02ca13ac037350ceccebce59918c1ebb2a828c625832873cb02183d",
+  "harder_dataset/natural_fill/results/metrics.csv": "8f507bcfa69094326f1721dbf18fc6347d161d18a2613448f2d9afb832f47033",
+  "harder_dataset/natural_fill/results/fill_diagnostics.csv": "be2a0c6f25a3909945a12c3816a4602faebffa4864b05a0a96a6734e3ef6a8b0",
+  "harder_dataset/natural_fill/results/validation.json": "96c50582748a2d5152c0fb16865e85948e04a2b984d13c037c9b471c22dc8bc2"
+}

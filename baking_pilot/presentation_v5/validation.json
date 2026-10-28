@@ -1,0 +1,13 @@
+{
+  "slides": 27,
+  "pdf_pages": 27,
+  "methods_with_actual_final_output": 14,
+  "no_on_slide_reference_lines": true,
+  "no_version_order_labels": true,
+  "last_two_slides": [
+    "qualitative",
+    "metrics"
+  ],
+  "duplicate_package_entries": 0,
+  "no_footer_overflow": true
+}

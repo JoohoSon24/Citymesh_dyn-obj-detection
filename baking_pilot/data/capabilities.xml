@@ -1,0 +1,698 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WMS_Capabilities
+  xmlns="http://www.opengis.net/wms"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:inspire_common="http://inspire.ec.europa.eu/schemas/common/1.0"
+  xmlns:inspire_vs="http://inspire.ec.europa.eu/schemas/inspire_vs/1.0"
+  xsi:schemaLocation="http://www.opengis.net/wms http://schemas.opengis.net/wms/1.3.0/capabilities_1_3_0.xsd http://inspire.ec.europa.eu/schemas/inspire_vs/1.0 http://inspire.ec.europa.eu/schemas/inspire_vs/1.0/inspire_vs.xsd"
+    
+  version="1.3.0">
+  <Service>
+    <Name>WMS</Name>
+    <Title>Landelijke Voorziening Beeldmateriaal</Title>
+    <Abstract>Een jaarlijks te vernieuwen dataset van luchtopnamen van Nederland in hoge en lage resolutie.</Abstract>
+    <KeywordList>
+      <Keyword>rgb</Keyword>
+      <Keyword>infoMapAccessService</Keyword>
+      <Keyword>landelijke voorziening beeldmateriaal</Keyword>
+      <Keyword>lvb</Keyword>
+      <Keyword>beeldmateriaal</Keyword>
+      <Keyword>luchtbeelden</Keyword>
+      <Keyword>luchtfoto</Keyword>
+      <Keyword>orthofoto</Keyword>
+      <Keyword>ortho</Keyword>
+      <Keyword>ortho25</Keyword>
+      <Keyword>orthofotomozaïek</Keyword>
+      <Keyword>orthofotomozaiek</Keyword>
+      <Keyword>mozaïek</Keyword>
+      <Keyword>mozaiek</Keyword>
+      <Keyword>lage resolutie</Keyword>
+      <Keyword>lr</Keyword>
+      <Keyword>open data cc-by</Keyword>
+      <Keyword>orthobeeldvorming</Keyword>
+      <Keyword>nationaal</Keyword>
+      <Keyword>orhtoHR</Keyword>
+      <Keyword>quick ortho</Keyword>
+      <Keyword>hoge resolutie</Keyword>
+      <Keyword>hr</Keyword>
+    </KeywordList>
+    <OnlineResource
+      xmlns:xlink="http://www.w3.org/1999/xlink" xlink:type="simple" xlink:href="http://www.pdok.nl/" />
+    <ContactInformation>
+      <ContactPersonPrimary>
+        <ContactPerson>KlantContactCenter PDOK</ContactPerson>
+        <ContactOrganization>PDOK</ContactOrganization>
+      </ContactPersonPrimary>
+      <ContactPosition>publisher</ContactPosition>
+      <ContactAddress>
+        <AddressType>postal</AddressType>
+        <Address>Laan van Westenenk 701</Address>
+        <City>Apeldoorn</City>
+        <StateOrProvince>Gelderland</StateOrProvince>
+        <PostCode>7334 DP</PostCode>
+        <Country>The Netherlands</Country>
+      </ContactAddress>
+      <ContactVoiceTelephone>.</ContactVoiceTelephone>
+      <ContactFacsimileTelephone>.</ContactFacsimileTelephone>
+      <ContactElectronicMailAddress>BeheerPDOK@kadaster.nl</ContactElectronicMailAddress>
+    </ContactInformation>
+    <Fees>None</Fees>
+    <AccessConstraints>None</AccessConstraints>
+    <MaxWidth>2500</MaxWidth>
+    <MaxHeight>2500</MaxHeight>
+  </Service>
+  <Capability>
+    <Request>
+      <GetCapabilities>
+        <Format>text/xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0" />
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetCapabilities>
+      <GetMap>
+        <Format>image/jpeg</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0" />
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetMap>
+      <GetFeatureInfo>
+        <Format>text/plain</Format>
+        <Format>text/xml</Format>
+        <DCPType>
+          <HTTP>
+            <Get>
+              <OnlineResource xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0" />
+            </Get>
+          </HTTP>
+        </DCPType>
+      </GetFeatureInfo>
+    </Request>
+    <Exception>
+      <Format>XML</Format>
+    </Exception>
+    <inspire_vs:ExtendedCapabilities>
+      <inspire_common:ResourceLocator>
+        <inspire_common:URL>https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=wms&amp;request=getCapabilities</inspire_common:URL>
+        <inspire_common:MediaType>application/vnd.ogc.wms_xml</inspire_common:MediaType>
+      </inspire_common:ResourceLocator>
+      <inspire_common:ResourceType>service</inspire_common:ResourceType>
+      <inspire_common:TemporalReference>
+        <inspire_common:DateOfCreation>2021-02-01</inspire_common:DateOfCreation>
+        <inspire_common:DateOfLastRevision>2021-02-01</inspire_common:DateOfLastRevision>
+        <inspire_common:DateOfPublication>2021-02-01</inspire_common:DateOfPublication>
+      </inspire_common:TemporalReference>
+      <inspire_common:Conformity>
+        <inspire_common:Specification xsi:type="inspire_common:citationInspireInteroperabilityRegulation_dut">
+            <inspire_common:Title>VERORDENING (EU) Nr. 1089/2010 VAN DE COMMISSIE van 23 november 2010 ter uitvoering van Richtlijn 2007/2/EG van het Europees Parlement en de Raad betreffende de interoperabiliteit van verzamelingen ruimtelijke gegevens en van diensten met betrekking tot ruimtelijke gegevens</inspire_common:Title>
+            <inspire_common:DateOfPublication>2010-12-08</inspire_common:DateOfPublication>
+            <inspire_common:URI>OJ:L:2010:323:0011:0102:NL:PDF</inspire_common:URI>
+            <inspire_common:ResourceLocator>
+                <inspire_common:URL>http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2010:323:0011:0102:NL:PDF</inspire_common:URL>
+                <inspire_common:MediaType>application/pdf</inspire_common:MediaType>
+            </inspire_common:ResourceLocator>
+        </inspire_common:Specification>
+        <inspire_common:Degree>notConformant</inspire_common:Degree>
+      </inspire_common:Conformity>
+      <inspire_common:MetadataPointOfContact>
+        <inspire_common:OrganisationName>PDOK</inspire_common:OrganisationName>
+        <inspire_common:EmailAddress>BeheerPDOK@kadaster.nl</inspire_common:EmailAddress>
+      </inspire_common:MetadataPointOfContact>
+      <inspire_common:MetadataDate>2021-02-01</inspire_common:MetadataDate>
+      <inspire_common:SpatialDataServiceType>view</inspire_common:SpatialDataServiceType>
+      <inspire_common:MandatoryKeyword>
+          <inspire_common:KeywordValue>infoMapAccessService</inspire_common:KeywordValue>
+      </inspire_common:MandatoryKeyword>
+      <inspire_common:SupportedLanguages>
+        <inspire_common:DefaultLanguage>
+          <inspire_common:Language>dut</inspire_common:Language>
+        </inspire_common:DefaultLanguage>
+      </inspire_common:SupportedLanguages>
+      <inspire_common:ResponseLanguage>
+        <inspire_common:Language>dut</inspire_common:Language>
+      </inspire_common:ResponseLanguage>
+      <inspire_common:MetadataUrl>
+        <inspire_common:URL>http://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=c82a783a-9a58-4761-a809-b4c5d90dcd35</inspire_common:URL>
+        <inspire_common:MediaType>application/vnd.ogc.csw.GetRecordByIdResponse_xml</inspire_common:MediaType>
+      </inspire_common:MetadataUrl>
+    </inspire_vs:ExtendedCapabilities>
+    <Layer>
+      <Title>Landelijke Voorziening Beeldmateriaal</Title>
+      <CRS>EPSG:28992</CRS>
+      <CRS>EPSG:3857</CRS>
+      <CRS>EPSG:4258</CRS>
+      <CRS>EPSG:4326</CRS>
+      <CRS>EPSG:25831</CRS>
+      <CRS>EPSG:25832</CRS>
+      <EX_GeographicBoundingBox>
+        <westBoundLongitude>3.1706551165717776</westBoundLongitude>
+        <eastBoundLongitude>7.4887369433036834</eastBoundLongitude>
+        <southBoundLatitude>50.5788239246427</southBoundLatitude>
+        <northBoundLatitude>53.637607600687694</northBoundLatitude>
+      </EX_GeographicBoundingBox>
+      <BoundingBox CRS="EPSG:4326" minx="48.0405018704" miny="-1.65729160235" maxx="56.1105896442" maxy="12.4317272654"/>
+      <BoundingBox CRS="EPSG:3857" minx="-184488.85727" miny="6113595.5499" maxx="1383893.54886" maxy="7580462.49937"/>
+      <BoundingBox CRS="EPSG:28992" minx="-285401.92" miny="22598.08" maxx="595401.92" maxy="903401.92"/>
+      <Layer queryable="0" opaque="1">
+        <Name>Actueel_orthoHR</Name>
+        <Title>Luchtfoto Actueel Ortho 8cm RGB</Title>
+        <Abstract>Landsdekkende dataset in 8cm resolutie kleuren luchtfoto's van de meest recente jaargang.</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="https://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=bc9b2d88-9d6b-46c9-ad0e-23f0b7da657c"/>
+        </MetadataURL>
+      </Layer>
+      <Layer queryable="0" opaque="1">
+        <Name>Actueel_ortho25</Name>
+        <Title>Luchtfoto Actueel Ortho 25cm RGB</Title>
+        <Abstract>Landsdekkende dataset in 25cm resolutie kleuren luchtfoto's van de meest recente jaargang.</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="http://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=7b424340-25c5-4c95-8dbf-bf1d87888566"/>
+        </MetadataURL>
+      </Layer>
+      <Layer queryable="0" opaque="1">
+        <Name>2026_orthoHR</Name>
+        <Title>Luchtfoto 2026 Ortho 5 en 8cm RGB</Title>
+        <Abstract>Landsdekkende dataset in 8cm resolutie kleuren luchtfoto's van 2026</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="https://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=4d8e14a9-302c-48e7-a0ee-1b23ed2a2122"/>
+        </MetadataURL>
+      </Layer>
+      <Layer queryable="0" opaque="1">
+        <Name>2026_quickorthoHR</Name>
+        <Title>Luchtfoto 2026 Quick Ortho 8cm RGB</Title>
+        <Abstract>Landsdekkende dataset in 8cm resolutie kleuren luchtfoto's van 2026.</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="https://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=4d8e14a9-302c-48e7-a0ee-1b23ed2a2122"/>
+        </MetadataURL>
+      </Layer>
+      <Layer queryable="0" opaque="1">
+        <Name>2026_quickortho25</Name>
+        <Title>Luchtfoto 2026 Quick Ortho 25cm RGB</Title>
+        <Abstract>Landsdekkende dataset in 25cm resolutie kleuren luchtfoto's van 2026.</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="https://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=00abe9ef-45f6-46bb-a227-2f653ae5fc6e"/>
+        </MetadataURL>
+      </Layer>
+      <Layer queryable="0" opaque="1">
+        <Name>2025_orthoHR</Name>
+        <Title>Luchtfoto 2025 Ortho 5 en 8cm RGB</Title>
+        <Abstract>Landsdekkende dataset in 8cm resolutie kleuren luchtfoto's van 2025</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="https://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=bc9b2d88-9d6b-46c9-ad0e-23f0b7da657c"/>
+        </MetadataURL>
+      </Layer>
+      <Layer queryable="0" opaque="1">
+        <Name>2025_ortho25</Name>
+        <Title>Luchtfoto 2025 Ortho 25cm RGB</Title>
+        <Abstract>Landsdekkende dataset 25cm resolutie kleuren luchtfoto's van 2025.</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="https://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=7b424340-25c5-4c95-8dbf-bf1d87888566"/>
+        </MetadataURL>
+      </Layer>
+      <Layer queryable="0" opaque="1">
+        <Name>2024_orthoHR</Name>
+        <Title>Luchtfoto 2024 Ortho 8cm RGB</Title>
+        <Abstract>Landsdekkende dataset in 8cm resolutie kleuren luchtfoto's van 2024</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="https://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=8b4d70cd-4233-4299-8ce6-01943d1bbd1f"/>
+        </MetadataURL>
+      </Layer>
+      <Layer queryable="0" opaque="1">
+        <Name>2024_ortho25</Name>
+        <Title>Luchtfoto 2024 Ortho 25cm RGB</Title>
+        <Abstract>Landsdekkende dataset 25cm resolutie kleuren luchtfoto's van 2024.</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="https://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=d7a771c2-bfe4-4101-9932-a1cf97c14dc9"/>
+        </MetadataURL>
+      </Layer>
+      <Layer queryable="0" opaque="1">
+        <Name>2023_orthoHR</Name>
+        <Title>Luchtfoto 2023 Ortho 8cm RGB</Title>
+        <Abstract>Landsdekkende dataset in 8cm resolutie kleuren luchtfoto's van 2023</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="https://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=84ae8387-a93b-4a70-ac5c-6bb47792c1b4"/>
+        </MetadataURL>
+      </Layer>
+      <Layer queryable="0" opaque="1">
+        <Name>2023_ortho25</Name>
+        <Title>Luchtfoto 2023 Ortho 25cm RGB</Title>
+        <Abstract>Landsdekkende dataset 25cm resolutie kleuren luchtfoto's van 2023.</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="https://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=50575455-6daf-4cfe-ae1e-bbc9cc5c6093"/>
+        </MetadataURL>
+      </Layer>
+      <Layer queryable="0" opaque="1">
+        <Name>2022_orthoHR</Name>
+        <Title>Luchtfoto 2022 Ortho 8cm RGB</Title>
+        <Abstract>Landsdekkende dataset in 8cm resolutie kleuren luchtfoto's van 2022</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="https://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=cd9b7810-054e-4c8a-94dc-c9cf35a30f1d"/>
+        </MetadataURL>
+      </Layer>
+      <Layer queryable="0" opaque="1">
+        <Name>2022_ortho25</Name>
+        <Title>Luchtfoto 2022 Ortho 25cm RGB</Title>
+        <Abstract>Landsdekkende dataset 25cm resolutie kleuren luchtfoto's van 2022.</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="https://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=76681c7b-8e4d-4c5c-a4a4-3ef758dde206"/>
+        </MetadataURL>
+      </Layer>
+      <Layer queryable="0" opaque="1">
+        <Name>2021_orthoHR</Name>
+        <Title>Luchtfoto 2021 Ortho 8cm RGB</Title>
+        <Abstract>Landsdekkende dataset in 8cm resolutie kleuren luchtfoto's van 2021</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="https://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=bb286d37-4a1b-495f-9840-20e7292beced"/>
+        </MetadataURL>
+      </Layer>
+      <Layer queryable="0" opaque="1">
+        <Name>2020_ortho25</Name>
+        <Title>Luchtfoto 2020 Ortho 25cm RGB</Title>
+        <Abstract>Landsdekkende dataset 25cm resolutie kleuren luchtfoto's van 2020.</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="http://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=4e2bb25e-a5a9-43a7-986a-40e7aea32e38"/>
+        </MetadataURL>
+      </Layer>
+      <Layer queryable="0" opaque="1">
+        <Name>2019_ortho25</Name>
+        <Title>Luchtfoto 2019 Ortho 25cm RGB</Title>
+        <Abstract>Landsdekkende dataset 25cm resolutie kleuren luchtfoto's van 2019.</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="http://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=64ff8561-5c56-4cc1-ae0e-94366fb70b7e"/>
+        </MetadataURL>
+      </Layer>
+      <Layer queryable="0" opaque="1">
+        <Name>2018_ortho25</Name>
+        <Title>Luchtfoto 2018 Ortho 25cm RGB</Title>
+        <Abstract>Landsdekkende dataset 25cm resolutie kleuren luchtfoto's van 2018.</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="http://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=5b274449-b6c2-4672-a32f-e0bd40975a53"/>
+        </MetadataURL>
+      </Layer>
+      <Layer queryable="0" opaque="1">
+        <Name>2017_ortho25</Name>
+        <Title>Luchtfoto 2017 Ortho 25cm RGB</Title>
+        <Abstract>Landsdekkende dataset 25cm resolutie kleuren luchtfoto's van 2017.</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="http://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=74aca3eb-c38b-4214-9537-e0abc69e11b5"/>
+        </MetadataURL>
+      </Layer>
+      <Layer queryable="0" opaque="1">
+        <Name>2016_ortho25</Name>
+        <Title>Luchtfoto 2016 Ortho 25cm RGB</Title>
+        <Abstract>Landsdekkende dataset 25cm resolutie kleuren luchtfoto's van 2016.</Abstract>
+        <CRS>EPSG:28992</CRS>
+        <CRS>EPSG:3857</CRS>
+        <CRS>EPSG:4258</CRS>
+        <CRS>EPSG:4326</CRS>
+        <CRS>EPSG:25831</CRS>
+        <CRS>EPSG:25832</CRS>
+        <EX_GeographicBoundingBox>
+          <westBoundLongitude>3.170655050418618</westBoundLongitude>
+          <eastBoundLongitude>7.4887368679516655</eastBoundLongitude>
+          <southBoundLatitude>50.5788239391456</southBoundLatitude>
+          <northBoundLatitude>53.63760758138346</northBoundLatitude>
+        </EX_GeographicBoundingBox>
+
+        <BoundingBox CRS="EPSG:28992"  minx="-2000.0" miny="290000.0"  maxx="294000.0" maxy="630000.0" />
+        <BoundingBox CRS="EPSG:3857"  minx="352955.7056937217" miny="6547128.004577159"  maxx="833642.3748251938" maxy="7101820.07516432" />
+        <BoundingBox CRS="EPSG:4258"  minx="50.57882391238731" miny="3.1706550818953216"  maxx="53.63760759202128" maxy="7.488736836926826" />
+        <BoundingBox CRS="EPSG:4326"  minx="50.5788239391456" miny="3.170655050418618"  maxx="53.63760758138346" maxy="7.4887368679516655" />
+        <BoundingBox CRS="EPSG:25831"  minx="512082.88085966825" miny="5603004.116177382"  maxx="796694.0124633494" maxy="5952570.107613796" />
+        <BoundingBox CRS="EPSG:25832"  minx="87403.33455963084" miny="5619229.646356759"  maxx="400082.441000147" maxy="5944264.190804671" />
+        <MetadataURL type="TC211">
+          <Format>text/plain</Format>
+          <OnlineResource xlink:type="simple" xlink:href="http://www.nationaalgeoregister.nl/geonetwork/srv/dut/xml.metadata.get?uuid=df15af6e-0d21-4437-a69f-802be3479bba"/>
+        </MetadataURL>
+      </Layer>
+    </Layer>
+  </Capability>
+</WMS_Capabilities>

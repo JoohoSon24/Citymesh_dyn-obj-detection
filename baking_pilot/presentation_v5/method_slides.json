@@ -1,0 +1,16 @@
+{
+  "l2": 8,
+  "median": 9,
+  "block": 10,
+  "hugs": 11,
+  "robust": 12,
+  "geo_mask": 13,
+  "uv_fusion": 14,
+  "uv_shadow_guard": 15,
+  "geo_fusion": 16,
+  "geo_smooth": 17,
+  "dino_ssim_soft": 18,
+  "dino_cosine_soft": 19,
+  "dino_cosine_hard": 20,
+  "sam_region_median": 21
+}

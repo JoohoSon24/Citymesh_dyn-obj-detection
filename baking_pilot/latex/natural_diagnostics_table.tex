@@ -1,0 +1,9 @@
+\begin{table}[htbp]\centering\scriptsize
+\caption{추가 진단(seed42). Gradient L1은2026 기준과의 인접 RGB 차분 오차(낮을수록 좋음), hole은모든 학습 관측이 제외된 픽셀, 경계는hole의3픽셀 이웃이다. 작은 부분집합이며 자연스러움의 사람 평가가 아니다.}
+\begin{tabular}{llrrrr}\toprule 장면 & 방법 & Gradient L1 & hole PSNR & 경계 PSNR & hole 픽셀\\\midrule
+B & UV + shadow guard & 0.0109 & 20.19 & 20.28 & 362 \\
+B & Gradient harmonize & 0.0105 & 20.56 & 20.39 & 362 \\
+B & Patch transfer & 0.0109 & 23.69 & 21.83 & 362 \\
+C & UV + shadow guard & 0.0108 & 18.74 & 18.86 & 1439 \\
+C & Gradient harmonize & 0.0103 & 18.55 & 19.06 & 1439 \\
+C & Patch transfer & 0.0108 & 18.29 & 18.84 & 1439 \\\bottomrule\end{tabular}\end{table}

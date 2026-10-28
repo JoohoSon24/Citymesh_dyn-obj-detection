@@ -1,0 +1,21 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.release-downloads/
+# Large snapshot files are distributed via GitHub Releases.
+*.npz
+*.npy
+*.pth
+*.pt
+*.zip
+*.mp4
+baking_pilot/external/
+/baking_pilot/reference_study_v3/papers/gs_w.pdf
+/baking_pilot/reference_study_v3/papers/on_the_go.pdf
+/baking_pilot/reference_study_v3/papers/robust_3dgs.pdf
+/baking_pilot/reference_study_v3/papers/robust_gs.pdf
+/baking_pilot/reference_study_v3/papers/robustnerf.pdf
+/baking_pilot/reference_study_v3/papers/spotless.pdf
+/baking_pilot/reference_study_v3/papers/wildgaussians.pdf

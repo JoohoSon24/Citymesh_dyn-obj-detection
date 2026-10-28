@@ -1,0 +1,8 @@
+{
+  "executed_method_reports": 14,
+  "literature_only_reports": 3,
+  "individual_reports": 17,
+  "metric_source": "/root/sonjooho/baking_pilot/reference_study_v3/results/summary.json",
+  "new_experiments": false,
+  "images": "actual same fixed C audit crop; literature images labelled separately"
+}

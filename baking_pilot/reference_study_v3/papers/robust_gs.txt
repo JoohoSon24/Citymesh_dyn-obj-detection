@@ -1,0 +1,806 @@
+                                                                Robust Gaussian Splatting
+arXiv:2404.04211v1 [cs.CV] 5 Apr 2024
+
+                                        François Darmon          Lorenzo Porzi     Samuel Rota-Bulò           Peter Kontschieder
+
+                                                                  Meta Reality Labs Zurich
+                                               fra.darmon@gmail.com, {porzi,rotabulo,pkontschieder}@meta.com
+
+
+
+                                                 Ground Truth                     3D GS                            Ours
+
+
+
+
+                                        Color inconsistency:                         Motion / defocus blur:
+
+
+
+                                Fig. 1: Hand-held phone captures (top left, from ScanNet++) can be challenging to
+                                reconstruct with 3D Gaussian Splatting (top center), due to inter-frame color incon-
+                                sistencies (bottom left), motion blur and defocus blur (bottom right). We show how
+                                these factors can explicitly and easily be modeled in the 3D GS framework, leading to
+                                notably improved reconstruction results (top right).
+
+
+
+
+                                               Abstract. In this paper, we address common error sources for 3D Gaus-
+                                               sian Splatting (3DGS) including blur, imperfect camera poses, and color
+                                               inconsistencies, with the goal of improving its robustness for practical ap-
+                                               plications like reconstructions from handheld phone captures. Our main
+                                               contribution involves modeling motion blur as a Gaussian distribution
+                                               over camera poses, allowing us to address both camera pose refinement
+                                               and motion blur correction in a unified way. Additionally, we propose
+                                               mechanisms for defocus blur compensation and for addressing color in-
+                                               consistencies caused by ambient light, shadows, or due to camera-related
+                                               factors like varying white balancing settings. Our proposed solutions in-
+                                               tegrate in a seamless way with the 3DGS formulation while maintaining
+                                               its benefits in terms of training efficiency and rendering speed. We ex-
+                                               perimentally validate our contributions on relevant benchmark datasets
+                                               including Scannet++ and Deblur-NeRF, obtaining state-of-the-art re-
+                                               sults and thus consistent improvements over relevant baselines.
+
+                                               Keywords: 3D Gaussian Splatting · Pose Optimization · Motion Blur
+2      Darmon et al .
+
+1   Introduction
+Neural rendering has emerged as a powerful tool for photorealistic novel view
+synthesis (NVS), the task of rendering images from arbitrary camera viewpoints,
+given a set of posed input images. NVS has a broad number of applications in
+fields such as AR/VR/MR, robotics, mapping, etc. One of the most recently pro-
+posed methods are Neural Radiance Fields (NeRFs) [18], which combine deep
+learning and volumetric rendering techniques for modelling 3D scenes. This is
+achieved by optimizing multilayer perceptrons (MLPs) to map from spatial co-
+ordinates and viewing directions to density and color fields, allowing the models
+to capture the intricate relationship between light and geometry in a data-driven
+manner, with remarkable fidelity.
+    Another recent approach to neural rendering is 3D Gaussian splats (3DGS) [11],
+which represent scenes as a collection of anisotropic 3D Gaussian functions with
+corresponding, additional parameters for modelling view-dependent appearance
+and opacity. This representation allows for very fast and GPU-efficient render-
+ing of high-quality, high-resolution images, making it well-suited for applications
+with strong fidelity requirements.
+    While the aforementioned neural rendering techniques have shown great
+promise in generating photorealistic images and videos, they often make strong
+assumptions about their input. For example, many methods assume perfect cam-
+era poses, non-blurred input images, and without any defocus artifacts. Addi-
+tionally, they may require constant camera color settings and calibration, which
+can be difficult to achieve in practice. Such assumptions limit the applicability
+of neural rendering techniques for real-world scenarios, where input data may
+be noisy, incomplete, and distorted. As a consequence, images rendered from
+models trained on real-world data exhibit characteristic issues including floaters
+and poor image quality.
+    In this paper, we explore ways to relax the aforementioned data quality as-
+sumptions for 3D Gaussian splats and improve their robustness for practical
+applications. More specifically, we introduce a new formulation for addressing
+common error sources including blur (camera motion blur and defocus blur),
+imperfect camera poses, and color inconsistencies. We explain that motion blur
+in an image can be understood as the result of integrating multiple, locally
+perturbed camera captures taken during exposure time. Building on this obser-
+vation, we propose a solution that addresses both camera pose distortion and
+motion blur by modeling motion blur as a Gaussian distribution over camera
+poses, from where we can obtain the expected image at the given noise. This
+approach seamlessly and elegantly integrates with the probabilistic formulation
+of 3DGS while maintaining its benefits in terms of training efficiency and render-
+ing speed. For our model, we only require few additional, per-image parameters
+(6 for motion blur), based on which we can derive the updated per-Gaussian
+parameters.
+    Defocus blur is caused by the use of an aperture in a camera, which limits
+the amount of light entering the lens. When the aperture is small, only a narrow
+beam of light can pass through the lens, resulting in a sharp image. However,
+                                                Robust Gaussian Splatting       3
+
+when the aperture is larger, more light can pass through the lens, causing the
+image to become blurry, particularly under low-light conditions. Additionally,
+the use of an aperture also causes the depth of field to be shallow, meaning
+that only objects within a certain distance from the camera will be in focus (on
+the so-called focus plane). Conversely, objects outside of this range will appear
+blurry, and with increasing distance to the focus plane, get projected to a circle
+with increasing radius. To compensate for defocus blur, we propose an offset
+correction mechanism implemented via another covariance to the Gaussians,
+once projected to the 2D image plane.
+    To address color inconsistencies across multiple images taken for a scene that
+are caused by changes in ambient light, moving shadows, or camera-induced
+issues like white balancing, we propose incorporating an RGB decoder function
+with additional per-image parameters. This can be implemented as a simple
+affine color transformation applied to the standard RGB color decoder of 3D
+Gaussian Splats. For novel view synthesis at test time, this can be absorbed into
+the spherical harmonics used in conventionally used 3DGS viewers.
+    We experimentally validate our contributions and their impact on relevant
+benchmark datasets including the novel, real-world Scannet++ [32] dataset and
+the synthetically generated Deblur-NeRF dataset [15]. For Scannet++, we in-
+troduce an evaluation procedure for novel view synthesis, leveraging their noisy,
+low-quality iPhone data for evaluation. To address blur and other issues in the
+images, we select the 10 best test views per sequence based on a blurriness mea-
+sure (decreasing maximum gradient magnitude), while ensuring no test view
+is within 0.5m and 60◦ of another. To address pose and color drift, we pro-
+pose a test-time adaptation to align the camera poses and color profile to the
+expected one from ground truth before computing evaluation metrics. This ap-
+proach does not lead to over-fitting and can be applied to all baselines in a
+fair way. Our experiments show consistent improvements over relevant baselines
+including 3DGS [11] and MipNeRF-360 [2].
+   To summarize, our proposed contributions are as follows:
+
+
+ – A solution that models motion blur as a Gaussian distribution over cam-
+   era poses, allowing us to address both camera pose refinement and motion
+   blur correction while maintaining the benefits of 3DGS in terms of training
+   efficiency and rendering speed.
+ – We propose a defocus blur compensation mechanism, providing an off-focus
+   plane correction implemented via another covariance to the Gaussians, once
+   projected to the 2D image plane.
+ – We propose an RGB decoder function with per-image parameters to address
+   color inconsistencies caused by ambient light, shadows, or camera-specific
+   issues.
+ – We introduce a way for test set generation from Scannet++ by leveraging
+   their noisy iPhone video data, for assessing blur, pose, and color drift.
+4       Darmon et al .
+
+2   Related work
+Neural rendering was first proposed in NeRF [18]. It proposes to learn novel view
+synthesis by optimizing a radiance field representation so that it can re-render the
+training views. Many follow-up articles focused on the 3D representation used:
+either using an Multi Layer Perceptron (MLP) [1,2,26] voxel grids [8], factorized
+voxel grids [4,7] and hash grids [3,19]. Such method consistently showed increased
+speed both in training and rendering. Recently, Gaussian Splatting [11] intro-
+duced a new paradigm for neural rendering. Instead of optimizing a radiance field
+by querying points in 3D, it encodes the scene as a collection of 3D gaussians that
+can be splatted on the image plane for rendering. It has shown state-of-the-art
+rendering quality and real-time rendering. Neural rendering methods typically
+assume that the input data has good quality: pixel perfect camera poses, color
+consistency across views and sharp images. If those assumptions are not met,
+they produce bad quality results with typically blurry textures and floaters in
+the images.
+     Color inconsistency was tackled in NeRF in the wild [16] that deals with
+challenging data from raw internet image collections. It optimizes a per-image
+feature vector so that the color output also depend on the training image. This
+approach is used in many recent neural rendering methods. Another approach
+is to model the physical image capturing process as in [9, 17].
+     Pose inaccuracies was tackled in [10, 14, 21, 31] where the camera poses are
+optimized along the 3D representation. These papers introduce numerous tech-
+niques for optimizing noisy camera poses with a large noise, sometimes even
+random initialization. The main goal of such papers is to remove the dependency
+on Structure-from-Motion (SfM) step used before the actual 3D representation
+training. In this paper we also optimize poses but the objective is different: we
+assume a good first guess of the poses from SfM [25] and refine the poses during
+training.
+     Deblurring is a long standing problem in computer vision. Blind deblurring
+is the task of removing blur that was caused by an unknown convolution kernel.
+Existing work is splitted in single view deblurring and multi view. Single view
+deblurring is classically solved with optimization methods. Since the problem
+is ill-posed with infinite many solutions, classical methods heavily rely on reg-
+ularization [6, 24]. With the advent of Deep Learning many papers proposed to
+apply it to deblurring [23, 28–30, 33]. Multi-view deblurring relies on matching
+between multiple views [5, 20] to aggregate informations.
+     Neural rendering has provided an elegant way to do multi-view deblurring.
+The blur phenomenon can be directly modeled along with the rendering. De-
+blurNerf [15] introduced a simple approach to train neural rendering models
+from blurry images. It relies on generating multiple rendering for a same train-
+ing pixel, each rendering being produced from a slightly different ray as predicted
+by a small MLP. This idea was further improved with other architecture for off-
+set prediction in [13, 22]. While the same idea could be applied to Gaussian
+Splatting, [12] introduces a more efficient way to model blur for gaussian splat-
+ting models. It models blur with a new covariance matrix for each gaussians as
+                                                                                                           Robust Gaussian Splatting                      5
+
+predicted by an MLP. Our approach is similar to that approach but it explicitly
+derive the covariance changes from motion and defocus blur using a physical
+model. All deblurring methods that use neural rendering have shown impressive
+results on the DeblurNerf dataset [15] but, to the best of our knowledge, they
+were never applied to data closer to the real world. We propose in this paper an
+evaluation on real-world data like Scannet++ [32].
+
+3    Brief review of Gaussian splatting
+Gaussian splatting is a scene reconstruction method introduced in [11] that
+builds on top of ideas from [34]. The underlying scene representation is non-
+parametric and consists in a collection of 3D Gaussian primitives Γ := {γ1 , . . . , γK },
+which are rendered via volume splatting.
+
+Gaussian primitive. A Gaussian primitive γk can be imagined as a 3D Gaussian
+kernel
+                      \mathcal G_k(\vct x)\coloneqq \exp \left (-\frac {1}{2}(\vct x-\vct \mu _k)^\top \mat \Sigma _k^{-1}(\vct x-\vct \mu _k)\right ) 
+
+with mean µk ∈ R3 and covariance Σk . Each primitive has an associated opacity
+factor αk ∈ [0, 1] and a feature vector f k ∈ Rd . The feature vector typically holds
+spherical harmonics coefficients that encode view-dependent color information.
+
+Splatting. The operation of projecting a Gaussian primitive γk to a camera pixel
+space is called splatting. Let π be the camera and assume the same notation to
+refer to its world-to-image transformation. The "splatted" primitive is approx-
+imated as a 2D Gaussian kernel Gkπ with mean µπk := π(µk ) and covariance
+Σπk := Jπk Σk Jπk ⊤ , where Jπk denotes the Jacobian of π evaluated at µk . Indeed,
+Gkπ is the kernel of the normal distribution we obtain by transforming a normal
+variate 3D point x ∼ Gk with π approximated to the first order at the Gaussian
+primitive’s center.
+
+Rendering. In order to render a scene represented as a collection of Gaussian
+primitives Γ from a given camera π, we assume to have a decoder Φ that extracts
+the information we want to render from a primitive and optionally the pixel
+value (e.g. to get its associated view direction). The typical decoder that is used
+in Gaussian splatting denoted by ΦRGB turns spherical harmonics coefficients
+stored in f k and the viewing direction associated to pixel u into an actual RGB
+color. The actual rendering for each pixel u consists in alpha-composing each
+primitives’ decoded feature with alpha values given by αk Gkπ (u). The order of the
+primitives in the alpha-composition is determined by the depth of their center
+when viewed from the target camera. We refer to [11] for more details.
+
+4    Improving Robustness of Gaussian splatting
+In this section we show how we can render Gaussian splatting robust against
+errors in the estimated camera poses (pose error ), against blurred images due to
+6       Darmon et al .
+
+       Defocus blur            Color inconsistency             Motion blur
+
+
+
+
+Fig. 2: In 3DGS, defocus blur (left), color inconsistencies (center) and motion blur
+(right) can be modeled as simple transformations applied to the 3D Gaussian prim-
+itives (Sec. 4). This allows us to estimate per-camera motion, appearance and focus
+parameters, which can be factored out to recover a sharp reconstruction.
+
+
+
+parts being out-of-focus (defocus blur ) or due to a camera being moved too fast
+while capturing (motion blur ), and against color inconsistencies when observing
+the same part of the scene, e.g. due different white balancing, exposure time, etc.
+
+
+4.1   Robustness against pose errors and motion blur
+
+We start addressing two problems at once, namely how to correct errors in the
+camera poses used to fit a scene, and how to cope with images that are blurred
+due to camera motion. In fact, the former problem is a special case of the latter.
+An image affected by motion blur can be regarded as the result of integrating
+images of a scene taken from multiple perturbed camera poses. As a special case,
+if the perturbed camera is only one (or multiple concentrated in the same point),
+this integration process yields an image that will be associated to a wrong pose,
+which is an instance of the pose correction problem. The implication of this is
+that we can formulate a solution to the motion blur problem and expect this to
+also cope with errors in the provided poses.
+    To solve the motion blur problem we need to estimate a distribution of cam-
+era poses whose renderings yield the ground-truth observation once integrated.
+An alternative, but equivalent, way of seeing the problem is to find a distribu-
+tion of world transformations, while retaining the original cameras. Indeed, each
+random world transformation changes the world reference frame in a way that
+renderings produced according to the original camera parameters are equivalent
+to renderings taken from a different camera in the original world reference frame.
+We indirectly model a distribution of world transformations by constructing a
+function ζ[θπMB ](x, ϵ) that depends on image-specific parameters θπMB and on a
+                                                                                                                                                                                  Robust Gaussian Splatting                                                                 7
+
+noise variable ϵ, and that implements a rigid transformation of x if we fix the
+other variables.
+    By exploiting the same idea underlying the splatting operation, we take the
+first-order approximation of ζ in (µk , 0) to get a linear function in x and ϵ.
+Assuming x ∼ Gk and ϵ a standard normal multivariate, the output of the
+approximated transformation is Gaussian distributed with mean µζk := ζ(µk , 0)
+and covariance Σζk := Jζx,k Σk Jζ⊤     ζ    ζ⊤           ζ
+                                x,k + Jϵ,k Jϵ,k , where Jx,k is the Jacobian of ζ with
+respect to x evaluated at (µk , 0), and similarly for ϵ. As a result, we obtain
+updated 3D Gaussian primitives that integrate already the effect of the motion
+blur and can now be splatted and rendered as usual from the original camera
+poses.
+    Finally, if we consider the 3D Gaussian kernel Gkζ of the updated primitives,
+the overall opacity mass has increased due to the increase in the covariance. To
+compensate for q this, we change also the opacity αk of the original primitive, by
+scaling it by   det(Σk )/det(Σζk ).
+
+Implementation details. For the experiments in this paper, we model the world-
+transformation function ζ as follows:
+
+                   \zeta [\theta _\pi ^\mathtt {MB}](\vct x, \vct \epsilon )\coloneqq \mat R_\pi \left (\exp \left (\mat \Sigma _\pi ^{\mat R\frac {1}{2}}\vct \epsilon _{\mat R}\right )\vct x+\mat \Sigma _\pi ^{t\frac {1}{2}}\vct \epsilon _t\right )+\vct t_\pi \,, 
+
+where ϵ := (ϵR , ϵt ), both being distributed as a standard 3D Gaussian, exp()
+is the exponential map, and θπMB := (Rπ , tπ , ΣRπ , Σtπ ) are per-image parameters
+entailing a rotation Rπ , a translation tπ , a covariance matrix ΣRπ for the rota-
+tion axis-angle representation and a covariance matrix Σtπ for the translation.
+Intuitively, ζ first remaps x according to a random rigid transformation, where
+the axis-angle representation of the rotation and the translation follow centered
+Gaussian distributions with covariance ΣRπ and Σtπ , respectively. The result is then
+transformed via the rigid transformation that has Rπ as the rotation matrix and
+tπ as the translation. The new position and covariance of the 3D Gaussian prim-
+itives, considering the ζ function above are given by:
+
+                                                                                                 \vct \mu _k^\zeta \coloneqq \mat R_\pi \vct \mu _k+\vct t_\pi \,, 
+
+                                          \mat \Sigma _k^\zeta \coloneqq \mat R_\pi \left (\mat \Sigma _k+[\vct \mu _k]_\times \mat \Sigma _\pi ^{\mathtt R}[\vct \mu _k]_\times ^\top + \mat \Sigma _\pi ^t\right )\mat R_\pi ^\top \,, 
+where [·]× gives the skew-symmetric cross product matrix for the provided vec-
+tor.
+
+4.2   Robustness against defocus blur
+Defocus blur is caused by the use of a real camera with a non-zero aperture.
+Gaussian splatting assumes to have a pinhole camera so that every 3D point will
+be projected to a 2D point on the image. Unfortunately, this assumption is not
+true when the camera has a significant aperture, which happens especially with
+indoor scenes where the light is low or in video captures where the exposure time
+8        Darmon et al .
+
+needs to be small. When the aperture size is not negligible, only points that are
+on a 3D plane called focus plane are in focus. The other points are projected to
+a circle that gets wider as we depart from the focus plane. The radius Rkπ of this
+circle for a Gaussian primitive γk and camera π can be written as
+
+                                \label {eq:radius} R^\pi _k \coloneqq A_\pi \left (\rho _\pi -\frac {1}{D^\pi _k}\right )\,,    (1)
+
+where
+                                              A_\pi \coloneqq \frac {a_\pi }{1-\rho _\pi f_\pi }\,. 
+
+Here, aπ denotes aperture of camera π, fπ denotes its focal length, ρπ the inverse
+depth of its focus plane and Dkπ is the depth of µk when viewed from camera
+π’s perspective.
+    In order to address defocus blur in Gaussian splatting the idea is to add
+an offset corresponding to Rkπ 2 to the diagonal of the 2D covariance matrices
+Σπk of each Gaussian primitive γk . Since not all variables of the physical model
+are available (e.g. aperture and focus plane distance are usually not known), we
+introduce image-specific variables, namely θπDB := (Aπ , ρπ ) that appear in Eq. (1),
+and optimize them directly during scene fitting.
+    Akin to what we have done for the motion blur case, we rescale the opacity
+αk of the original primitive to compensate for the change in total opacity mass
+due to the added covarance terms.
+
+
+4.3     Robustness against color inconsistencies
+
+There are many possible factors that induce an inconsistency in the color we
+observe in two views of the same part of the scene. Those could be external,
+like sun suddenly being occluded by cloud between two shots, or camera-related,
+e.g. a change in the white balancing setting of the camera. These inconsisten-
+cies might severely harm the final reconstruction, often leading to floaters. To
+address this problem we introduce a new RGB decoder ΨRGB [θπCI ](γπ , u) that
+depends on additional per-image parameters θπCI . This gives the model the flex-
+ibility of correcting the effect of image-specific color nuisances. In this paper,
+we explore the simple solution of considering θπCI := (Wπ , q π ) the parameters
+of an affine color transformation that we apply to the standard decoded RGB
+color, i.e. ΨRGB [θπCI ](γπ , u) := Wπ ΦRGB (γk , u) + q π . The advantage of this choice
+is that the average transformation that we apply at test time can be absorbed
+into a modification of the spherical harmonics stored in f k , making the resulting
+representation compatible with available Gaussian splatting viewers.
+
+
+4.4     Summary
+
+We provide in Algorithm 1 the pseudocode of the rendering process at training
+time.
+                                                             Robust Gaussian Splatting                                                                        9
+
+Algorithm 1 Overview of the rendering process at train time
+      Input: Gaussians γk := (µk , Σk , αk , f k ), camera π
+      per-image parameters Rπ , tπ , ΣRπ , Σtπ , Aπ , ρπ , θπCI
+
+    for k in 1 . . . K do
+       Σζk ← Rπ Σk + Σtπ + [µk ]× ΣRπ [µk ]⊤                             \triangleright  Motion blur updated covariance
+                                              ⊤
+                                            × Rπ
+       µζk ← Rπ µk + tπ ,                                                                \triangleright  Motion blur updated position
+       µπk , Σπk ← splatting(γk , π)                                                                     \triangleright  Project Gaussians on image
+       Dkπ ← get_depth(µπk )                                                                                                 \triangleright  Get primitive’s depth
+       Σπk ′ ← Σπkr  + A2π (ρπ − 1/Dkπ )2 I             \triangleright  Apply defocus blur on image plane
+                                det(Σπ )
+                              q
+       αk ← αk det(Σkζ ) det(Σπk′ )                                                                             \triangleright  Opacity scaling
+                    det(Σk )       k
+
+       Σπk ← Σπk ′
+    end for
+    return rendering(Γ, ΨRGB [θπCI ])                 \triangleright  Rendering with color transformation
+
+
+
+5     Experiments
+
+While training from noisy data is challenging, evaluating such models can also
+be hard. In Sec. 5.1 we propose an evaluation procedure aimed at ensuring fair
+comparisons when only noisy data is available for testing. Following this, in
+Sec. 5.2 we report results on real world scenes from the Scannet++ dataset [32],
+and in Sec. 5.4 we evaluate on the synthetic Deblurnerf [15] dataset. Finally, in
+Sec. 5.3 we present a detailled ablation study of our contributions.
+
+
+5.1     Evaluating NVS from noisy captures
+
+In order to compare several baselines on real-world data as opposed to syn-
+thetic datasets, we would ideally require challenging training views, and corre-
+sponding sets of high-quality, clean test views. The ScanNet++ dataset [32] was
+constructed following this logic: for each scene, it contains both a low quality
+smartphone video, and a set of images taken with a high end DSLR camera.
+Unfortunately, the smartphone captures do not generally cover all scene regions
+observed by the DSLR images. Using the high-quality data as a test set would
+thus mostly evaluate a model’s ability to correctly “guess” the appearance of un-
+observed regions. We therefore choose to use ScanNet++ [32] smartphone videos
+only, which solves the scene coverage problem but implies we’ll have to deal with
+a certain amount of noise in the test set.
+    First, the testing views may be blurred. Second, images may be localized
+with poor accuracy, since the SfM algorithm (namely, COLMAP [25]) used by
+the authors of [32] to reconstruct the sequences is also negatively impacted by
+poor image quality. Another source of pose uncertainty is the fact that we use
+pose optimization during training, meaning that our reconstructed world frame
+might drift over time, a problem known as gauge freedom in the SfM literature.
+Finally, colors might shift throughout the captures, as the smartphone’s camera
+10       Darmon et al .
+
+
+
+
+                                     (a) Evaluation image
+
+
+
+
+      (b) Raw rendering PSNR=14.82                      (c) Test time optim. PSNR=25.85
+
+Fig. 3: We perform test-time optimization of the per-image parameters to ensure a
+fair comparison. Without it, the renderings are noticeably misaligned and they have a
+color shift compared to the ground truth.
+
+
+dynamically adapts exposure and white balance. The last two points imply that
+naively rendering a trained model from the given test camera poses will likely
+produce images that don’t match the ground truth, as illustrated in Fig. 3b.
+    To address blur, we select test views based on a blurriness measure. Specif-
+ically, and for each scene, we sort its images by decreasing maximum gradient
+magnitude, then iteratively select the 10 best while ensuring no test view is
+within 0.5m and 60◦ of another. To address the issues related to pose and color
+drift, we propose to do a test-time adaptation to align the camera poses and
+the color profile to the expected one from ground truth, before computing the
+evaluation metrics. This is shown in 3c where the camera poses and the color
+transformation were optimized for 1000 steps. Given the small number of opti-
+mized parameters we argue that this approach does not lead to over-fitting, and
+that it is a fair comparison since we perform this optimization for all compared
+baselines.
+
+5.2    Comparison with NVS baselines on real-world data
+Following the procedure described in the previous section, we build a real-world
+benchmark including 49 scenes from the ScanNet++ validation set, and com-
+                                                   Robust Gaussian Splatting       11
+
+Table 1: Comparison with state of the art approaches. Note that all models are trained
+with per-image color adaptation and pose refinement.
+
+   Method                                             PSNR↑      SSIM↑    LPIPS↓
+   Mipnerf360 [2] + image codes                        23.90     .8340     .3634
+   Mipnerf360 [2] + image codes + deblurNerf [15]      23.43     .8172     .4084
+   Mipnerf360 [2] + affine color transformation        25.61     .8406     .3677
+   Nerfacto [27] + image codes                         27.09     .8486     .3571
+   Nerfacto [27] + image codes + deblurNerf [15]       26.71     .8392     .3793
+   Nerfacto [27] + affine color transformation         26.74     .8389     .4070
+   Gaussian splatting [11]                             23.87     .8434     .3493
+   Ours                                                24.08     .8503     .3419
+
+
+
+
+pare against NVS baselines. Specifically, we consider Mip-NeRF 360 [2] with
+per-image appearance codes [16] as a representative of state-of-the-art NeRF
+approaches, along with Nerfacto [27] and standard Gaussian Splatting [11]. To
+ensure a fair comparison, we augment all models with pose optimization capa-
+bilities, by simply enabling gradient propagation to the pose parameters. During
+test-time adaptation, we freeze all model parameters except the pose offsets and
+the per-image color parameters. Note that, in the case of Mip-NeRF 360 and
+Nerfacto, this might lead to greater over-fitting than with our model, since the
+per-image codes, while low-dimensional, are used as inputs to a highly non-linear
+function that might produce appearance changes beyond simple color adapta-
+tion. We therefore compare with an additional adaptation that does not use
+per-image codes but an affine color transformation similar to our approach. As
+shown in Tab. 1 Nerfacto produces the best results for the PSNR metrics. This
+is probably because it is more strongly regularized and it can produce better
+uniformly colored regions. However, our approach outperforms the baselines on
+the perceptual metrics (SSIM and LPIPS) that are more sensitive to fine grained
+details.
+
+    Additionally, we augment Mip-NeRF 360 and Nerfacto with a deblurring
+component, adapted from the formulation of DeblurNerf [15]. Interestingly, this
+approach noticeably decreases accuracy compared to standard models. We sus-
+pect this might be related to the fact that DeblurNerf drastically increases the
+training-time memory requirements, forcing us to reduce batch size by a factor
+5 compared to the value proposed in the original papers and used in the other
+experiments. It is also possible that the architecture might already be close to
+the limits of its capacity when confronted with the large and highly-detailed
+scenes in ScanNet++, independently of whether or not specific steps are taken
+to contrast dataset noise.
+12        Darmon et al .
+
+
+
+
+     (a) Ground truth      (b) Gaussian splatting    (c) GS with pose opt.   (d) Ours
+
+
+
+
+     (e) Ground truth      (f ) Gaussian splatting   (g) GS with pose opt.   (h) Ours
+
+         Fig. 4: Qualitative comparison of GS models with different ablations.
+                                                 Robust Gaussian Splatting      13
+
+ Table 2: Ablation study demonstrating proposed robustness mechanism modules.
+
+  Color transfo.   Pose optim.   Motion   Defocus    PSNR↑    SSIM↑    LPIPS↓
+                                                     21.71     .807      .395
+        ✓                                            23.08     .817      .380
+        ✓              ✓                             23.87     .843      .349
+        ✓              ✓           ✓                 24.08     .850      .341
+        ✓              ✓                     ✓       23.94     .846      .346
+        ✓              ✓           ✓         ✓       24.08     .850      .342
+
+
+
+5.3   Ablation study
+
+We use the evaluation procedure described in Sec. 5.1 to evaluate the relative
+contributions of the component we describe in Sec. 4. In particular, we separately
+consider affine color transformation (Color transfo.), pose optimization (Pose
+optim.), motion blur modeling (Motion) and defocus blur modeling (Defocus).
+Results are reported in Table 2.
+    The simple additions of color transformation and pose optimization clearly
+show a large improvements over the baseline Gaussian Splatting. Since removing
+color transformation clearly leads to severe performance degradation, we keep it
+enable for all other ablation experiments and to generate the qualitative results
+in Fig. 4. Defocus blur modeling and motion blur modeling are both useful
+individually but the use of both simultaneously does not improve over motion
+blur modeling alone. This is probably because there are few images with defocus
+blur in the ScanNet++ scenes we use for evaluation. Interestingly, defocus blur
+modeling still improves over no blur modeling, since it can (inaccurately) explain
+part of the motion blur. Defocus blur is however useful for DeblurNerf data [15]
+as shown in Sec. 5.4.
+
+
+5.4   Evaluation on synthetic data
+
+We finally perform experiments on the synthetic scenes of the DeblurNeRF [15]
+dataset. This dataset consists of multiple scenes with either motion or defocus
+blur. While this dataset is useful for benchmarking deblurring capabilities of
+models, it shows a quite different set of challenges compared to the casually
+captured smartphone videos of ScanNet++. Specifically, the scenes are smaller
+and viewed from forward facing cameras, and the blur is significantly more pro-
+nounced. On the other hand, the dataset provides a perfect setup where the
+color are consistent, poses are accurate and test images are perfectly sharp. Due
+to this, we can evaluate without color correction, pose optimization or test-time
+adaptation.
+    We compare our method with state-of-the-art deblurring NVS methods,
+showing results in Table 3. While our method is significantly below current
+NeRF based state-of-the-art, it still significantly outperforms standard Gaus-
+sian Splatting for both motion and defocus blur. We suspect this might be a
+14     Darmon et al .
+
+direct consequence of the greater regularization imposed by the MLPs in the
+NeRFs, which allow them to deal with extreme levels of blur better than Gaus-
+sian Splatting-based approaches.
+
+
+               Table 3: Results on Deblurnerf [15] synthetic dataset
+
+                                      Motion blur         Defocus
+          Method
+                                    PSNR↑ SSIM↑        PSNR↑ SSIM↑
+          NeRF [18]                  25.93     .7791    25.83     .7701
+          deblurNerf [15]            28.77     .8593    28.37     .8527
+          dp-nerf [13]               29.23     .8674    29.33     .8713
+          PDRF-10 [22]               29.29    .8798     30.08     .8931
+          Gaussian Splatting [11]    21.97     .6808    24.46      .8199
+          Deblur-GS [12]               -         -      29.43      .8907
+          Ours                       23.99     .7811    29.24     .9168
+
+
+
+
+6    Limitations
+While our paper makes a significant contribution toward real-world robust Gaus-
+sian splattings, it suffers from limitations. First we add modelisation for defocus
+blur and camera motion blur but we have not tackled other types of motion
+blur. Such blur could e.g. come from non-static objects like walking pedestri-
+ans, swaying trees, or moving cars. Incorporating compensation strategies for
+dynamic blur would be much more challenging since it would also require us to
+handle dynamic scenes. Second, our method does not solve the poor general-
+ization of 3DGS to viewpoints far away from the training trajectory. This is a
+well-known issue for 3DGS and our method keeps sharing that limitation.
+
+
+7    Conclusions
+In this paper, we presented a new approach to improve the robustness of 3D
+Gaussian splats (3DGS) for practical applications involving real-world data chal-
+lenges. We introduced a formulation that addresses common error sources such
+as blur, imperfect camera poses, and color inconsistencies. Our solution models
+motion blur as a Gaussian distribution over camera poses, allowing us to address
+both camera pose refinement and motion blur correction while maintaining the
+benefits of 3DGS in terms of training efficiency and rendering speed. Addition-
+ally, we propose a defocus blur compensation mechanism and an RGB decoder
+function with per-image parameters to address color inconsistencies caused by
+ambient light, shadows, or camera-specific issues. We experimentally validated
+our contributions on relevant benchmark datasets including Scannet++ and
+Deblur-NeRF, showing consistent improvements over relevant baselines.
+                                                    Robust Gaussian Splatting         15
+
+References
+ 1. Barron, J.T., Mildenhall, B., Tancik, M., Hedman, P., Martin-Brualla, R., Srini-
+    vasan, P.P.: Mip-nerf: A multiscale representation for anti-aliasing neural radiance
+    fields. In: ICCV. pp. 5855–5864 (2021) 4
+ 2. Barron, J.T., Mildenhall, B., Verbin, D., Srinivasan, P.P., Hedman, P.: Mip-nerf
+    360: Unbounded anti-aliased neural radiance fields. In: CVPR (2022) 3, 4, 11, 19
+ 3. Barron, J.T., Mildenhall, B., Verbin, D., Srinivasan, P.P., Hedman, P.: Zip-nerf:
+    Anti-aliased grid-based neural radiance fields (2023) 4
+ 4. Cao, A., Johnson, J.: Hexplane: A fast representation for dynamic scenes. In:
+    CVPR. pp. 130–141 (June 2023) 4
+ 5. Chan, K.C., Zhou, S., Xu, X., Loy, C.C.: Basicvsr++: Improving video super-
+    resolution with enhanced propagation and alignment. In: CVPR. pp. 5972–5981
+    (2022) 4
+ 6. Chan, T.F., Wong, C.K.: Total variation blind deconvolution. IEEE TIP 7(3),
+    370–375 (1998) 4
+ 7. Chen, A., Xu, Z., Geiger, A., Yu, J., Su, H.: Tensorf: Tensorial radiance fields. In:
+    ECCV (2022) 4
+ 8. Fridovich-Keil, S., Yu, A., Tancik, M., Chen, Q., Recht, B., Kanazawa, A.: Plenox-
+    els: Radiance fields without neural networks. In: Proceedings of the IEEE/CVF
+    Conference on Computer Vision and Pattern Recognition (CVPR). pp. 5501–5510
+    (June 2022) 4
+ 9. Huang, X., Zhang, Q., Feng, Y., Li, H., Wang, X., Wang, Q.: Hdr-nerf: High dy-
+    namic range neural radiance fields. In: CVPR. pp. 18398–18408 (2022) 4
+10. Jeong, Y., Ahn, S., Choy, C., Anandkumar, A., Cho, M., Park, J.: Self-calibrating
+    neural radiance fields. In: ICCV. pp. 5846–5854 (2021) 4
+11. Kerbl, B., Kopanas, G., Leimkühler, T., Drettakis, G.: 3d gaussian splatting for
+    real-time radiance field rendering. ACM Transactions on Graphics 42(4) (July
+    2023), https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/ 2, 3, 4,
+    5, 11, 14
+12. Lee, B., Lee, H., Sun, X., Ali, U., Park, E.: Deblurring 3d gaussian splatting. arXiv
+    preprint arXiv:2401.00834 (2024) 4, 14
+13. Lee, D., Lee, M., Shin, C., Lee, S.: Dp-nerf: Deblurred neural radiance field with
+    physical scene priors. In: CVPR. pp. 12386–12396 (June 2023) 4, 14
+14. Lin, C.H., Ma, W.C., Torralba, A., Lucey, S.: Barf: Bundle-adjusting neural radi-
+    ance fields. In: ICCV. pp. 5741–5751 (October 2021) 4
+15. Ma, L., Li, X., Liao, J., Zhang, Q., Wang, X., Wang, J., Sander, P.V.: Deblur-nerf:
+    Neural radiance fields from blurry images. In: CVPR. pp. 12861–12870 (June 2022)
+    3, 4, 5, 9, 11, 13, 14
+16. Martin-Brualla, R., Radwan, N., Sajjadi, M.S.M., Barron, J.T., Dosovitskiy, A.,
+    Duckworth, D.: NeRF in the Wild: Neural Radiance Fields for Unconstrained
+    Photo Collections. In: CVPR (2021) 4, 11
+17. Mildenhall, B., Hedman, P., Martin-Brualla, R., Srinivasan, P.P., Barron, J.T.:
+    Nerf in the dark: High dynamic range view synthesis from noisy raw images. In:
+    CVPR. pp. 16190–16199 (2022) 4
+18. Mildenhall, B., Srinivasan, P.P., Tancik, M., Barron, J.T., Ramamoorthi, R., Ng,
+    R.: Nerf: Representing scenes as neural radiance fields for view synthesis. In: ECCV
+    (2020) 2, 4, 14
+19. Müller, T., Evans, A., Schied, C., Keller, A.: Instant neural graphics primitives
+    with a multiresolution hash encoding. ACM TOG 41(4), 1–15 (2022) 4
+16      Darmon et al .
+
+20. Nah, S., Son, S., Lee, K.M.: Recurrent neural networks with intra-frame iterations
+    for video deblurring. In: CVPR. pp. 8102–8111 (2019) 4
+21. Park, K., Henzler, P., Mildenhall, B., Barron, J.T., Martin-Brualla, R.: Camp:
+    Camera preconditioning for neural radiance fields. ACM TOG (2023) 4
+22. Peng, C., Chellappa, R.: Pdrf: progressively deblurring radiance field for fast scene
+    reconstruction from blurry images. In: AAAI. vol. 37, pp. 2029–2037 (2023) 4, 14
+23. Ren, D., Zhang, K., Wang, Q., Hu, Q., Zuo, W.: Neural blind deconvolution using
+    deep priors. In: CVPR. pp. 3341–3350 (2020) 4
+24. Rudin, L.I., Osher, S., Fatemi, E.: Nonlinear total variation based noise removal
+    algorithms. Physica D: nonlinear phenomena 60(1-4), 259–268 (1992) 4
+25. Schönberger, J.L., Frahm, J.M.: Structure-from-motion revisited. In: CVPR (2016)
+    4, 9
+26. Tancik, M., Srinivasan, P., Mildenhall, B., Fridovich-Keil, S., Raghavan, N., Sing-
+    hal, U., Ramamoorthi, R., Barron, J., Ng, R.: Fourier features let networks learn
+    high frequency functions in low dimensional domains. NeurIPS 33, 7537–7547
+    (2020) 4
+27. Tancik, M., Weber, E., Ng, E., Li, R., Yi, B., Kerr, J., Wang, T., Kristoffersen,
+    A., Austin, J., Salahi, K., Ahuja, A., McAllister, D., Kanazawa, A.: Nerfstudio: A
+    modular framework for neural radiance field development. In: ACM SIGGRAPH
+    2023 Conference Proceedings. SIGGRAPH ’23 (2023) 11, 19
+28. Tang, C., Zhu, X., Liu, X., Wang, L., Zomaya, A.: Defusionnet: Defocus blur detec-
+    tion via recurrently fusing and refining multi-scale deep features. In: CVPR (June
+    2019) 4
+29. Tao, X., Gao, H., Shen, X., Wang, J., Jia, J.: Scale-recurrent network for deep
+    image deblurring. In: CVPR. pp. 8174–8182 (2018) 4
+30. Ulyanov, D., Vedaldi, A., Lempitsky, V.: Deep image prior. In: CVPR. pp. 9446–
+    9454 (2018) 4
+31. Wang, Z., Wu, S., Xie, W., Chen, M., Prisacariu, V.A.: NeRF−−: Neural radiance
+    fields without known camera parameters. arXiv preprint arXiv:2102.07064 (2021)
+    4
+32. Yeshwanth, C., Liu, Y.C., Nießner, M., Dai, A.: Scannet++: A high-fidelity dataset
+    of 3d indoor scenes. In: ICCV (2023) 3, 5, 9
+33. Zamir, S.W., Arora, A., Khan, S., Hayat, M., Khan, F.S., Yang, M.H.: Restormer:
+    Efficient transformer for high-resolution image restoration. In: CVPR. pp. 5728–
+    5739 (June 2022) 4
+34. Zwicker, M., Pfister, H., van Baar, J., Gross, M.: Ewa volume splatting. In: Pro-
+    ceedings Visualization, 2001. VIS ’01. pp. 29–538 (2001). https://doi.org/10.
+    1109/VISUAL.2001.964490 5
+                                                                                                                                                                                                                                                                                                                                                                                                                                        Robust Gaussian Splatting                                                                                                                                                 17
+
+A            Derivations for results in Subsection 4.1
+We show the derivations for the theoretical results of subsection 4.1. We first ex-
+plain how to derive the updated mean and covariance of a gaussian transformed
+by a generic camera transformation. We then derive the updates used in practice
+with our noisy camera formulation. Finally we explain the opacity scaling used
+to keep the total mass constant when changing a gaussian’s covariance.
+
+A.1              Parameters of updated 3D Gaussian primitives for generic ζ
+The first-order approximation of ζ(x, ϵ) at (µk , 0) is given by
+                                                \tilde \zeta (\vct x,\vct \epsilon )\coloneqq \zeta (\vct \mu _k,\vct 0)+\underbrace {\mat J^\zeta _{\vct x}(\vct \mu _k,\vct 0)}_{\coloneqq \mat J^\zeta _{\vct x,k}}(\vct x-\vct \mu _k)+\underbrace {\mat J^\zeta _{\vct \epsilon }(\vct \mu _k,\vct 0)}_{\coloneqq \mat J^\zeta _{\vct \epsilon ,k}}\vct \epsilon \,. 
+
+
+
+Let x ∼ N (µk , Σk ) be normal distributed with mean µk and covariance Σk and
+let ϵ ∼ N (0, I) be a standard normal multivariate. Then ζ̃(x, ϵ) is also Gaussian
+distributed, for ζ̂ is linear is (x, ϵ), with mean and covariance being given by:
+
+
+                                     \vct \mu _k^\zeta &\coloneqq \mathbb E[\tilde \zeta (\vct x,\vct \epsilon )]&=&\zeta (\vct \mu _k,\vct 0)\\ \mat \Sigma _k^\zeta &\coloneqq \mathbb V\text {ar}[\tilde \zeta (\vct x,\vct \epsilon )]&=&\mat J^\zeta _{\vct x,k}\mathbb V\text {ar}[\vct x-\vct \mu _k]\mat J^{\zeta \top }_{\vct x,k}&+&\mat J^\zeta _{\vct \epsilon ,k}\mathbb V\text {ar}[\vct \epsilon ]\mat J^{\zeta \top }_{\vct \epsilon ,k}\\ &&=&\mat J^\zeta _{\vct x,k}\mat \Sigma _k\mat J^{\zeta \top }_{\vct x,k}&+&\mat J^\zeta _{\vct \epsilon ,k}\mat J^{\zeta \top }_{\vct \epsilon ,k}.
+
+
+
+
+A.2              Opacity scaling for updated 3D Gaussian primitives
+The total opacity mass Mk of a 3D Gaussian primitive γk is the integral of
+αk Gk (x) over the Euclidean plane, which is given by:
+
+   \mathcal M_k\coloneqq \alpha _k\int _{\mathbb R^2}\mathcal G_k(\vct x)d\vct x=\alpha _k\text {det}(2\pi \mat \Sigma _k)^\frac {1}{2}\int _{\mathbb R^2}\mathcal N(\vct x;\vct \mu _k,\mat \Sigma _k)d\vct x=2\pi \text {det}(\mat \Sigma _k)^\frac {1}{2}\alpha _k 
+
+
+                                                                                                                                                                                                                                                                                                                                                                                                       1
+Similarly, we would have Mζk := 2πdet(Σζk ) 2 αkζ . Now we want to find αkζ such
+that Mk = Mζk , which is given by
+
+
+                                                                                                                                         \alpha ^\zeta _k\coloneq \alpha _k\frac {2\pi \text {det}(\mat \Sigma _k)^\frac {1}{2}}{2\pi \text {det}(\mat \Sigma ^\zeta _k)^\frac {1}{2}}=\alpha _k\sqrt {\frac {\text {det}(\mat \Sigma _k)}{\text {det}(\mat \Sigma ^\zeta _k)}}\,. 
+
+This shows where the proposed opacity scaling factor stems from.
+
+A.3              Parameters of updated 3D Gaussian primitives for specific ζ
+Let’s consider the following particular instance of ζ:
+
+                                                                     \zeta (\vct x,(\vct \epsilon _{\mat R}, \vct \epsilon _t))\coloneqq \mat R_\pi \left (\exp \left (\mat \Sigma _\pi ^{\mat R\frac {1}{2}}\vct \epsilon _{\mat R}\right )\vct x+\mat \Sigma _\pi ^{t\frac {1}{2}}\vct \epsilon _t\right )+\vct t_\pi \,. 
+18             Darmon et al .
+
+Then we have that:
+
+
+       \vct \mu _k^\zeta \coloneqq \zeta (\vct \mu _k,(\vct 0, \vct 0))=\mat R_\pi \left (\underbrace {\exp \left (\mat \Sigma _\pi ^{\mat R\frac {1}{2}}\vct 0\right )}_{\mat I}\vct \mu _k+\mat \Sigma _\pi ^{t\frac {1}{2}}\vct 0\right )+\vct t_\pi =\mat R_\pi \vct \mu _k+\vct t_\pi \,. 
+
+
+The Jacobians terms that are needed to compute the covariance are given by:
+
+                      \mat J^\zeta _{\vct x,k}\coloneqq \mat R_\pi \exp \left (\mat \Sigma _\pi ^{\mat R\frac {1}{2}}\vct 0\right )=\mat R_\pi \,,\qquad \text {and}\qquad \mat J^\zeta _{{\vct \epsilon },k}\coloneqq \begin {bmatrix} \mat J^\zeta _{{\vct \epsilon _{\mat R}},k}&\mat J^\zeta _{{\vct \epsilon _t},k} \end {bmatrix}\,, 
+
+Let’s write the first order approximation of ζ w.r.t. ϵR
+
+
+                        \zeta (\vct x,(\vct \epsilon _{\mat R}, \vct \epsilon _t))&\coloneqq \mat R_\pi \left (\exp \left (\mat \Sigma _\pi ^{\mat R\frac {1}{2}}\vct \epsilon _{\mat R}\right )\vct x+\mat \Sigma _\pi ^{t\frac {1}{2}}\vct \epsilon _t\right )+\vct t_\pi \\ &\overset {(a)}{=} \mat R_\pi \left [\vct x+[\mat \Sigma _\pi ^{\mat R\frac {1}{2}}\vct \epsilon _{\mat R}]_\times \vct x+ O(\Vert \vct \epsilon _{\mat R}\Vert ^2) + \mat \Sigma _\pi ^{t\frac {1}{2}}\vct \epsilon _t\right ] + \vct t_\pi \\ &\overset {(b)}{=} \mat R_\pi \left [\vct x - [\vct x]_\times \mat \Sigma _\pi ^{\mat R\frac {1}{2}}\vct \epsilon _{\mat R}+ O(\Vert \vct \epsilon _{\mat R}\Vert ^2) + \mat \Sigma _\pi ^{t\frac {1}{2}}\vct \epsilon _t\right ] + \vct t_\pi \,.
+
+
+
+
+Here, in (a) we replace the exponential map exp(z) with its Taylor expansion to
+the first-order at 0, namely I + [z]× + O(∥z∥2 ), and in (b) we use the property of
+the cross-product [a]× b = −[b]× a. We can now identify the jacobians expression
+from the above linear approximations:
+
+                                                                                                                                                                                                                                                                                                                                                                                                                         \mat J^\zeta _{{\vct \epsilon }_t,k} &= \mat R_\pi \mat \Sigma _\pi ^{t\frac {1}{2}} \\ \mat J^\zeta _{{\vct \epsilon }_{\mat R},k} &=\mat R_\pi [\vct \mu _k]_\times \mat \Sigma _\pi ^{\mat R\frac {1}{2}}.
+
+
+
+Finally, we can compute
+
+                                                                                                            \begin {alignedat}{2} & \begin {alignedat}{5} \mat \Sigma _k^\zeta \coloneqq & \mat J^\zeta _{\vct x,k}\mat \Sigma _k\mat J^{\zeta \top }_{\vct x,k}&+&\mat J^\zeta _{\vct \epsilon ,k}\mat J^{\zeta \top }_{\vct \epsilon ,k}\\ =&\mat R_\pi \mat \Sigma _k\mat R_\pi ^\top &+&\mat J^\zeta _{\vct \epsilon _{\mat R},k}\mat J^{\zeta \top }_{\vct \epsilon _{\mat R},k}&+&\mat J^\zeta _{\vct \epsilon _t,k}\mat J^{\zeta \top }_{\vct \epsilon _t,k}\\ =&\mat R_\pi \mat \Sigma _k\mat R_\pi ^\top &+&\mat R_\pi [\vct \mu _k]_\times \mat \Sigma _k^{\mat R}[\vct \mu _k]_\times ^\top \mat R_\pi ^\top &+&\mat R_\pi \mat \Sigma _\pi ^t\mat R_\pi ^\top \end {alignedat}\\ &\phantom {\mat \Sigma _k^\zeta {:}}=\mat R_\pi \left (\mat \Sigma _k+[\vct \mu _k]_\times \mat \Sigma _k^{\mat R}[\vct \mu _k]_\times ^\top +\mat \Sigma _\pi ^t\right )\mat R_\pi ^\top \,. \end {alignedat} 
+                                                   Robust Gaussian Splatting       19
+
+B     Additional visualizations
+
+
+
+
+    (a) Ground truth    (b) Mipnerf360 [2]    (c) Nerfacto [27]        (d) Ours
+
+Fig. 5: Comparison of our approach with state-of-the-art Mipnerf360 [2] and Ner-
+facto [27]. All the methods are trained with per-image affine color transformation and
+pose optimization followed by test-time optimization of the per-image parameters on
+the test views.
+20        Darmon et al .
+
+
+
+
+     (a) Blurry training view   (b) Ours with blurring     (c) Ours without blurring
+
+Fig. 6: Side by side comparison of a blurry training view from Scannet++ (a), render-
+ing with blurring enabled (b) and rendering from the same model but with blurring
+disabled (c). Our model is able to copy a blurry training view while keeping a sharp
+representation.
+

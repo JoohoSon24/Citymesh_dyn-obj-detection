@@ -1,0 +1,654 @@
+                            This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.
+                                         Except for this watermark, it is identical to the accepted version;
+                                   the final published version of the proceedings is available on IEEE Xplore.
+
+
+
+
+ NeRF On-the-go: Exploiting Uncertainty for Distractor-free NeRFs in the Wild
+
+ Weining Ren1∗ Zihan Zhu1 * Boyang Sun1 Jiaqi Chen1 Marc Pollefeys1,2 Songyou Peng1,3
+             1              2               3
+               ETH Zürich    Microsoft       MPI for Intelligent Systems, Tübingen
+                                   nerf-on-the-go.github.io
+                                       Input                                                   Input                     Uncertainty
+                                        …
+
+
+
+
+                                                                                                                     Input       NeRF-W
+
+
+
+
+           NeRF-W                  RobustNeRF                      Ours                          Ours             RobustNeRF       Ours
+
+
+Figure 1. NeRF On-the-go. Given casually captured image sequences or videos in the wild as inputs, the goal of this paper is to train a
+NeRF for static scenes and effectively remove all dynamic elements in the scenes (cars, trams, pedestrians, etc), i.e. distractors. Unlike
+existing methods such as NeRF-W [23] and RobustNeRF [35], which produce imperfect results, our method leverages the predicted
+uncertainty maps to effectively remove those distractors. This results in high-fidelity novel view synthesis on challenging dynamic scenes.
+
+                            Abstract                                      Neural radiance fields (NeRFs) [26] have emerged as a
+   Neural Radiance Fields (NeRFs) have shown remark-                      groundbreaking paradigm for this task. This is because a
+able success in synthesizing photorealistic views from multi-             NeRF can produce geometrically consistent and photoreal-
+view images of static scenes, but face challenges in dy-                  istic renderings, even for complex scenarios with thin struc-
+namic, real-world environments with distractors like mov-                 tures and semi-transparent objects.
+ing objects, shadows, and lighting changes. Existing meth-                    Training a NeRF model requires a set of RGB images
+ods manage controlled environments and low occlusion ra-                  with given camera poses, and demands manual adjustments
+tios but fall short in render quality, especially under high              of camera settings, such as focal length, exposure, and white
+occlusion scenarios. In this paper, we introduce NeRF On-                 balance. More crucially, vanilla NeRFs operate under the
+the-go, a simple yet effective approach that enables the ro-              assumption that the scene should remain completely static
+bust synthesis of novel views in complex, in-the-wild scenes              during the capture process, without any distractors such as
+from only casually captured image sequences. Delving into                 moving objects, shadows, or other dynamic elements [35].
+uncertainty, our method not only efficiently eliminates dis-              Nevertheless, the real world is inherently dynamic, making
+tractors, even when they are predominant in captures, but                 this distractor-free requirement often unrealistic to meet.
+also achieves a notably faster convergence speed. Through                 Additionally, removing distractors from the captured data
+comprehensive experiments on various scenes, our method                   is non-trivial. The process involves per-pixel annotation for
+demonstrates a significant improvement over state-of-the-                 each image, a procedure that is very labor-intensive, espe-
+art techniques. This advancement opens new avenues for                    cially for lengthy captures of large scenes. This underscores
+NeRF in diverse and dynamic real-world applications.                      a key limitation in the practical application of NeRFs in dy-
+1. Introduction                                                           namic, real-world environments.
+                                                                             Recently, several works [22, 34, 42, 47] have attempted
+Novel View Synthesis (NVS) tackles the challenge of ren-
+                                                                          to address the challenges. [34] and [42] use pre-trained se-
+dering a scene from previously unobserved viewpoints.
+                                                                          mantic segmentation models for specific moving objects,
+    * Equal contribution.                                                 but the model fails to segment undefined object classes.
+
+
+
+                                                                     8931
+NeRF-W [22] optimizes pixel-wise uncertainty from ran-             aleatoric [16]. In the specific context of scene reconstruc-
+domly initialized embedding by volume rendering. Such              tion, epistemic uncertainty generally arises from data lim-
+a design is suboptimal since it neglects the prior informa-        itations, such as restricted viewpoints. For instance, [40]
+tion of the image and entangles the uncertainty with radi-         utilizes ensemble learning to quantify epistemic uncertainty
+ance field reconstruction. As a result, they need to intro-        for exploring unobserved regions in next-best-view (NBV)
+duce transient embeddings to account for distractors. The          planning for NeRF. Goli et al. [10] establishes a volumetric
+addition of a new degree of freedom complicates system             uncertainty field to remove the floaters from NeRF. On the
+tuning, leading to a Pareto-optimal scenario as discussed          other hand, aleatoric uncertainty comes from the inherent
+in [35]. Dynamic NeRF methods like D2 NeRF [47] can                randomness of the data, such as the noise of measurement,
+decompose static and dynamic scenes for video input, but           appearance changes, and distractors in the scene. There
+underperform with sparse image inputs. More recently, Ro-          are works [15, 30, 33] that utilize aleatoric uncertainty as
+bustNeRF [35] models distractors as outliers and demon-            a guiding principle for active learning and NBV planning
+strates impressive results in controlled and simple scenarios.     for better NeRF training. Similarly, DebSDF [49] improves
+Nevertheless, its performance significantly drops in com-          indoor scene reconstruction through an uncertainty map to
+plex, in-the-wild scenes. Interestingly, RobustNeRF also           mitigate the noise from monocular prior.
+underperforms in scenarios without any distractors. This               Closely related to us, NeRF-W [23] was pioneering to
+leads to a compelling research question:                           eliminate transient objects and address variable illumina-
+Can we build a NeRF for in-the-wild scenes from casually           tion in unstructured internet photo collections, achieved by
+ captured images, regardless of the ratio of distractors?          introducing transient and appearance embeddings. Follow-
+                                                                   up works like Ha-NeRF [4] hallucinates NeRFs from un-
+   Toward this goal, we introduce NeRF On-the-go, a ver-           constrained tourism images, while Neural Scene Chronol-
+satile plug-and-play module designed for effective distrac-        ogy [21] reconstructs temporal-varying chronology from
+tor removal, allowing rapid NeRF training from any casu-           time-stamped Internet photos. Building upon previous for-
+ally captured images. Our method is grounded in three key          mulation for aleatoric uncertainty, we innovate by integrat-
+aspects. First, we utilize DINOv2 features [29] for their          ing DINOv2 features into uncertainty prediction, which
+robustness and spatial-temporal consistency in feature ex-         enhances the quality of predicted uncertainty. In a re-
+traction, from which a small multi-layer perception (MLP)          cent work, Kim et al. [17] also presents a similar DINO-
+predicts per-sample pixel uncertainty. Second, our method          based uncertainty prediction approach, but directly adapts
+leverages a structural similarity loss to improve uncertainty      for NeRF-W [23] to a pose-free condition. In contrast, we
+optimization, enhancing the distinction between foreground         focus on refining NeRF training to effectively handle dis-
+distractors and the static background. Third, we incorpo-          tractors from casually-captured image sequences.
+rate estimated uncertainty into NeRF’s image reconstruc-           SLAM and SfM in Dynamic Scenes. Handling dynamic
+tion objective using a decoupled training strategy, which          scenes has been studied for years in the literature of SLAM
+significantly enhances distractor elimination, particularly in     and SfM. Classical methods exclude pixels associated with
+high occlusion scenes. Our method demonstrates robust-             dynamic objects with robust kernel function [7, 28] or
+ness across a wide range of scenarios, from confined in-           RANSAC [37, 38]. However, such hand-craft features
+door scenes with small objects to complex, large-scale street      are effective in scenarios with a low occlusion ratio but
+view scenes, and can effectively handle varying levels of          struggle at in-the-wild scenes. To address this, recent ad-
+distractors. Notably, we find that our On-the-go module can        vances have integrated additional information. This in-
+also significantly accelerate NeRF training up to one order        cludes external segmentation or detection modules for pre-
+of magnitude, compared with RobustNeRF. This efficiency,           defined classes [55, 57–59], utilization of optical or scene
+combined with its straightforward integration with modern          flow [2, 8, 41, 43, 56, 61], and geometry-based approaches
+NeRF frameworks, makes NeRF On-the-go an accessible                using clustering and epipolar line distance [3, 12, 58].
+and powerful tool for enhancing NeRF training in dynamic
+real-world settings.                                               NeRF in Dynamic Scenes. Recent NeRF methods focus on
+                                                                   reconstructing both static and dynamic components from a
+2. Related Work                                                    video sequence [6, 9, 19, 20, 31, 44, 47, 48] enabling novel
+                                                                   view synthesis at arbitrary timestamps. Although primar-
+Uncertainty in Scene Reconstruction. Uncertainty has               ily designed for video inputs, these methods often under-
+proven to enhance the robustness and reliability of a wide         perform with photo collection sequences [35]. Addition-
+range of tasks such as monocular depth prediction [11, 32],        ally, separating static and dynamic components can be time-
+semantic segmentation [13, 27], and simultaneous localiza-         consuming and requires extensive hyperparameter tuning.
+tion and mapping (SLAM) [5, 24, 36, 54]. In general, un-           A notable example in this realm is EmerNeRF [53], which
+certainty can be divided into two categories: epistemic and        also employs the DINOv2 [29] features. However, they use
+
+
+
+                                                                 8932
+           DINOv2 Feature Map                                                                  where i spans all training images, and C denotes feature
+                                                                         ℒ reg (Eq. (3))
+                                      DINO
+                                      Patch
+                                                   G                                           dimension. This module also upsamples the feature maps
+                                               Uncertainty        β(r)
+                                                 MLP                                           to the original resolution by nearest-neighbor sampling.
+                                                                                               Uncertainty Prediction. Once we obtain the 2D DINOv2
+DINOv2 ❄
+
+
+
+
+                            Dilated                                                            feature maps, we proceed to determine the uncertainty of
+                            Patch
+                                                  C(r)         SSIM      ℒ uncer (Eq. (9))
+                           Sampling                                                            each sampled ray r. We first query its corresponding fea-
+                                                                                               ture f = Fi (r), and then input it to a shallow MLP to
+                                      RGB
+                                      Patch       NeRF                                         estimate the uncertainty for this ray β(r) = G(f ), where
+                                              Representation
+                                                                                               G is the uncertainty MLP. In the subsequent sections, we
+                                                                         ℒ nerf (Eq. (10))
+               RGB Input                                                                       will demonstrate how this predicted uncertainty β(r) is in-
+                                                                                               tegrated into the optimization process as a weighting func-
+Figure 2. Pipeline. A pre-trained DINOv2 network extracts fea-                                 tion, which plays a crucial role in refining the NeRF model,
+ture maps from posed images, followed by a dilated patch sampler                               particularly in handling and mitigating the impact of dis-
+that selects rays. The uncertainty MLP G then takes the DINOv2                                 tractors in the scene.
+features of these rays as inputs to generate the uncertainties β(r).
+                                                                                               Uncertainty Regularization. To enforce spatial-temporal
+Three losses (on the right) are used to optimize G and the NeRF
+                                                                                               consistency in uncertainty predictions, we introduce a reg-
+model. Note that the training process is facilitated by detaching
+the gradient flows as indicated by the colored dashed lines.                                   ularization term based on the cosine similarity of feature
+                                                                                               vectors within a minibatch. Specifically, for each sampled
+them for enhanced scene decomposition, while we use them                                       ray r, we define a neighbor set N (r) consisting of rays
+as a strong prior knowledge for distractor removal.                                            in the same batch whose associated feature vectors exhibit
+    RobustNeRF, to our knowledge the only method that also                                     high similarity to the feature f of r. This neighbor set is
+targets static scene reconstruction from dynamic scenes,                                       formed by selecting rays that meet a specified cosine simi-
+uses Iteratively Reweighted Least Squares for outlier ver-                                     larity threshold η:
+ification. Compared with it, our method can deal with more
+                                                                                                               N (r) = {r′ | cos(f , f ′ ) > η}
+complex scenes with various levels of occlusions.
+                                                                                               where f ′ is the associated feature of r′ . The refined uncer-
+3. Method                                                                                      tainty for a ray r is computed as the average of N (r):
+We start by showing how to utilize per-pixel DINO fea-                                                                    1         X
+tures for uncertainty prediction (Sec. 3.1). Subsequently,                                                    β̄(r) =                        β(r′ )        (2)
+                                                                                                                        |N (r)|
+we show a novel approach for learning uncertainty to re-                                                                          r′∈N (r)
+
+move distractors in NeRF (Sec. 3.2). We further introduce                                      To reinforce consistency, we introduce a regularization term
+our decoupled optimization scheme for uncertainty predic-                                      that penalizes the variance of uncertainty within N (r):
+tion and NeRF (Sec. 3.3). Finally, we illustrate why sam-
+pling method is important in distractor-free NeRF training                                                            1         X
+                                                                                                       Lreg (r) =                    (β̄(r) − β(r′ ))2 .   (3)
+(Sec. 3.4). An overview of our pipeline is depicted in Fig. 2.                                                      |N (r)|
+                                                                                                                              r′∈N (r)
+
+3.1. Uncertainty Prediction with DINOv2 Features                                               This regularization aims to smooth out abrupt changes in
+Our primary objective is to effectively identify and elimi-                                    uncertainty predictions across similar features from rays
+nate recurring distractors–those that appear across multiple                                   across images, thereby enhancing the overall robustness and
+images. To achieve this, we take advantage of DINOv2 [29]                                      consistency of the uncertainty estimation process.
+features, which have shown to be able to maintain spatial-
+temporal consistency across views.
+                                                                                               3.2. Uncertainty for Distractor Removal in NeRF
+   We begin with extracting DINOv2 features for each in-                                       We hypothesize that pixels correlating with dynamic ele-
+put RGB image. Next, these features serve as inputs to a                                       ments (distractors) should have high uncertainty, whereas
+small MLP to predict the uncertainty value for each pixel.                                     static regions should have low uncertainty. This premise
+To further enforce the consistency of our uncertainty pre-                                     allows us to effectively integrate predicted uncertainty into
+diction, we incorporate a regularization term.                                                 NeRF training objectives, aiming to progressively filter out
+Image Feature Extraction. For RGB images with a res-                                           distractors for enhanced novel view synthesis.
+olution of H × W , we derive per-pixel features through a                                          We will analyze the potential issue of the classical way
+pre-trained DINOv2 feature extractor E:                                                        of incorporating uncertainty into the loss function for NeRF.
+                                                                                               Finally, we introduce a simple yet effective modification, to
+                  Fi = E(Ii ), E ∈ RH×W ×3 → RH×W ×C                                  (1)      incorporate uncertainty, for robust distractor removal.
+
+
+
+                                                                                             8933
+Uncertainty Convergence Analysis. Uncertainty predic-
+tion has been widely used in different fields, including
+NeRF-based novel view synthesis. For example, in the sem-
+inal work NeRF in the Wild [23], their loss is written as * :
+                                                                               (a) Rendering         (b) Input        (c) SSIM Error
+                 ∥C(r) − Ĉ(r)∥2
+          L(r) =                 + λ1 log β(r)                 (4)
+                     2β 2 (r)
+
+Here, C(r) and Ĉ(r) represent the input and rendered RGB
+values. The uncertainty β(r) is treated as a weight function.
+The regularization term is crucial for balancing the first term             (d) Luminance Error (e) Contrast Error   (f) Structure Error
+and preventing the trivial solution where β(r) = ∞.
+   Here we present a simple analysis to understand how the             Figure 3. SSIM Can Effectively Distinguish Distractors. In this
+uncertainty changes wrt. the loss function, we first take the          scene from [35], the 3 wooden robots are the dynamic elements.
+                                                                       SSIM pinpoints distractors by leveraging discrepancies in three
+partial derivative wrt. β(r):
+                                                                       measurements including luminance, contrast, and structure. Con-
+          dL(r)    ∥C(r) − Ĉ(r)∥2       1                             versely, relying solely on the ℓ2 error between RGB values (lu-
+                =−          3
+                                   + λ1                        (5)     minance error) proves challenging, especially when the distractors
+          dβ(r)        β(r)             β(r)                           and background have similar colors. The color bar on the right
+Setting this derivative to 0, we derive the closed-form solu-          side indicates the correspondence for error interpretation.
+tion for the optimal uncertainty:
+                                r                                      the luminance, contrast, and structure similarities between
+        dL(r)                       1                                  P and P̂ . We further modify Eq. (7) as:
+                = 0 ⇒ β(r) =          ∥C(r) − Ĉ(r)∥      (6)
+        dβ(r)                      λ1
+                                                                        LSSIM = (1−L(P, P̂ ))·(1−C(P, P̂ ))·(1−S(P, P̂ )) (8)
+This reveals an important relationship between uncertainty
+prediction and the error between the rendered and input col-              Compared to Eq. (7), our reformulation in Eq. (8) places
+ors. Specifically, the optimal uncertainty is directly propor-         greater emphasis on the differences between dynamic and
+tional to this error term.                                             static elements. Consequently, this enhances the disparity
+    However, a challenge arises when employing the ℓ2 loss             in uncertainty, facilitating more effective optimization of
+as shown in Eq. (4), particularly when the color of distrac-           uncertainty. The mathematical proof and comparisons be-
+tors and background is close (as illustrated in Fig. 3 (d)). In        tween Eq. (7) and Eq. (8) are included in the supplements.
+such cases, the predicted uncertainty in those regions will               Building on this updated SSIM formulation, we intro-
+also be low according to Eq. (6). This impedes the effec-              duce a new loss tailored for uncertainty learning:
+tiveness of uncertainty-based distractor removal, and leads
+to cloud artifacts in the rendered images.                                                             LSSIM
+                                                                                        Luncer (r) =          + λ1 log β(r)                (9)
+    Recognizing the limitation inherent in the ℓ2 RGB loss,                                            2β(r)2
+we propose a new loss for better uncertainty learning, so              This loss is a simple modification of Eq. (4), adapted for
+that the predicted uncertainty can discriminate between dis-           better uncertainty learning. Luncer is specifically applied to
+tractors and static background more effectively.                       train the uncertainty estimation MLP G. This is crucial as it
+SSIM-Based Loss for Enhanced Uncertainty Learning.                     allows us to decouple the training of the NeRF model from
+The structural similarity index (SSIM) is comprised of three           uncertainty prediction. Such decoupling ensures that the
+measurements: luminance, contrast, and structure similari-             learned uncertainty is robust to various types of distractors.
+ties. These components capture local structural and contrac-           Please refer to Table 4 for an ablation for Luncer .
+tual differences, which is crucial for distinguishing between              Note that a recent work S3IM [50] also uses SSIM for
+scene elements. This is verified in Fig. 3, where SSIM is ef-          NeRF training, but their loss is tailored for static scenes,
+fective in detecting distractors by incorporating these three          whereas ours is designed for better uncertainty learning.
+components together. An SSIM loss can be formulated as:                Also, S3IM employs stochastic sampling to identify non-
+                                                                       local structural similarities, while we use dilated sampling
+         LSSIM = 1 − SSIM(P, P̂ )
+                                                               (7)     to focus on local structures for distractor removal.
+                 = 1 − L(P, P̂ ) · C(P, P̂ ) · S(P, P̂ )
+                                                                       3.3. Optimization
+where P and P̂ are patches sampled from the input and ren-
+                                                                       As mentioned above, it is crucial to separately optimize
+dered images C(r) and Ĉ(r), respectively. L, C, S refer to
+                                                                       the uncertainty prediction module and NeRF model. For
+  * We omit their regularization term for transient density.           optmization of the uncertainty prediction MLP, we employ
+
+
+
+                                                                     8934
+                                                                                      Mountain                                Fountain
+    (a) Random [23]       (b) Patch [35]      (c) Dilated Patch
+
+Figure 4. Comparison of Different Ray Sampling Strategies.
+In contrast to random sampling and patch sampling, dilated patch
+sampling can improve training efficiency and uncertainty learning.                      Corner                                 Patio
+
+Luncer in Eq. (9) and Lreg in Eq. (3). In parallel, we train the
+NeRF model with the following:
+                              ∥C(r) − Ĉ(r)∥2
+                Lnerf (r) =                                   (10)                       Spot                                Patio-High
+                                  2β 2 (r)
+This loss, essentially Eq. (4) without the regularization              Figure 5. On-the-go Dataset. Sample training images showing
+                                                                       the distractors in several scenes of our self-captured dataset.
+term, is used because Luncer already prevents trivial solu-
+tions for uncertainty (β(r) = ∞). The parallel training
+                                                                       include the Crab scene since it is not released. Meanwhile,
+process is facilitated by detaching the gradient flow from
+                                                                       we put comparisons on Baby Yoda scene in supplements,
+Luncer to NeRF representation, and Lnerf to the uncertainty
+                                                                       since each image in this sequence contains a distinct set of
+MLP G as illustrated in Fig. 2. Note that we also follow Ro-
+                                                                       distractors, which is different from our setting.
+bustNeRF [35] and include the interval loss and distortion
+loss from Mip-NeRF 360 [1] for NeRF training, which we                 On-the-go Dataset. To rigorously evaluate our approach
+omit here for simplicity. Our overall objectives integrate all         in real-world indoor and outdoor settings, we captured a
+losses together, denoted as:                                           dataset that contains 12 casually captured sequences, in-
+                                                                       cluding 10 outdoor and 2 indoor scenes, with varying ra-
+            λ2 Lnerf (r) + λ3 Luncer (r) + λ4 Lreg (r)        (11)     tios of distractors (from 5% to over 30 %). For quantitative
+                                                                       evaluation, we select 6 sequences representing different oc-
+where each term is weighted by a corresponding λ.
+                                                                       clusion rates, as shown in Fig. 5. More details and results
+3.4. Dilated Patch Sampling                                            for this dataset are available in supplements.
+In this section, we delve into the ray sampling strategy, a            Baselines. We compare our method with Mip-NeRF
+key factor in the efficacy of NeRF training, particularly in           360 [1], D2 NeRF [47], NeRF-W [23]† , Ha-NeRF [4]‡ , Ro-
+achieving distractor-free results.                                     bustNeRF [35]§ , and Mip-NeRF 360 + SAM, a baseline
+    RobustNeRF has demonstrated the efficacy of patch-                 that we design to exclude dynamic objects in images with
+based ray sampling (Fig. 4 (b)) over random sampling                   SAM [18], and train a NeRF on static parts. Refer to sup-
+(Fig. 4 (a)). However, this approach has its limitations, pri-         plements for more details.
+marily due to the small size of the sampled patches (e.g.              Metrics. We adopt the widely used PSNR, SSIM [46] and
+16 × 16). Especially when the batch size is small due to               LPIPS [60] for the evaluation of novel view synthesis.
+the constraint of GPU memory, this small context can re-
+strict the network’s learning capacity to remove distractors,          4.1. Evaluation
+impacting optimization stability and convergence speed.                On-the-go Dataset. We extend our evaluation on our On-
+    To tackle the issue, we utilize dilated patch sampling [14,        the-go dataset, as depicted in Fig. 5 and Table 1. Compared
+25, 39, 45, 51, 52], depicted in Fig. 4 (c). This strategy             to our method, RobustNeRF often fails to retain fine de-
+involves sampling rays from a dilated patch. By enlarging              tails in low to medium-occlusion scenarios, and struggles to
+the patch size, we can significantly increase the amount of            eliminate distractors in high-occlusion settings. Besides, we
+contextual information available in each training iteration.           notice that even after tuning the hyperparameter of outlier
+    Our empirical findings in Table 3 show that dilated patch          ratios for highly-occluded scenes, RobustNeRF still shows
+sampling not only accelerates the training process, but also           inferior performance. Please refer to the supplements.
+yields superior performance in distractor removal.                         Unlike RobustNeRF, NeRF-W and Ha-NeRF show pro-
+                                                                       ficiency in removing distractors at low and medium occlu-
+4. Experiments
+                                                                            † https://github.com/kwea123/nerf pl/tree/nerfw
+RobustNeRF Dataset. There are four sequences with toys-                     ‡ https://github.com/rover-xingyu/Ha-NeRF
+
+on-the-table settings. However, note that we are unable to                  § https://github.com/google-research/multinerf
+
+
+
+
+                                                                     8935
+ Mountain
+ Fountain
+ Corner
+ Patio
+Spot
+Patio-High
+
+
+
+
+             Mip-NeRF 360 [1]   NeRF-W [23]   Ha-NeRF [4]   RobustNeRF [35] Mip-NeRF 360 + SAM   Ours             GT
+
+Figure 6. Novel View Synthesis Results on Our On-the-go Dataset. Our method constantly outperforms baseline methods on scenes
+with various ratios of distractors, from confined indoor scenes with objects to large outdoor scenes.
+
+
+
+
+                                                                  8936
+                                 Low Occlusion                         Medium Occlusion                                High Occlusion
+                          Mountain           Fountain              Corner             Patio                     Spot               Patio-High
+                      LPIPS↓ SSIM↑ PSNR↑ LPIPS↓ SSIM↑ PSNR↑ LPIPS↓ SSIM↑ PSNR↑ LPIPS↓ SSIM↑ PSNR↑ LPIPS↓ SSIM↑ PSNR↑ LPIPS↓ SSIM↑ PSNR↑
+
+ Mip-NeRF 360 [1]     0.295 0.601 19.64   0.556 0.290 13.91   0.345 0.660 20.41       0.421 0.503 15.48   0.469 0.306 17.82    0.486 0.432 15.73
+ NeRF-W [23]          0.491 0.492 18.07   0.546 0.410 17.20   0.349 0.708 20.21       0.445 0.532 17,55   0.690 0.384 16.40    0.606 0.349 12.99
+ Ha-NeRF [4]          0.499 0.485 18.64   0.569 0.393 16.71   0.367 0.684 19.23       0.393 0.543 16.82   0.599 0.460 17.85    0.505 0.463 16.67
+ RobustNeRF [35]      0.383 0.496 17.54   0.576 0.318 15.65   0.244 0.764 23.04       0.251 0.718 20.39   0.391 0.625 20.65    0.366 0.578 20.54
+ Mip-NeRF 360 + SAM   0.258 0.642 20.20   0.556 0.287 13.65   0.332 0.670 20.65       0.227 0.738 20.83   0.323 0.542 21.08    0.326 0.576 20.13
+ Ours                 0.259 0.644 20.15   0.314 0.609 20.11   0.190 0.806 24.22       0.219 0.754 20.78   0.189 0.787 23.33    0.235 0.718 21.41
+
+Table 1. Novel View Synthesis Results on Our On-the-go Dataset. We show quantitative comparison between our methods and baselines.
+
+sion levels, but this effectiveness comes at the cost of re-                                                 Statue                  Android
+                                                                                                     LPIPS↓ SSIM↑ PSNR↑ LPIPS↓ SSIM↑ PSNR↑
+duced image quality. This trade-off is a consequence of
+its transient embedding approach, as discussed in [30, 35].              Mip-NeRF 360 [1]             0.36    0.66    19.09   0.40    0.65     19.35
+Furthermore, NeRF-W and Ha-NeRF struggle notably at                      D2 NeRF [47]                 0.48    0.49    19.09   0.43    0.57     20.61
+                                                                         RobustNeRF [35]              0.28    0.75    20.89   0.31    0.65     21.72
+higher occlusion ratios. In such cases, their per-image tran-            RobustNeRF∗ [35]             0.27    0.73    21.13   0.22    0.73     22.83
+sient embeddings are unable to adequately model distrac-                 Mip-NeRF 360 + SAM           0.23    0.74    21.30   0.23    0.71     22.62
+tors, leading to a noticeable performance drop. The Mip-                 Ours                         0.24    0.77    21.58   0.21    0.75     23.50
+NeRF 360 combined with SAM method works well in sim-
+ple scenes like Mountain, where distractors are easy to seg-
+ment. However, its effectiveness diminishes in more com-
+plex scenes. In contrast, we exhibit versatility across scenes          Android
+with various occlusion ratios, and can consistently produce
+high-quality renderings.
+Comparison on RobustNeRF Dataset [35]. As shown in
+Table 2, our method exhibits superior performance quan-
+titatively and qualitatively over all baselines. Robust-
+NeRF’s hard-thresholding approach tends to overlook com-
+plex structures with limited observations, such as the shoes
+                                                                        Statue
+
+
+
+
+and carpet in the Android scene. Moreover, we observed
+that they underperform in scenarios involving plane sur-
+faces with view-dependent effects, e.g. the wooden texture
+on the table with view-dependent highlight in Statue scene.
+Note that Mip-NeRF 360 + SAM requires a tedious process                           Mip-NeRF 360   RobustNeRF∗ Mip-NeRF360+SAM            Ours
+of manually selecting every distractor in each image using
+SAM [18], but it still struggles with capturing thin struc-             Table 2. Novel View Synthesis Results on the RobustNeRF
+tures, shadows, and reflections.                                        Dataset. The numbers for Mip-NeRF 360 [1], D2 NeRF [47] and
+                                                                        RobustNeRF [35] are taken from [35]. RobustNeRF∗ [35] denotes
+4.2. Ablation Study                                                     our own run using the official code release.
+
+All ablations are conducted on the challenging highly-                  Loss Functions. In Table 4, we ablate on different train-
+occluded “Patio-High” scene in our On-the-go dataset.                   ing losses. In (b), SSIM proves more adept at differentiat-
+Patch Dilation. Here we test different dilation rates for our           ing distractors with static elements compared to ℓ2 loss. In
+dilation patch sampling, as shown in Table 3. Within a range            (c), we train the uncertainty MLP and NeRF together. This
+from 1 to 4, a higher dilation rate results in much faster              results in a significant performance drop, indicating the ef-
+convergence and better rendering quality. This verifies our             fectiveness of our decoupled training approach. Moreover,
+hypothesis in Sec. 3.4 that increasing the contextual infor-            we find from (a) that omitting Lreg will negatively impact
+mation within patches can effectively boost performance.                the rendering quality of certain views. Additional studies
+However, when the dilation rate is above 4, uncertainty op-             on various sequences are available in the supplements.
+timization begins to collapse. It is likely because higher di-
+lation rates cause patches to lose semantic information. This           4.3. Analysis
+occurs as the sampling now becomes more akin to random
+sampling, negatively impacting the learning of uncertainty.             Fast Convergence. Fig. 7 presents a comparison between
+Further details and analysis on patch size and dilation rate            RobustNeRF and ours during training processes. Thanks to
+across different sequences are available in the supplements.            our uncertainty prediction pipeline and dilated patch sam-
+
+
+
+                                                                     8937
+                                                0.7                   1             4           16
+                  LPIPS↓ SSIM↑ PSNR↑
+                                                                      2             8
+                                                0.6                                                                       0.447            0.376             0.374
+       1 0.451 0.515 17.82
+                                                0.5
+
+
+                                            LPIPS
+       2 0.262 0.692 20.70
+       4 0.235 0.718 21.41                      0.4
+       8 0.392 0.529 18.22
+       16 0.477 0.439 16.08                     0.3
+                                                0.2         50      100       150      200      250
+                                                                 Training Iterations (K)                        RobustNeRF [35]     Ours           Mip-NeRF 360 [1]         GT
+
+Table 3. Ablations on Patch Dilation Rates. Comparisons of                                                     Figure 8. Performance on Static Scenes. LPIPS metrics are in-
+various dilation rates for the dilated patch sampling, with a patch                                            cluded in images. Our performance is much better than Robust-
+size of 32 × 32.                                                                                               NeRF and on par with the SOTA method [1].
+                                                       LPIPS↓          SSIM↑            PSNR↑
+
+                        (a) w/o Lreg                   0.261              0.698         21.02
+                        (b) ℓ2 in Luncer               0.437              0.492         17.13
+                        (c) Luncer for NeRF            0.496              0.437         16.70
+                        Ours                           0.235              0.718         21.41
+
+
+
+
+                                                                                                                       Arc de Triomphe                         Patio-High
+
+                                                                                                               Figure 9. Handling Large Obstructions. From top to bottom:
+                                                                                                               input frames, our uncertainty maps, our rendering results.
+                  (a)                 (b)              (c)                 Ours                 GT
+
+Table 4. Ablations on Loss Functions. We compare different loss                                                using a static scene from the Mip-NeRF 360 [1] dataset. As
+choices for training our system.                                                                               illustrated in Fig. 8, we indeed achieve great performance
+                                                                                                               as Mip-NeRF 360 [1]. In contrast, RobustNeRF fails to
+                                                                                                               capture certain parts of the bicycle, since one of their key
+RobustNeRF [35]
+
+
+
+
+                                                                                                               designs involves omitting at least some portions of a scene.
+                              0.498                 0.422                   0.372                    0.349     Large Obstructions. In Fig. 9, we further show that our
+                                                                                                               method can faithfully model the large obstructions with our
+                                                                                                               predicted uncertainty, and effectively remove them.
+
+                                                                                                               5. Conclusions
+                                                                                                               We introduce NeRF On-the-go, a versatile method that en-
+                                                                                                               ables effective and efficient distractor removal in dynamic
+                              0.285                 0.249                   0.233                    0.232
+ Ours
+
+
+
+
+                                                                                                               real-world scenes containing various levels of distractors.
+                                                                                                               Our method represents a step towards realizing the full po-
+                                                                                                               tential of NeRF in practical, in-the-wild applications.
+                                                                                                               Limitation. While our method shows robustness on diverse
+                        25K                 50K                     100K                     250K              real-world scenes, we suffer in predicting correct uncertain-
+                                                                                                               ties for regions with strong view-dependent effects, such
+Figure 7. Convergence Speed Comparison. LPIPS metrics are
+included in images. Our method can already capture better details
+                                                                                                               as highly reflective surfaces like windows and metals. In-
+at 25K iterations than RobustNeRF at 250K iterations.                                                          tegrating additional prior knowledge into the optimization
+                                                                                                               process could potentially be beneficial.
+pling, we show notably faster convergence. It can be noticed                                                   Acknowledgements. We thank the Max Planck ETH Cen-
+that we can already capture fine details from the early stages                                                 ter for Learning Systems (CLS) for supporting Songyou
+of training, see ours at 25K and RobustNeRF at 250K.                                                           Peng. We also thank Yiming Zhao and Clément Jambon
+                                                                                                               for helpful discussions.
+Applicability to Static Scenes. After showcasing our effi-
+cacy in building a NeRF from dynamic scenes, we explore
+whether it is directly adaptable to static scenes. We evaluate
+
+
+
+                                                                                                             8938
+References                                                              [19] Tianye Li, Mira Slavcheva, Michael Zollhoefer, Simon
+                                                                             Green, Christoph Lassner, Changil Kim, Tanner Schmidt,
+ [1] Jonathan T Barron, Ben Mildenhall, Dor Verbin, Pratul P                 Steven Lovegrove, Michael Goesele, Richard Newcombe,
+     Srinivasan, and Peter Hedman. Mip-nerf 360: Unbounded                   et al. Neural 3d video synthesis from multi-view video. In
+     anti-aliased neural radiance fields. In CVPR, 2022. 5, 6, 7, 8          CVPR, 2022. 2
+ [2] Ioan Andrei Bârsan, Peidong Liu, Marc Pollefeys, and An-
+                                                                        [20] Zhengqi Li, Simon Niklaus, Noah Snavely, and Oliver Wang.
+     dreas Geiger. Robust dense mapping for large-scale dynamic
+                                                                             Neural scene flow fields for space-time view synthesis of dy-
+     environments. In ICRA, 2018. 2
+                                                                             namic scenes. In CVPR, 2021. 2
+ [3] Berta Bescos, José M Fácil, Javier Civera, and José Neira.
+                                                                        [21] Haotong Lin, Qianqian Wang, Ruojin Cai, Sida Peng, Hadar
+     Dynaslam: Tracking, mapping, and inpainting in dynamic
+                                                                             Averbuch-Elor, Xiaowei Zhou, and Noah Snavely. Neural
+     scenes. RA-L, 2018. 2
+                                                                             scene chronology. In CVPR, 2023. 2
+ [4] Xingyu Chen, Qi Zhang, Xiaoyu Li, Yue Chen, Ying Feng,
+                                                                        [22] Ricardo Martin-Brualla, Noha Radwan, Mehdi SM Sajjadi,
+     Xuan Wang, and Jue Wang. Hallucinated neural radiance
+                                                                             Jonathan T Barron, Alexey Dosovitskiy, and Daniel Duck-
+     fields in the wild. In CVPR, 2022. 2, 5, 6, 7
+                                                                             worth. Nerf in the wild: Neural radiance fields for uncon-
+ [5] Gabriele Costante and Michele Mancini. Uncertainty esti-
+                                                                             strained photo collections. In CVPR, 2021. 1, 2
+     mation for data-driven visual odometry. IEEE Transactions
+                                                                        [23] Ricardo Martin-Brualla, Noha Radwan, Mehdi SM Sajjadi,
+     on Robotics, 2020. 2
+                                                                             Jonathan T Barron, Alexey Dosovitskiy, and Daniel Duck-
+ [6] Yilun Du, Yinan Zhang, Hong-Xing Yu, Joshua B Tenen-
+                                                                             worth. Nerf in the wild: Neural radiance fields for uncon-
+     baum, and Jiajun Wu. Neural radiance flow for 4d view syn-
+                                                                             strained photo collections. In CVPR, 2021. 1, 2, 4, 5, 6,
+     thesis and video processing. In ICCV, 2021. 2
+                                                                             7
+ [7] Jakob Engel, Vladlen Koltun, and Daniel Cremers. Direct
+     sparse odometry. PAMI, 2017. 2                                     [24] Nathaniel Merrill, Yuliang Guo, Xingxing Zuo, Xinyu
+                                                                             Huang, Stefan Leutenegger, Xi Peng, Liu Ren, and Guo-
+ [8] Daniela Esparza and Gerardo Flores. The stdyn-slam: a
+                                                                             quan Huang. Symmetry and uncertainty-aware object slam
+     stereo vision and semantic segmentation approach for vslam
+                                                                             for 6dof object pose estimation. In CVPR, 2022. 2
+     in dynamic outdoor environments. IEEE Access, 2022. 2
+ [9] Chen Gao, Ayush Saraf, Johannes Kopf, and Jia-Bin Huang.           [25] Marko Mihajlovic, Aayush Bansal, Michael Zollhoefer, Siyu
+     Dynamic view synthesis from dynamic monocular video. In                 Tang, and Shunsuke Saito. Keypointnerf: Generalizing
+     ICCV, 2021. 2                                                           image-based volumetric avatars using relative spatial encod-
+                                                                             ing of keypoints. In ECCV, 2022. 5
+[10] Lily Goli, Cody Reading, Silvia Selllán, Alec Jacobson, and
+     Andrea Tagliasacchi. Bayes’ rays: Uncertainty quantifica-          [26] Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Ravi
+     tion for neural radiance fields. In CVPR, 2024. 2                       Ramamoorthi, and Ren Ng. Nerf: Representing scenes as
+[11] Julia Hornauer and Vasileios Belagiannis. Gradient-based                neural radiance fields for view synthesis. In ECCV, 2020. 1
+     uncertainty for monocular depth estimation. In ECCV, 2022.         [27] Jishnu Mukhoti, Joost van Amersfoort, Philip HS Torr, and
+     2                                                                       Yarin Gal. Deep deterministic uncertainty for semantic seg-
+[12] Jiahui Huang, Sheng Yang, Zishuo Zhao, Yu-Kun Lai, and                  mentation. In CVPR, 2023. 2
+     Shi-Min Hu. Clusterslam: A slam backend for simultaneous           [28] Raul Mur-Artal and Juan D Tardós. Orb-slam2: An open-
+     rigid body clustering and motion estimation. In CVPR, 2019.             source slam system for monocular, stereo, and rgb-d cam-
+     2                                                                       eras. IEEE Transactions on Robotics, 2017. 2
+[13] Po-Yu Huang, Wan-Ting Hsu, Chun-Yueh Chiu, Ting-Fan                [29] Maxime Oquab, Timothée Darcet, Théo Moutakanni, Huy
+     Wu, and Min Sun. Efficient uncertainty estimation for se-               Vo, Marc Szafraniec, Vasil Khalidov, Pierre Fernandez,
+     mantic segmentation in videos. In ECCV, 2018. 2                         Daniel Haziza, Francisco Massa, Alaaeldin El-Nouby, et al.
+[14] Ajay Jain, Matthew Tancik, and Pieter Abbeel. Putting nerf              DINOv2: Learning robust visual features without supervi-
+     on a diet: Semantically consistent few-shot view synthesis.             sion. arXiv preprint arXiv:2304.07193, 2023. 2, 3
+     In ICCV, 2021. 5                                                   [30] Xuran Pan, Zihang Lai, Shiji Song, and Gao Huang. Ac-
+[15] Liren Jin, Xieyuanli Chen, Julius Rückin, and Marija                   tivenerf: Learning where to see with uncertainty estimation.
+     Popović. Neu-nbv: Next best view planning using uncer-                 In ECCV, 2022. 2, 7
+     tainty estimation in image-based neural rendering. In IROS,        [31] Keunhong Park, Utkarsh Sinha, Peter Hedman, Jonathan T
+     2023. 2                                                                 Barron, Sofien Bouaziz, Dan B Goldman, Ricardo Martin-
+[16] Alex Kendall and Yarin Gal. What uncertainties do we need               Brualla, and Steven M Seitz.          Hypernerf: a higher-
+     in bayesian deep learning for computer vision? In NeurIPS,              dimensional representation for topologically varying neural
+     2017. 2                                                                 radiance fields. ACM TOG, 2021. 2
+[17] Injae Kim, Minhyuk Choi, and Hyunwoo J Kim. Up-nerf:               [32] Matteo Poggi, Filippo Aleotti, Fabio Tosi, and Stefano Mat-
+     Unconstrained pose-prior-free neural radiance fields. In                toccia. On the uncertainty of self-supervised monocular
+     NeurIPS, 2023. 2                                                        depth estimation. In CVPR, 2020. 2
+[18] Alexander Kirillov, Eric Mintun, Nikhila Ravi, Hanzi Mao,          [33] Yunlong Ran, Jing Zeng, Shibo He, Jiming Chen, Lincheng
+     Chloe Rolland, Laura Gustafson, Tete Xiao, Spencer White-               Li, Yingfeng Chen, Gimhee Lee, and Qi Ye. Neurar: Neural
+     head, Alexander C Berg, Wan-Yen Lo, et al. Segment any-                 uncertainty for autonomous 3d reconstruction with implicit
+     thing. In ICCV, 2023. 5, 7                                              neural representations. RA-L, 2023. 2
+
+
+
+
+                                                                      8939
+[34] Konstantinos Rematas, Andrew Liu, Pratul P Srini-                  [50] Zeke Xie, Xindi Yang, Yujie Yang, Qi Sun, Yixiang Jiang,
+     vasan, Jonathan T Barron, Andrea Tagliasacchi, Thomas                   Haoran Wang, Yunfeng Cai, and Mingming Sun. S3im:
+     Funkhouser, and Vittorio Ferrari. Urban radiance fields. In             Stochastic structural similarity and its unreasonable effec-
+     CVPR, 2022. 1                                                           tiveness for neural fields. In ICCV, 2023. 4
+[35] Sara Sabour, Suhani Vora, Daniel Duckworth, Ivan Krasin,           [51] Dejia Xu, Yifan Jiang, Peihao Wang, Zhiwen Fan, Humphrey
+     David J Fleet, and Andrea Tagliasacchi. Robustnerf: Ignor-              Shi, and Zhangyang Wang. Sinnerf: Training neural radiance
+     ing distractors with robust losses. In CVPR, 2023. 1, 2, 4, 5,          fields on complex scenes from a single image. In ECCV,
+     6, 7, 8                                                                 2022. 5
+[36] Erik Sandström, Kevin Ta, Luc Van Gool, and Martin R Os-          [52] Shiyao Xu, Lingzhi Li, Li Shen, and Zhouhui Lian. Desrf:
+     wald. Uncle-slam: Uncertainty learning for dense neural                 Deformable stylized radiance field. In CVPR, 2023. 5
+     slam. In ICCV Workshops, 2023. 2                                   [53] Jiawei Yang, Boris Ivanovic, Or Litany, Xinshuo Weng, Se-
+[37] Johannes Lutz Schönberger and Jan-Michael Frahm.                       ung Wook Kim, Boyi Li, Tong Che, Danfei Xu, Sanja Fidler,
+     Structure-from-motion revisited. In CVPR, 2016. 2                       Marco Pavone, and Yue Wang. Emernerf: Emergent spatial-
+[38] Johannes Lutz Schönberger, Enliang Zheng, Marc Pollefeys,              temporal scene decomposition via self-supervision. In ICLR,
+     and Jan-Michael Frahm. Pixelwise view selection for un-                 2024. 2
+     structured multi-view stereo. In ECCV, 2016. 2                     [54] Nan Yang, Lukas von Stumberg, Rui Wang, and Daniel Cre-
+                                                                             mers. D3vo: Deep depth, deep pose and deep uncertainty for
+[39] Katja Schwarz, Yiyi Liao, Michael Niemeyer, and Andreas
+                                                                             monocular visual odometry. In CVPR, 2020. 2
+     Geiger. Graf: Generative radiance fields for 3d-aware image
+     synthesis. In NeurIPS, 2020. 5                                     [55] Shichao Yang and Sebastian Scherer. Cubeslam: Monocular
+                                                                             3-d object slam. IEEE Transactions on Robotics, 2019. 2
+[40] Jianxiong Shen, Ruijie Ren, Adria Ruiz, and Francesc
+                                                                        [56] Weicai Ye, Xingyuan Yu, Xinyue Lan, Yuhang Ming, Jinyu
+     Moreno-Noguer. Estimating 3d uncertainty field: Quanti-
+                                                                             Li, Hujun Bao, Zhaopeng Cui, and Guofeng Zhang. De-
+     fying uncertainty for neural radiance fields. In ICRA, 2024.
+                                                                             flowslam: Self-supervised scene motion decomposition for
+     2
+                                                                             dynamic dense slam. arXiv preprint arXiv:2207.08794,
+[41] Shihao Shen, Yilin Cai, Wenshan Wang, and Sebastian
+                                                                             2022. 2
+     Scherer. Dytanvo: Joint refinement of visual odometry and
+                                                                        [57] Weicai Ye, Xinyue Lan, Shuo Chen, Yuhang Ming,
+     motion segmentation in dynamic environments. In ICRA,
+                                                                             Xingyuan Yu, Hujun Bao, Zhaopeng Cui, and Guofeng
+     2023. 2
+                                                                             Zhang. Pvo: Panoptic visual odometry. In CVPR, 2023.
+[42] Matthew Tancik, Vincent Casser, Xinchen Yan, Sabeek Prad-               2
+     han, Ben Mildenhall, Pratul P Srinivasan, Jonathan T Barron,
+                                                                        [58] Chao Yu, Zuxin Liu, Xin-Jun Liu, Fugui Xie, Yi Yang, Qi
+     and Henrik Kretzschmar. Block-nerf: Scalable large scene
+                                                                             Wei, and Qiao Fei. Ds-slam: A semantic visual slam towards
+     neural view synthesis. In CVPR, 2022. 1
+                                                                             dynamic environments. In IROS, 2018. 2
+[43] Zachary Teed and Jia Deng. Droid-slam: Deep visual slam            [59] Jun Zhang, Mina Henein, Robert Mahony, and Viorela Ila.
+     for monocular, stereo, and rgb-d cameras. In NeurIPS, 2021.             Vdo-slam: a visual dynamic object-aware slam system.
+     2                                                                       arXiv preprint arXiv:2005.11052, 2020. 2
+[44] Chaoyang Wang, Ben Eckart, Simon Lucey, and Orazio                 [60] Richard Zhang, Phillip Isola, Alexei A Efros, Eli Shechtman,
+     Gallo. Neural trajectory fields for dynamic novel view syn-             and Oliver Wang. The unreasonable effectiveness of deep
+     thesis. arXiv preprint arXiv:2105.05994, 2021. 2                        features as a perceptual metric. In CVPR, 2018. 5
+[45] Cong Wang, Di Kang, Yan-Pei Cao, Linchao Bao, Ying                 [61] Wang Zhao, Shaohui Liu, Hengkai Guo, Wenping Wang, and
+     Shan, and Song-Hai Zhang. Neural point-based volumetric                 Yong-Jin Liu. Particlesfm: Exploiting dense point trajecto-
+     avatar: Surface-guided neural points for efficient and photo-           ries for localizing moving cameras in the wild. In ECCV,
+     realistic volumetric head avatar. In SIGGRAPH Asia Confer-              2022. 2
+     ence Papers, 2023. 5
+[46] Zhou Wang, Alan C Bovik, Hamid R Sheikh, and Eero P
+     Simoncelli. Image quality assessment: from error visibility
+     to structural similarity. IEEE TIP, 2004. 5
+[47] Tianhao Wu, Fangcheng Zhong, Forrester Cole, Andrea
+     Tagliasacchi, and Cengiz Oztireli. D2nerf: Self-supervised
+     decoupling of dynamic and static objects from a monocular
+     video. In NeurIPS, 2022. 1, 2, 5, 7
+[48] Wenqi Xian, Jia-Bin Huang, Johannes Kopf, and Changil
+     Kim. Space-time neural irradiance fields for free-viewpoint
+     video. In CVPR, 2021. 2
+[49] Yuting Xiao, Jingwei Xu, Zehao Yu, and Shenghua Gao.
+     Debsdf: Delving into the details and bias of neural in-
+     door scene reconstruction. arXiv preprint arXiv:2308.15536,
+     2023. 2
+
+
+
+
+                                                                      8940
+

@@ -1,0 +1,110 @@
+[
+  {
+    "scene": "industrial_b",
+    "method": "l2",
+    "gradient_L1_OBB": 0.01693000971787321,
+    "PSNR_hole_OBB": 17.09059129878518,
+    "hole_OBB_pixels": 362,
+    "PSNR_hole_boundary_OBB": 16.81982463376671,
+    "boundary_OBB_pixels": 495
+  },
+  {
+    "scene": "industrial_b",
+    "method": "block",
+    "gradient_L1_OBB": 0.017344528608449726,
+    "PSNR_hole_OBB": 14.043602634811789,
+    "hole_OBB_pixels": 362,
+    "PSNR_hole_boundary_OBB": 14.623532122204189,
+    "boundary_OBB_pixels": 495
+  },
+  {
+    "scene": "industrial_b",
+    "method": "uv_fusion",
+    "gradient_L1_OBB": 0.01125244854961803,
+    "PSNR_hole_OBB": 16.21500290088338,
+    "hole_OBB_pixels": 362,
+    "PSNR_hole_boundary_OBB": 17.756210687394585,
+    "boundary_OBB_pixels": 495
+  },
+  {
+    "scene": "industrial_b",
+    "method": "uv_shadow_guard",
+    "gradient_L1_OBB": 0.010882596010927172,
+    "PSNR_hole_OBB": 20.187232312876745,
+    "hole_OBB_pixels": 362,
+    "PSNR_hole_boundary_OBB": 20.28004107068942,
+    "boundary_OBB_pixels": 495
+  },
+  {
+    "scene": "industrial_b",
+    "method": "gradient_harmonize",
+    "gradient_L1_OBB": 0.010494717759696109,
+    "PSNR_hole_OBB": 20.56263603745538,
+    "hole_OBB_pixels": 362,
+    "PSNR_hole_boundary_OBB": 20.385502406046008,
+    "boundary_OBB_pixels": 495
+  },
+  {
+    "scene": "industrial_b",
+    "method": "patch_transfer",
+    "gradient_L1_OBB": 0.010919442328768845,
+    "PSNR_hole_OBB": 23.690951471461148,
+    "hole_OBB_pixels": 362,
+    "PSNR_hole_boundary_OBB": 21.834684556847996,
+    "boundary_OBB_pixels": 495
+  },
+  {
+    "scene": "industrial_c",
+    "method": "l2",
+    "gradient_L1_OBB": 0.019985084586052103,
+    "PSNR_hole_OBB": 14.873043988762305,
+    "hole_OBB_pixels": 1439,
+    "PSNR_hole_boundary_OBB": 16.884923806842192,
+    "boundary_OBB_pixels": 2374
+  },
+  {
+    "scene": "industrial_c",
+    "method": "block",
+    "gradient_L1_OBB": 0.015212566867684517,
+    "PSNR_hole_OBB": 15.269533766995952,
+    "hole_OBB_pixels": 1439,
+    "PSNR_hole_boundary_OBB": 17.116751695626828,
+    "boundary_OBB_pixels": 2374
+  },
+  {
+    "scene": "industrial_c",
+    "method": "uv_fusion",
+    "gradient_L1_OBB": 0.01105779681531055,
+    "PSNR_hole_OBB": 18.351325172242174,
+    "hole_OBB_pixels": 1439,
+    "PSNR_hole_boundary_OBB": 18.686081674606676,
+    "boundary_OBB_pixels": 2374
+  },
+  {
+    "scene": "industrial_c",
+    "method": "uv_shadow_guard",
+    "gradient_L1_OBB": 0.010775208565610945,
+    "PSNR_hole_OBB": 18.742916887288214,
+    "hole_OBB_pixels": 1439,
+    "PSNR_hole_boundary_OBB": 18.85574886406636,
+    "boundary_OBB_pixels": 2374
+  },
+  {
+    "scene": "industrial_c",
+    "method": "gradient_harmonize",
+    "gradient_L1_OBB": 0.010340396327805763,
+    "PSNR_hole_OBB": 18.548707131219956,
+    "hole_OBB_pixels": 1439,
+    "PSNR_hole_boundary_OBB": 19.064631213682787,
+    "boundary_OBB_pixels": 2374
+  },
+  {
+    "scene": "industrial_c",
+    "method": "patch_transfer",
+    "gradient_L1_OBB": 0.010803791550117391,
+    "PSNR_hole_OBB": 18.293330589849703,
+    "hole_OBB_pixels": 1439,
+    "PSNR_hole_boundary_OBB": 18.835535998127895,
+    "boundary_OBB_pixels": 2374
+  }
+]

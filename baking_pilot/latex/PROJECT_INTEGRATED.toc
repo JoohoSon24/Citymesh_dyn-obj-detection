@@ -1,0 +1,49 @@
+\contentsline {section}{\numberline {1}Intro}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}문제와 연구 질문}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}범위와 용어}{3}{subsection.1.2}%
+\contentsline {section}{\numberline {2}Method}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}영상 출처, 장면과 전처리}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}공통 틀: 같은 L2 오차에 어떤 관측 가중치 S를 곱하는가?}{4}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}L2 / no-removal: 모든 관측을 사용}{4}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Block형: 차량 클래스이면 관측을 제외}{5}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}HuGS형: 정적으로 일관된 영역만 사용}{5}{subsection.2.5}%
+\contentsline {subsection}{\numberline {2.6}Robust형: 현재 잔차로 S를 반복 갱신}{5}{subsection.2.6}%
+\contentsline {subsection}{\numberline {2.7}개선한 S: 원본 마스크를 공통 UV에서 투영}{6}{subsection.2.7}%
+\contentsline {subsection}{\numberline {2.8}관측 선택을 공유하는 직접 UV 합성과 추가 prior}{6}{subsection.2.8}%
+\contentsline {paragraph}{직접 UV 합성: 선택한 관측을 직접 모으는 참고 기준선.}{6}{section*.4}%
+\contentsline {paragraph}{Shadow guard: S=0의 범위를 어두운 이웃으로 확장.}{6}{section*.5}%
+\contentsline {paragraph}{Geometry + prior: S는 유지하고 미관측부에 공간 제약 추가.}{6}{section*.6}%
+\contentsline {subsection}{\numberline {2.9}추가 두 방법: 같은 S를 유지하고 채우는 방식을 개선}{6}{subsection.2.9}%
+\contentsline {paragraph}{Gradient harmonization: 관측값과 경계 변화량을 함께 맞추기.}{6}{section*.7}%
+\contentsline {paragraph}{Patch transfer: 실제 관측된 주변 패치로 미관측부 채우기.}{7}{section*.8}%
+\contentsline {subsection}{\numberline {2.10}공통 구현: S 이외의 조건}{7}{subsection.2.10}%
+\contentsline {subsection}{\numberline {2.11}평가 지표와 실험 간 차이}{7}{subsection.2.11}%
+\contentsline {section}{\numberline {3}Result}{9}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Easy: 빈 배경 관측이 다수인 장면}{9}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Hard: 높은 차량 점유에서의 기존 기준선}{10}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Improved: 배경 관측 선택과 명시적 공간 prior}{12}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}추가 실험: 부자연스러운 채움을 줄이는 두 재구성 방법}{14}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}관측 선택의 시각화: 빨간색은 제외한 관측 S=0}{18}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}해석, 한계 및 재현 범위}{20}{subsection.3.6}%
+\contentsline {subsection}{\numberline {3.7}산출물과 실행 기록}{20}{subsection.3.7}%
+\contentsline {section}{\numberline {A}구현 세부 수식}{21}{appendix.A}%
+\contentsline {subsection}{\numberline {A.1}표기와 공통 베이킹 모델}{21}{subsection.A.1}%
+\contentsline {subsection}{\numberline {A.2}공통 최적화 절차}{21}{subsection.A.2}%
+\contentsline {subsection}{\numberline {A.3}미적용 기준선: L2와 시간 중앙값}{21}{subsection.A.3}%
+\contentsline {paragraph}{L2 / no-removal.}{21}{section*.26}%
+\contentsline {paragraph}{시간 중앙값.}{22}{section*.27}%
+\contentsline {subsection}{\numberline {A.4}Block-NeRF형: 의미 클래스에 따른 관측 제외}{22}{subsection.A.4}%
+\contentsline {subsection}{\numberline {A.5}NeRF-HuGS형: 특징점 지지, 잔차와 SAM 영역}{22}{subsection.A.5}%
+\contentsline {paragraph}{특징점 일관성.}{22}{section*.28}%
+\contentsline {paragraph}{색 잔차.}{22}{section*.29}%
+\contentsline {paragraph}{SAM 영역 선택.}{22}{section*.30}%
+\contentsline {subsection}{\numberline {A.6}RobustNeRF형: 잔차 기반 IRLS와 공간 문맥}{23}{subsection.A.6}%
+\contentsline {paragraph}{OR 변형.}{23}{section*.31}%
+\contentsline {paragraph}{차량 크기 변형.}{23}{section*.32}%
+\contentsline {paragraph}{깊이 적응 변형.}{23}{section*.33}%
+\contentsline {subsection}{\numberline {A.7}개선 기준선 I: UV에서 비차량 관측만 합성}{23}{subsection.A.7}%
+\contentsline {subsection}{\numberline {A.8}개선 기준선 II: 차량 주변의 어두운 후보 제외}{24}{subsection.A.8}%
+\contentsline {subsection}{\numberline {A.9}개선 기준선 III: 마스크 투영ㆍ초기화ㆍ공간 prior}{24}{subsection.A.9}%
+\contentsline {paragraph}{Geometry mask.}{24}{section*.34}%
+\contentsline {paragraph}{Geometry + init.}{24}{section*.35}%
+\contentsline {paragraph}{Geometry + prior.}{24}{section*.36}%

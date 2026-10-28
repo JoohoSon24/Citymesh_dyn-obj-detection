@@ -1,0 +1,708 @@
+                                         SpotLessSplats: Ignoring Distractors in 3D Gaussian Splatting
+                                         SARA SABOUR∗ and LILY GOLI∗ , Google Deepmind, University of Toronto, Canada
+                                         GEORGE KOPANAS, Google AR, United Kingdom
+                                         MARK MATHEWS, Google Deepmind, United States
+                                         DMITRY LAGUN, Google Deepmind, United States
+                                         LEONIDAS GUIBAS, Google Deepmind, Stanford University, United States
+                                         ALEC JACOBSON, University of Toronto, Canada
+                                         DAVID FLEET, Google Deepmind, University of Toronto, Canada
+                                         ANDREA TAGLIASACCHI, Google Deepmind, University of Toronto, Simon Fraser University, Canada
+arXiv:2406.20055v2 [cs.CV] 29 Jul 2024
+
+
+
+
+                                         Fig. 1. SpotLessSplats cleanly reconstructs a scene with many transient occluders (middle), while avoiding artifacts (bottom). It correctly identifies and
+                                         masks out all transients (top), even in captures with a large number of them (left).
+
+                                         3D Gaussian Splatting (3DGS) is a promising technique for 3D reconstruc-                 1   Introduction
+                                         tion, offering efficient training and rendering speeds, making it suitable for           The reconstruction of 3D scenes from 2D images with neural ra-
+                                         real-time applications. However, current methods require highly controlled
+                                                                                                                                  diance fields (NeRF) [Mildenhall et al. 2020] and, more recently,
+                                         environments—no moving people or wind-blown elements, and consistent
+                                         lighting—to meet the inter-view consistency assumption of 3DGS. This
+                                                                                                                                  with 3D Gaussian Splatting (3DGS) [Kerbl et al. 2023], has been the
+                                         makes reconstruction of real-world captures problematic. We present Spot-                subject of intense focus in vision research. Most current methods
+                                         LessSplats, an approach that leverages pre-trained and general-purpose                   assume that images are simultaneously captured, perfectly posed,
+                                         features coupled with robust optimization to effectively ignore transient                and noise-free. While these assumptions simplify 3D reconstruction,
+                                         distractors. Our method achieves state-of-the-art reconstruction quality both            they rarely hold in real-world, where moving objects (e.g., people
+                                         visually and quantitatively, on casual captures. Additional results available            or pets), lighting variations, and other spurious photometric incon-
+                                         at: https://spotlesssplats.github.io                                                     sistencies degrade performance, limiting widespread application.
+                                                                                                                                     In NeRF training, robustness to outliers has been incorporated by
+                                                                                                                                  down-weighting or discarding inconsistent observations based on
+                                         ∗ Both authors contributed equally to this research.
+                                                                                                                                  the magnitude of color residuals [Chen et al. 2024; Martin-Brualla
+                                                                                                                                  et al. 2021b; Sabour et al. 2023; Wu et al. 2022]. Similar methods
+                                                                                                                                  adapted to 3DGS [Dahmani et al. 2024; Kulhanek et al. 2024; Wang
+                                         Authors’ Contact Information: Sara Sabour, sasabour@google.com; Lily Goli, lily.goli@
+                                         mail.utoronto.ca, Google Deepmind, University of Toronto, Toronto, Canada; George
+                                                                                                                                  et al. 2024] address global appearance changes and single-frame
+                                         Kopanas, Google AR, London, United Kingdom; Mark Mathews, Google Deepmind,               transients seen in datasets like Phototourism [Snavely et al. 2006].
+                                         Mountain View, United States; Dmitry Lagun, Google Deepmind, Mountain View,              Such captures include appearance changes occurring over weeks
+                                         United States; Leonidas Guibas, Google Deepmind, Stanford University, Mountain
+                                         View, United States; Alec Jacobson, University of Toronto, Toronto, Canada; David        and different times of day, which are not common in most casual
+                                         Fleet, Google Deepmind, University of Toronto, Toronto, Canada, larst@affiliation.org;   captures. For 3DGS in particular, the adaptive densification process
+                                         Andrea Tagliasacchi, Google Deepmind, University of Toronto, Simon Fraser University,    itself introduces variance in color residuals, compromising detection
+                                         Vancouver, Canada.
+2 •    Sabour & Goli et al.
+
+
+of transients when directly applying existing ideas from robust NeRF
+frameworks.
+   In this paper we introduce SpotLessSplats (SLS), a framework
+for robust 3D scene reconstruction with 3DGS, via unsupervised
+detection of outliers in training images. Rather than detecting out-
+liers in RGB space, we instead utilize a richer, learned feature space
+from text-to-image models. The meaningful semantic structure of          Fig. 2. Our outlier classification using clustered semantic features covers
+this feature embedding allows one to more easily detect the spatial      the distractor balloon fully, but an adapted robust mask from [Sabour et al.
+support of structured outliers associated, for example, with a single    2023] misclassifies pixels with similar color to background, as inliers.
+object. Rather than employing manually-specified robust kernels
+for outlier identification [Sabour et al. 2023], we instead exploit
+adaptive methods in this feature space to detect outliers. To this       significantly faster rendering speed, while maintaining high qual-
+end we consider two approaches within this framework. The first          ity. 3D Gaussians can be efficiently rasterized using alpha blend-
+uses non-parametric clustering of local feature embeddings as a          ing [Zwicker et al. 2001]. This simplified representation takes ad-
+simple way to find image regions of structured outliers. The sec-        vantage of modern GPU hardware to facilitate real-time rendering.
+ond uses an MLP, trained in an unsupervised fashion to predict           The efficiency and simplicity of 3DGS have prompted a shift in fo-
+the portion of the feature space that is likely to be associated with    cus within the field, with many NeRF enhancements being quickly
+distractors. We further introduce a (complementary and general           ported to 3DGS [Charatan et al. 2024; Yu et al. 2024].
+purpose) sparsification strategy, compatible with our robust opti-       Robustness in NeRF. The original NeRF paper made strong as-
+mization, that delivers similar reconstruction quality with two to       sumptions regarding the capture setup: the scene needs to be per-
+four times fewer splats, even on distractor-free datasets, yielding      fectly static, and the illumination should stay unchanged through-
+significant savings in compute and memory. Through experiments           out the capture. More recently, NeRF has been extended to train
+on challenging benchmarks of casually captured scenes [Ren et al.        on unstructured “in-the-wild” captured images that violate these
+2024; Sabour et al. 2023], SLS is shown to consistently outperform       constraints. Two influential works, NeRF-W [Martin-Brualla et al.
+competing methods in reconstruction accuracy.                            2021a] and RobustNeRF [Sabour et al. 2023] addressed the problem
+                                                                         of transient distractors, both using photometric error as guidance.
+Our key contributions include:                                           NeRF-W [Martin-Brualla et al. 2021a] models a 3D uncertainty field
+                                                                         rendered to 2D outlier masks that down-weight the loss at pixels
+                                                                         with high-error, and a regularizer that prevents degenerate solutions.
+      • An adaptive, robust loss, leveraging text-to-image diffu-        NeRF-W [Martin-Brualla et al. 2021a] also models global appearance
+        sion features, that reliably identifies transient distractors    via learned embeddings, which are useful for images captured over
+        in causal captures, eliminating issues of overfitting to pho-    widely varying lighting and atmospheric conditions. Urban Radi-
+        tometric errors.                                                 ance Fields (URF) [Rematas et al. 2022] and Block-NeRF [Tancik et al.
+      • A novel sparsification method compatible with our robust         2022] similarly apply learned appearance embeddings to large-scale
+        loss that significantly reduces the number of Gaussians, sav-    reconstruction. HA-NeRF [Chen et al. 2022] and Cross-Ray [Yang
+        ing compute and memory without loss of fidelity.                 et al. 2023] model 2D outlier masks instead of 3D fields, leveraging
+      • Comprehensive evaluation of SLS on standard benchmarks,          CNNs or transformers for cross-ray correlations.
+        demonstrating SOTA robust reconstruction, outperforming             RobustNeRF [Sabour et al. 2023], approached the problem from
+        existing methods by a substantial margin.                        a robust estimator perspective, with binary weights determined
+                                                                         by thresholded rendering error, and a blur kernel to reflect the as-
+                                                                         sumption that pixels belonging to distractors are spatially correlated.
+                                                                         However, both RobustNeRF and NeRF-W variants [Chen et al. 2022;
+2     Related work                                                       Yang et al. 2023] rely solely on RGB residual errors and because of
+Neural Radiance Fields (NeRF) [Mildenhall et al. 2020], have gained      this they often misclassify transients with colors similar to their
+widespread attention due to the high quality reconstruction and          background; see RobustMask in Figure 2. To avoid this, previous
+novel view synthesis of 3D scenes. NeRF represents the scene as          methods require careful tuning of hyper-parameters, i.e., the blur
+a view dependent emissive volume. The volume is rendered using           kernel size and thresholds in RobustNeRF and the regularizer weight
+the absorption-emission part of the volume rendering equation [Ka-       in NeRF-W. On the contrary, our method uses the rich representa-
+jiya and Von Herzen 1984]. Multiple enhancements have followed.          tion of text-to-image models for semantic outlier modeling. This
+Fast training and inference [Chen et al. 2023; Müller et al. 2022;       avoids direct RGB error supervision, as it relies on feature-space
+Sun et al. 2022; Yu et al. 2021a], training with limited or single       similarities for clustering.
+view(s) [Jain et al. 2021; Rebain et al. 2022; Yu et al. 2021b] and         NeRF On-the-go [Ren et al. 2024] released a dataset of casually
+simultaneous pose inference [Levy et al. 2024; Lin et al. 2021; Wang     captured videos with transient occluders. Similar to our method, it
+et al. 2021] have brought radiance fields closer to practical appli-     uses semantic semantic features from DINOv2 [Oquab et al. 2023]
+cations. More recently, 3D Gaussian Splatting (3DGS) [Kerbl et al.       to predict outlier masks via a small MLP. However, it also relies
+2023] was proposed as a primitive-based alternative to NeRFs with        on direct supervision from the structural rendering error, leading
+                                                                                         SpotLessSplats: Ignoring Distractors in 3D Gaussian Splatting    • 3
+
+
+to potential over- or under-masking of outliers. This is illustrated
+in Figure 3, where over-masking has removed the hose (‘Fountain’)
+and has smoothed the carpet (‘Spot’), while under-masking caused
+distractor leaks and foggy artifacts (‘Corner’ and ‘Spot’). NeRF-
+HuGS [Chen et al. 2024] combines heuristics from COLMAP’s robust
+sparse point cloud [Schönberger and Frahm 2016], and off-the-shelf
+semantic segmentation to remove distractors. Both heuristics are
+shown to fail under heavy transient occlusions in [Ren et al. 2024].
+Precomputed features. The use of precomputed vision features,
+such as DINO [Caron et al. 2021; Oquab et al. 2023] have demon-
+strated the ability to generalize to multiple vision tasks. Denoising
+Diffusion Probabalistic Models [Ho et al. 2020; Rombach et al. 2022;
+Song and Ermon 2019], known for their photorealistic image gener-
+ation capabilities from text prompts [Ramesh et al. 2022; Rombach
+et al. 2021; Saharia et al. 2022], have been shown to have internal
+features similarly powerful in generalizing over many tasks e.g. seg-
+mentation and keypoint correspondence [Amir et al. 2022; Hedlin
+et al. 2024; Luo et al. 2023; Tang et al. 2023; Zhang et al. 2023].
+Robustness in 3DGS (concurrent works). Multiple concurrent
+                                                                                                   Fountain              Corner                Spot
+works address 3DGS training on wild-captured data. SWAG [Dah-                                 PSNR↑ SSIM↑ LPIPS↓ PSNR↑ SSIM↑ LPIPS↓ PSNR↑ SSIM↑ LPIPS↓
+mani et al. 2024] and GS-W [Zhang et al. 2024] model appearance              MipNerf360     13.91 0.29      0.55 20.41 0.66       0.34 17.82 0.30        0.46
+variation using learned global and local per-primitive appearance            RobustNerf     17.20 0.41      0.54 20.21 0.70       0.35 16.40 0.38        0.69
+embeddings. Similarly, WE-GS [Wang et al. 2024] uses an image                NeRF On-the-go 20.11 0.61      0.31 24.22 0.80       0.19 23.33 0.79        0.19
+encoder to learn adaptations to the color parameters of each splat,          3DGS           21.70 0.79      0.16 24.05 0.86       0.13 20.72 0.76        0.31
+per-image. Wild-GS [Xu et al. 2024] learns a spatial triplane field for      Our SLS-mlp    22.81 0.80      0.15 26.43 0.90       0.10 25.76 0.90        0.12
+appearance embeddings. All such methods [Wang et al. 2024; Xu
+et al. 2024; Zhang et al. 2024] adopt an approach to outlier mask pre-      Fig. 3. Our method accurately reconstructs scenes with different levels of
+                                                                            transient occlusion, avoiding leakage of transients or under-reconstruction
+diction like NeRF-W [Martin-Brualla et al. 2021a], with 2D outlier
+                                                                            evident by the quantitative and qualitative results on NeRF On-the-go [Ren
+masks predicted to downweight high-error rendered pixels. SWAG              et al. 2024] dataset.
+[Dahmani et al. 2024] learns a per-image opacity for each Gaussian,
+and denotes primitives with high opacity variance as transients.
+Notable are SWAG [Dahmani et al. 2024] and GS-W[Zhang et al.                projection of the 3D covariance to 2D screen space can be approx-
+2024] that show no or little improvement over the local/global ap-
+                                                                            imated following [Zwicker et al. 2001] as 𝚺˜ = JW𝚺W𝑇 J𝑇 , where
+pearance modeling, when additional learned transient masks are
+                                                                            J is the Jacobian of the projection matrix, which provides a linear
+applied to Phototourism scenes [Snavely et al. 2006]. SLS focuses
+                                                                            approximation to the non-linear projection process. To ensure 𝚺
+on casual captures with longer duration transients and minimal
+                                                                            represents covariance throughout optimization (i.e., positive semi-
+appearance changes, common in video captures like those in the
+                                                                            definite), the covariance matrix is parameterized as 𝚺 = RSS𝑇 R𝑇 ,
+“NeRF on-the-go” dataset [Ren et al. 2024].
+                                                                            where scale S=diag(s) with s∈R3 , and rotation R is computed from
+                                                                            a unit Quaternion 𝑞. Once splat positions and covariances in screen-
+                                                                            spaces are computed, the image formation process executes volume
+3   Background                                                              rendering as alpha-blending, which in turn requires splat sorting
+We build our technique on top of 3D Gaussian Splatting [Kerbl et al.        along the view direction. Unlike NeRF, which renders one pixel at a
+2023], or 3DGS for brevity, which represents a 3D scene as a collec-        time, 3DSG renders the entire image in a single forward pass.
+tion of 3D anisotropic Gaussians G={𝑔𝑖 }, henceforth referred to as
+                                          𝑁 , I ∈ R𝐻 ×𝑊 of a casually
+splats. Given a set of posed images {I𝑛 }𝑛=1     𝑖
+                                                                            3.1   Robust optimization of 3DGS
+captured scene, we aim to learn a 3DGS reconstruction G of the              Unlike typical capture data for 3DGS [Kerbl et al. 2023], we do not
+scene. Each splat 𝑔𝑖 , is defined by a mean 𝜇𝑖 , a positive semi-definite   assume the set of posed images {I𝑛 }𝑛=1 𝑁 to be curated, but rather
+covariance matrix 𝚺𝑖 , an opacity 𝛼𝑖 , and view dependent color pa-         casually captured. That is, we do not require images to be depic-
+rameterized by spherical harmonics coefficients c𝑖 [Ramamoorthi             tions of a perfectly 3D consistent and static world. Following prior
+and Hanrahan 2001].                                                         work, we (interchangeably) denote the portion of images that break
+   The 3D scene representation is rendered to screen space by ras-          these assumptions as distractors [Sabour et al. 2023] or transient
+terization. The splat positions/means are rasterized to screen coor-        effects [Martin-Brualla et al. 2021b]. And unlike prior works [Kerbl
+dinates via classical projective geometry, while special care needs to      et al. 2024; Martin-Brualla et al. 2021b; Tancik et al. 2022], we do
+be taken to rasterize the covariance matrix of each splat. In particu-      not make assumptions about the transient object class, appearance
+lar, if we denote with W the perspective transformation matrix, the         and/or shape.
+4   •   Sabour & Goli et al.
+
+
+   We address this problem by taking inspiration from the pioneer-         RobustNeRF [Sabour et al. 2023] to a 3DGS training regime; see Sec-
+ing work of [Sabour et al. 2023] in RobustNeRF, which removes              tions 4.1.1 and 4.1.2.
+distractors by identifying the portion of input images that should
+be masked out in the optimization process. The problem reduces to          4.1   Recognizing distractors
+                                                            𝑁 for
+predicting (without supervision) inlier/outlier masks {M𝑛 }𝑛=1                                           𝑁 , we pre-compute feature maps for
+                                                                           Given the input images {I𝑛 }𝑛=1
+each training image, and optimizing the model via a masked L1 loss:        each image using Stable Diffusion [Rombach et al. 2022] as proposed
+                                                                                                                                 𝑁 . This pre-
+                                                                           by [Tang et al. 2023], resulting in feature maps {F𝑛 }𝑛=1
+                                   𝑁
+                                   ∑︁
+                                           (t)         (t)
+                        arg min          M𝑛 ⊙ ∥I𝑛 − Î𝑛 ∥ 1 .       (1)    processing step is executed once before our training process starts.
+                               G   𝑛=1                                     We then employ these feature maps to compute the inlier/outlier
+           (t)                                                             masks M(t) ; we drop the image index 𝑛 to simplify notation, as the
+where Î𝑛 is a rendering of G at training iteration (𝑡). As in Ro-         training process involves one image per batch. We now detail two
+bustNeRF [Sabour et al. 2023], transient effects can be detected by        different ways to detect outliers.
+observing photometric inconsistencies during training; that is, im-
+age regions that are associated with a large loss value. By denoting       4.1.1 Spatial clustering. In the pre-processing stage, we additionally
+       (t)        (t)                                                      perform unsupervised clustering of image regions. Similar to super-
+with R𝑛 =∥I𝑛 − Î𝑛 ∥ 1 the image of residuals (with a slight abuse
+of notation, as the 1-norm is executed pixel-wise, along the color         pixel techniques [Ibrahim and El-kenawy 2020; Li and Chen 2015],
+channel), the mask is computed as:                                         we over-segment the image into a fixed cardinality collection of 𝐶
+                                                                           spatially connected components; see ‘Clustered Features’ fig. 2. In
+           M𝑛 =1 1{R𝑛 >𝜌 } ⊛ B >0.5 , 𝑃 (R𝑛 >𝜌)=𝜏
+                   n                    o
+             (t)         (t)                     (t)
+                                                                  (2)      more detail, we execute agglomerative clustering [Müllner 2011] on
+                                                                           the feature map F, where each pixel is connected to its 8 surrounding
+where 1 is an indicator function returning 1 if the predicate is true      pixels. We denote the clustering assignment of pixel 𝑝 into cluster
+and 0 otherwise, 𝜌 is a generalized median with 𝜏 being a hyper-           𝑐 as C[𝑐, 𝑝]∈{0, 1}, and clustering is initialized with every pixel
+parameter controlling the cut-off percentile1 , and B is a (normalized)    in its own cluster. Clusters are agglomerated greedily, collapsing
+3 × 3 box filter that performs a morphological dilation via convolu-       those that cause the least amount of inter-cluster feature variance
+tion (⊛). Intuitively, RobustNeRF [Sabour et al. 2023], summarized         differential before/post collapse. Clustering terminates when 𝐶=100
+by eq. (2) above, extends a trimmed robust estimator [Chetverikov          clusters remain.
+et al. 2002] by assuming that inliers/outliers are spatially correlated.      We can then calculate the probability of cluster 𝑐 being an inlier
+We found that directly applying ideas from [Sabour et al. 2023] to         from the percentage of its inlier pixels in eq. (2):
+3DGS, even when not limited by cases of misleading color residual                                   ∑︁                     ∑︁
+like those depicted in Figure 2, do not remove outliers effectively.                𝑃 (𝑐 ∈ M(t) ) =      C[𝑐, 𝑝] · M(t) [𝑝] /   C[𝑐, 𝑝],      (3)
+Rather, several adaptations are necessary in order to accommodate                                       𝑝                          𝑝
+differences in the representation and training process of 3DGS;
+see Section 4.2.                                                           and then propagate the cluster labels back to pixels as:
+
+                                                                                                    1{𝑃 (𝑐 ∈ M(t) ) > 0.5} · C[𝑐, 𝑝]
+                                                                                                ∑︁
+                                                                                       (t)
+                                                                                     Magg (𝑝) =                                              (4)
+4       Method                                                                                      𝑐
+The outlier mask in eq. (2) is built solely based on photometric er-
+                                                                                          (t)
+rors in the novel view synthesis process. Conversely, we propose           We then use Magg , rather than M(t) , as inlier/outlier mask to train
+to identify distractors based on their semantics, recognizing their        our 3DGS model in eq. (1). We designate this model configuration
+re-occurrence during the training process. We consider semantics           as ‘SLS-agg’.
+as feature maps computed from a self-supervised 2D foundation
+                                                                           4.1.2 Spatio-temporal clustering. A second approach is to train a
+model (e.g. [Tang et al. 2023]). The process of removing distractors
+                                                                           classifier that determines whether or not pixels should be included
+from training images then becomes one of identifying the sub-space
+                                                                           in the optimization eq. (1), based on their associated features. To
+of features that are likely to cause large photometric errors. As an
+                                                                           this end we use an MLP with parameters 𝜃 that predicts pixel-wise
+example, consider a dog walking around in an otherwise perfectly
+                                                                           inlier probabilities from pixel features:
+static scene. We would like to design a system that either spatially
+in each image (section 4.1.1) or more broadly, spatio-temporally                                            (t)
+                                                                                                     Mmlp = H (F; 𝜃 (t) ).                   (5)
+in the dataset (section 4.1.2), recognizes “dog” pixels as the likely
+cause of reconstruction problems, and automatically removes them           As the 𝜃 (t) notation implies, the classifier parameters are updated
+from the optimization. Our method is designed to reduce reliance           concurrently with 3DGS optimization. H is implemented with 1×1
+on local color residuals for outlier detection and over-fitting to color   convolutions, and hence acts in an i.i.d. fashion across pixels. We
+errors, and instead emphasizing reliance on semantic feature simi-         interleave the optimization of the MLP and the 3DGS model, such
+larities between pixels. We thus refer to our methods as “clustering.”     that the parameters of one are fixed while the other’s are optimized,
+In Section 4.1 we detail how to achieve this objective. In Section 4.2     in a manner similar to alternating optimization.
+we then detail several key adjustments to adapt the ideas from                The MLP classifier loss is given by
+1 If 𝜏=.5 then 𝜌=median (R(t) )
+                          𝑛                                                                L (𝜃 (t) ) = L𝑠𝑢𝑝 (𝜃 (t) ) + 𝜆L𝑟𝑒𝑔 (𝜃 (t) ),      (6)
+                                                                                              SpotLessSplats: Ignoring Distractors in 3D Gaussian Splatting      • 5
+
+
+                                                                               outliers. This assumption is broken in a 3DGS training run, where
+                                                                               each minibatch is a whole image, rather than a random set of pixels
+                                                                               drawn from the set of training images. This creates a challenge
+                                                                               in the implementation of the generalized median of eq. (2), as the
+                                                                               distribution of outliers is skewed between images.
+                                                                                  We overcome this by tracking residual magnitudes over multiple
+Fig. 4. Lower and upper error residual labels provide a weak supervision for   training batches. In particular, we discretize residual magnitudes
+training an MLP classifier for detecting outlier distractors.                  into 𝐵 histogram buckets of width equal to the lower bound of ren-
+                                                                               dering error (10 −3 ). We update the likelihood of each bucket at each
+with 𝜆=0.5, and where L𝑠𝑢𝑝 supervises the classifier:                          iteration via a discounted update to the bucket population, similar to
+                                                                               fast median filtering approaches [Perreault and Hebert 2007]. This
+                L𝑠𝑢𝑝 (𝜃 (t) ) = max(U(t) − H (F; 𝜃 (t) ), 0)             (7)   maintains a moving estimate of residual distribution, with constant
+                                             (t)
+                            + max(H (F; 𝜃 ) − L , 0) (t)                       memory consumption, from which we can extract our generalized
+                                                                               median value 𝜌 as the 𝜏 quantile in the histogram population; we
+and U and L are self-supervision labels computed from the mask of              refer the reader to our source code for implementation details.
+the current residuals:
+                                                                               4.2.3 A friendly alternative to “opacity reset”. [Kerbl et al. 2023]
+                  U(t) = M(t) from eq. (2) with 𝜏 = .5                   (8)
+                                                                               proposed to reset the opacity of all Gaussians every 𝑀 iterations.
+                  L(t) = M(t) from eq. (2) with 𝜏 = .9                   (9)   This opacity reset is a mechanism that deals with two main problems.
+                                                                               First, in challenging datasets the optimization has the tendency to
+In other words, we directly supervise the classifier only on pixels
+                                                                               accumulate Gaussians close to the cameras. These are often referred
+for which we can confidently determine the inlier status based on
+                                                                               to as floaters in the literature. Floaters are hard to deal with because
+reconstruction residuals, and otherwise we heavily rely on semantic
+                                                                               they force camera rays to saturate their transmittance early and
+similarity in the feature space; see Figure 4. To further regularize
+                                                                               as a result gradients do not have a chance to flow through the
+H to map similar features to similar probabilities, we minimize its
+                                                                               occluded parts of the scene. Opacity reset lowers the opacity of all
+Lipschitz constant via L𝑟𝑒𝑔 as detailed in [Liu et al. 2022, Eq. (13)].
+                 (t)
+                                                                               Gaussians such that gradients can flow again along the whole ray.
+We then use Mmlp , instead of M(t) , as inlier/outlier mask to train           Second, opacity reset acts as a control mechanism for the number
+3DGS in eq. (1). We designate this configuration as ‘SLS-mlp’. As              of Gaussians. Resetting opacity to a low value allows for Gaussians
+we are co-training our classifier together with the 3DGS model,                that never recover a higher opacity to be pruned by the adaptive
+additional care is needed in its implementation; see Section 4.2.1.            density control mechanism [Kerbl et al. 2023].
+                                                                                  However, opacity reset interferes with residual distribution track-
+4.2   Adapting 3DGS to robust optimization                                     ing (section 4.2.2), causing residuals to become artificially large in
+Directly applying any robust masking techniques to 3DGS can re-                the iterations following opacity reset. Simply disabling does not
+sult in the robust mask overfitting to a premature 3DGS model (sec-            work due to it’s necessity to the optimization. Following [Goli et al.
+tion 4.2.1), with inlier estimator becoming skewed by image-based              2024], we instead propose utilization-based pruning (UBP). We track
+training (section 4.2.2), or the densification tactics (section 4.2.3) of      the gradient of the rendered colors with respect to the projected
+3DGS. We propose solutions to these issues in what follows.                    splat positions2 𝑥𝑔 of each Gaussian 𝑔. Computing the derivative
+                                                                               with respect to projected positions, as opposed to 3D positions,
+4.2.1 Warm up with scheduled sampling. We find it important to                 allows for a less memory-intensive GPU implementation, while
+apply masks gradually, because the initial residuals are random.               providing a similar metric as in [Goli et al. 2024]. More concretely,
+This is doubly true if we use the learned clustering for masking               we define the utilization as:
+since the MLP will not have converged early in the optimization,                                                                                   2
+                                                                                                                                           (𝑡 )
+and predicts random masks. Further, direct use of the outlier mask                                           ∑︁
+                                                                                                                                 (𝑡 )   𝜕 Îℎ,𝑤
+                                                                                                   𝑢𝑔 =                 E𝑤,ℎ Mℎ,𝑤 ·         (𝑡 )                 (11)
+tends to quickly overcommit to outliers, preventing valuable error                                                                      𝜕𝑥𝑔        2
+                                                                                                          𝑡 ∈ N𝑇 (𝑡 )
+back-propagation and learning from those regions. We mitigate this
+by formulating our masking policy for each pixel as sampling from              We average this metric across the image (𝑊 ×𝐻 ), computing it every
+a Bernoulli distribution based on the masks:                                   𝑇 =100 steps accumulated across the previous set of |N𝑇 (𝑡)|=100 im-
+                           
+                                              (t)
+                                                                              ages. We prune Gaussians whenever 𝑢𝑔 <𝜅, with 𝜅 = 10 −8 . Replacing
+                  M(t) ∼ B 𝛼 · 1 + (1 − 𝛼) · M∗ ;              (10)
+                                                                               opacity reset with utilization-based pruning achieves both original
+where 𝛼 is a staircase exponential scheduler (detailed in the supple-          goals of opacity reset while alleviating interference to our resid-
+mentary material B), going from one to zero, providing a warm-up.              ual distribution tracking. Utilization-based pruning significantly
+This allows us to still sparsely sample gradients in areas we are not          compresses scene representation by using fewer primitives while
+confident about, leading to better classification of outliers.                 achieving comparable reconstruction quality even in outlier-free
+                                                                               scenes; see Section 5.2. It also effectively deals with floaters; see
+4.2.2 Trimmed estimators in image-based training. As [Sabour et al.
+2023] implements a trimmed estimator, the underlying assumption                2 Please carefully note that this is the gradient of the rendered image with respect to
+is that each minibatch (on average) contains the same proportion of            Gaussian positions, and not the gradient of the loss.
+6 •   Sabour & Goli et al.
+
+
+
+
+                                        Statue                         Android                       Yoda                         Crab (1)
+                             PSNR↑      SSIM↑      LPIPS↓      PSNR↑    SSIM↑    LPIPS↓     PSNR↑    SSIM↑     LPIPS↓    PSNR↑      SSIM↑     LPIPS↓
+  MipNerf360                 19.86       .69         .23       21.81     .69      .18       23.75     .77        .22     29.25       .92        .09
+  RobustNerf                 20.60       .76         .15       23.28     .75      .13       29.78     .82        .15     32.22       .94        .06
+  NeRF On-the-go             21.58       .77         .24       23.50     .75      .21       29.96     .83        .24       -          -          -
+  NeRF-HuGS                  21.00       .77        .18†       23.32     .76     .20†       30.70     .83       .22†     34.16       .96       .07†
+  3DGS                       21.68       .83         .14       23.33     .80      .15       27.15     .92        .13     31.80       .96        .08
+  Our SLS-mlp                22.69       .85         .12       25.15     .86      .09       33.60     .96        .10     35.85       .97        .08
+  3DGS on clean              28.02       .95         .05       25.42     .87      .07       33.69     .94       .12         -         -          -
+  3DGS* on clean             28.63       .95         .04       25.38     .87      .07       36.34     .97       .07         -         -          -
+
+
+Fig. 5. Quantitative and qualitative evaluation on RobustNeRF [Sabour et al. 2023] datasets show that SLS outperforms baseline methods on 3DGS and NeRF,
+by preventing over- or under-masking. † denotes VGG LPIPS computed on NeRF-HuGS results rather than AlexNet LPIPS reported in NeRF-HuGS. 3DGS*
+denotes 3DGS with utility-based pruning.
+
+
+Figure 10. Floaters, naturally, have low utilization as they partici-            where ⊙ is the Hadamard product, b models changes in brightness,
+pate in the rendering of very few views. Furthermore, using masked               and a provides the expressive power for white-balance. During
+derivatives as in eq. (11) allows for the removal of any splat that has          optimization, the trainable parameters also include 𝜃 Q and {z𝑛 }.
+leaked through the robust mask in the warm-up stage.                             Such a reduced model can prevent z𝑛 from explaining distractors as
+                                                                                 per-image adjustments, as would happen in a simpler GLO [Martin-
+4.2.4 Appearance modeling. While [Kerbl et al. 2023] assumed that
+                                                                                 Brualla et al. 2021b]; see [Rematas et al. 2022] for an analysis.
+the images of a scene (up to distractors) are perfectly photometri-
+cally consistent, this is rarely the case for casual captures typically
+employing automatic exposure and white-balance. We address this                  5      Results
+by incorporating the solution from [Rematas et al. 2022] adapted
+                                                                                 In what follows, we compare our proposed method on established
+to the view-dependent colors represented as spherical harmonics
+                                                                                 datasets of casual distractor-filled captures (section 5.1), comparing
+from [Kerbl et al. 2023]. We co-optimize a latent 𝑧𝑛 ∈R64 per input
+                                                                                 with other methods. We then investigate the effect of our proposed
+camera view, and map this latent vector via an MLP to a linear
+                                                                                 opacity reset alternative pruning (section 5.2). Finally, we report a
+transformation acting on the harmonics coefficients c:
+                                                                                 complete analysis of different variants of our clustering, along with
+                    ĉ𝑖 = a ⊙ c𝑖 + b,   a, b = Q (z𝑛 ; 𝜃 Q )            (12)     an ablation study of our design choices (section 5.3).
+                                                                                               SpotLessSplats: Ignoring Distractors in 3D Gaussian Splatting   • 7
+
+
+
+
+                                                                                  Fig. 7. Quantitative and qualitative results on MipNeRF360 [Barron et al.
+                                                                                  2022] dataset shows gradient-based pruning can reduce the number of
+                      Mountain               Patio            Patio High          Gaussians up to 4.5× with only marginal degradation of image quality.
+                  PSNR↑ SSIM↑ LPIPS↓ PSNR↑ SSIM↑ LPIPS↓ PSNR↑ SSIM↑ LPIPS↓
+ MipNerf360     19.64 0.60      0.35 15.48 0.50      0.42 15.73 0.43    0.49      We compare against state-of-the-art NeRF methods, NeRF on-the-
+ RobustNerf     18.07 0.49      0.49 17.55 0.53      0.45 12.99 0.35    0.61
+                                                                                  go [Ren et al. 2024], NeRF-HuGS [Chen et al. 2024] and Robust-
+ Nerf On-the-go 20.15 0.64      0.26 20.78 0.75      0.22 21.41 0.72    0.24
+ 3DGS           20.18 0.70      0.23 18.25 0.71      0.23 18.14 0.68    0.30      NeRF [Sabour et al. 2023]. We also include MipNeRF-360 [Barron
+ Our SLS-mlp 22.53 0.77         0.18 22.24 0.86      0.10 22.84 0.83    0.16      et al. 2022] as a baseline for NeRF.
+                                                                                  Metrics. We compute the commonly used image reconstruction
+Fig. 6. SLS reconstructs scenes from NeRF On-the-go [Ren et al. 2024] dataset     metrics of PSNR, SSIM and LPIPS. We use normalized VGG features,
+in great detail. High-occlusion lingering distractors, lead to distractor leaks
+                                                                                  as most do, when computing LPIPS metrics. NeRF-HuGS [Chen
+modeled as noisy floaters in baselines. Our method is free of such artifacts.
+                                                                                  et al. 2024] reports LPIPS metrics from AlexNet features; for fair
+                                                                                  comparison, we compute and report VGG LPIPS metrics on their
+                                                                                  released renderings. Finally, note NeRF on-the-go does not evaluate
+                                                                                  on ‘Crab’, because of the aforementioned issue.
+Datasets. We evaluate our method on the RobustNeRF [Sabour                        Implementation details. We train our 3DGS models with the same
+et al. 2023] and NeRF on-the-go [Ren et al. 2024] datasets of ca-                 hyper-parameters as in the officially released codebase. All models
+sual captures. The RobustNeRF dataset includes four scenes with                   are trained for 30k iterations. We turn off the opacity-reset and only
+distractor-filled and distractor-free training splits, allowing us to             reset the non-diffuse spherical harmonic coefficients to 0.001 at the
+compare a robust model with a ‘clean’ model trained on distractor-                8000th step. This ensures that any distractors leaked in the earlier
+free images. All models are evaluated on a clean test set. The ‘Crab’             stages of MLP training do not get modeled as view dependent effects.
+and ‘Yoda’ scenes feature variable distractors across images, not cap-            We run UBP every 100 steps, from the 500th to 15000th step. For
+tured in a single casual video, but these exact robotic capture with              MLP training, we use the Adam optimizer with a 0.001 learning
+twin distractor-free and distractor-filled images allow a fair com-               rate. We compute image features from the 2nd upsampling layer
+parison to the ‘clean’ model. Note the (originally released) Crab (1)             of Stable diffusion v2.1, denoising time step of 261, and an empty
+scene had a test set with same set of views as those in the train set,            prompt. [Tang et al. 2023] found this configuration most efficient for
+which is fixed in Crab (2). We compare previous methods on Crab (1),              segmentation and keypoint correspondence tasks. We concatenate
+and present full results on Crab (2) in Section 5.3, and in the supple-           positional encoding of degree 20 to the features as input to the MLP.
+mentary material C. The NeRF on-the-go dataset has six scenes with
+three levels of transient distractor occlusion (low, medium, high)                5.1   Distractor-free 3D reconstruction
+and a separate clean test set for quantitative comparison.                        We evaluate our method by preforming 3D reconstruction on the
+Baselines. Distractor-free reconstruction has yet to be widely ad-                RobustNeRF and NeRF on-the-go datasets. In Figure 5, we quanti-
+dressed by 3D Gaussian Splatting methods. Existing methods mostly                 tatively show that SLS-mlp outperforms all the robust NeRF-based
+focus on global appearance changes such as brightness variation [Dah-             baselines on the RobustNeRF dataset. The results further show
+mani et al. 2024; Kulhanek et al. 2024; Wang et al. 2024], and do not             that we improve significantly upon vanilla 3DGS, while having
+focus on the distractor-filled datasets of casual captures curated for            closer performance to the ideal clean models, specifically on ‘Yoda’
+this task. We therefore compare against vanilla 3DGS and robust                   and ‘Android’. We further qualitatively compare with vanilla 3DGS
+NeRF methods. We further add GLO to the vanilla 3DGS baseline                     and NeRF-HuGS. The qualitative results show that vanilla 3DGS
+to be comparable with MipNeRF360 results that have GLO enabled.                   tries to model distractors as noisy floater splats (‘Yoda’, ‘Statue’) or
+8 •   Sabour & Goli et al.
+
+
+
+
+                   Android       Statue      Crab (2)       Yoda      Mountain     Fountain      Corner        Patio         Spot      Patio-High Average
+ 3DGS            23.33 ± 0.13 21.68 ± 0.16 29.74 ± 0.37 27.15 ± 0.61 20.90 ± 0.18 21.85 ± 0.27 23.39 ± 0.43 18.33 ± 0.27 21.50 ± 0.85 18.06 ± 0.71 22.60
+ RobustFilter    24.50 ± 0.05 22.70 ± 0.06 31.34 ± 0.13 33.23 ± 0.13 22.29 ± 0.07 22.59 ± 0.07 25.20 ± 0.10 18.16 ± 0.19 25.54 ± 0.08 23.01 ± 0.18 24.85
+ SLS-agg         24.94 ± 0.08 23.16 ± 0.08 33.50 ± 0.14 35.01 ± 0.21 22.65 ± 0.14 23.03 ± 0.17 26.33 ± 0.10 22.31 ± 0.13 26.34 ± 0.37 23.54 ± 0.15 26.08
+ SLS-mlp w/o UBP 25.08 ± 0.04 22.75 ± 0.14 34.43 ± 0.03 34.36 ± 0.24 22.93 ± 0.09 23.19 ± 0.13 26.74 ± 0.13 22.36 ± 0.07 25.95 ± 0.47 23.27 ± 0.13 26.11
+ SLS-mlp w/ UBP 25.15 ± 0.05 22.69 ± 0.16 33.63 ± 0.27 33.60 ± 0.30 22.53 ± 0.11 22.81 ± 0.10 26.43 ± 0.08 22.24 ± 0.19 25.76 ± 0.15 22.84 ± 0.32 25.77
+
+Fig. 8. We ablate our different robust masking methods on [Sabour et al. 2023] and [Ren et al. 2024] datasets. The reconstruction metrics and qualitative
+masks illustrate the performance of SLS-agg eq. (4) and SLS-mlp eq. (5) over a basic RobustFilter eq. (2) adapted from [Sabour et al. 2023], and baseline vanilla
+3DGS[Kerbl et al. 2023]. The final row enables Utility-Based Pruning (UBP) (section 4.2.3). All methods use opacity reset disabled, the same scheduling in
+eq. (10), and GLO eq. (12) enabled on all runs including 3DGS. SLS-agg and SLS-mlp are mostly within 2𝜎 of each other on all tasks. The 𝜎 is calculated from 5
+independent runs each.
+
+
+view-dependent effects (‘Android’) or a mixture of both (‘Crab’).
+NeRF-HuGS [Chen et al. 2024] which uses segmentation-based
+masks shows signs of over-masking (removing static parts in all
+four scenes), or under-mask in challenging sparsely sampled views
+letting in transient objects (‘Crab’).
+   In Figure 3 and Figure 6, we perform a similar analysis on the
+NeRF On-the-go [Ren et al. 2024] dataset. While we show supe-
+rior quantitative results to both SOTA robust NeRF methods, we
+also achieve a significant performance boost compared to vanilla
+3DGS. The results further show that for low occlusion scenes the
+robust initialization of vanilla 3DGS from COLMAP [Schonberger
+and Frahm 2016] point clouds, specifically RANSAC’s rejection of                             SLS-      SLS-mlp SLS-mlp             SLS- SLS-agg SLS-agg
+                                                                                                  CNN
+outliers, is enough to yield good reconstruction quality. However, as                        mlp       (𝜆 = 0.1) (𝜆 = 1)            agg (𝐶 = 10) (𝐶 = 1000)
+the distractor density increases, 3DGS reconstruction quality drops                  PSNR ↑ 28.72 27.91 28.71     28.61            28.91 27.71      29.00
+with qualitative results showing leakage of distractor transients.                   SSIM ↑ 0.90 0.89     0.90     0.89             0.90  0.89      0.90
+Additionally, qualitative results show that NeRF On-the-go fails                     LPIPS ↓ 0.10 0.13    0.11     0.12             0.10  0.11      0.09
+to remove some of the distractors included in the early stages of
+                                                                                    Fig. 9. Ablations on variants from Section 4.1 show replacing the MLP eq. (5)
+training (‘Patio’, ‘Corner’, ‘mountain’ and ‘Spot’), showing further                in SLS-mlp with a CNN reduces quality. Varying its regularization coefficient
+signs of overfitting to the rendering error. This also is seen in the               𝜆 in eq. (6) shows minimal impact. More agglomerative clusters in SLS-agg
+over-masking of fine details (‘Patio High’) or even bigger structures               eq. (3) improve performance, plateauing for 𝐶 ≥100. Metrics averaged over
+(‘Fountain’) removed completely.                                                    all RobustNeRF dataset.
+
+
+5.2   Effect of utilization-based pruning
+In all our experiments, enabling our proposed utilization-based prun-               technique applicable to cluttered, as well as clean, datasets. Figure 7
+ing (UBP) (section 4.2.3), decreases the number of Gaussians from 4×                shows that on clean MipNeRF360 [Barron et al. 2021] datasets, using
+to 6×. This compression translates to at least a 2× reduction in train-             UBP instead of opacity reset reduces the number of Gaussians from
+ing time with UBP enabled and 3× during inference. Figure 10 shows                  2× to 4.5× while preserving rendering quality.
+that enabling UBP may degrade quantitative measurements slightly,
+but in practice the final renderings are cleaner with less floaters (e.g.           5.3    Ablation study
+bottom left of the image). Similar observations indicate that metrics               In Figure 8, we compare the performance of SLS with a progression
+such as PSNR and LPIPS may not completely reflect the presence                      of other robust masking techniques. The progression begins with a
+of floaters as clearly as a rendered video. Given the substantial re-               naive application of a robust filter (2), followed by the application of
+duction in number of Gaussians, we propose UBP as a compression                     SLS-agg, and finally the use of an MLP in SLS-mlp. We demonstrate
+                                                                                             SpotLessSplats: Ignoring Distractors in 3D Gaussian Splatting      • 9
+
+
+                                                                              features these models provide can miss thin structures such as the
+                                                                              balloon string of Figure 8. Especially in the use of clustering, upsam-
+                                                                              pling the features to image resolution results in imprecise edges. Our
+                                                                              pruning strategy, is based on epistemic uncertainty computation
+                                                                              per primitive which is effective in removing lesser utilized Gaus-
+              SLS-mlp   No UBP   Opacity Reset   No GLO    No 𝛼    No B       sians. However if the uncertainty is thresholded too aggressively
+    PSNR ↑     28.72     29.27      27.64         28.43    28.41   28.41      (e.g. ‘vase deck’ in fig. 7), it can remove parts of the scene that are
+    SSIM ↑      0.90      0.90       0.89          0.89     0.90   0.90       rarely viewed in the training data.
+    LPIPS ↓     0.10      0.09       0.11          0.11     0.11   0.11
+                                                                              Acknowledgments
+Fig. 10. Ablation on adaptations from Section 4.2 show disabling UBP (sec-
+tion 4.2.3) may produce higher reconstruction metrics but leaks transients    We thank Abhijit Kundu, Kevin Murphy, Songyou Peng, Rob Fergus
+as seen in the lower-left corner of the image; replacing it with “Opacity     and Sam Clearwater for reviewing our manuscript and for their
+Reset” as originally introduced in 3DGS is also ineffective. GLO appearance   valuable feedback.
+modelling eq. (12) improves quality, as do scheduling (𝛼), and Bernoulli
+sampling (B) eq. (10). Experiments are executed on SLS-mlp, with metrics      References
+averaged over all RobustNeRF dataset.                                         Shir Amir, Yossi Gandelsman, Shai Bagon, and Tali Dekel. 2022. Deep ViT Features as
+                                                                                 Dense Visual Descriptors. What is Motion For Workshop in ECCV (2022).
+that both SLS-agg and SLS-mlp are capable of effectively removing             Jonathan Barron, Ben Mildenhall, Matthew Tancik, Peter Hedman, Ricardo Martin-
+                                                                                 Brualla, and Pratul Srinivasan. 2021. Mip-NeRF: A Multiscale Representation for
+distractors from the reconstructed scene, while maintaining max-                 Anti-Aliasing Neural Radiance Fields. In ICCV. https://arxiv.org/abs/2103.13415
+imal coverage of the scene. Further, in Figure 9 and Figure 10 we             Jonathan T. Barron, Ben Mildenhall, Dor Verbin, Pratul P. Srinivasan, and Peter Hedman.
+ablate our choices in both architectural design, and the adaptations             2022. Mip-NeRF 360: Unbounded Anti-Aliased Neural Radiance Fields. In CVPR.
+                                                                              Mathilde Caron, Hugo Touvron, Ishan Misra, Hervé Jégou, Julien Mairal, Piotr Bo-
+proposed in Section 4.2. fig. 9 shows that using an MLP instead of               janowski, and Armand Joulin. 2021. Emerging Properties in Self-Supervised Vision
+a small CNN (both roughly having 30K parameters, and two non-                    Transformers. In ICCV.
+                                                                              David Charatan, Sizhe Lester Li, Andrea Tagliasacchi, and Vincent Sitzmann. 2024.
+linear activations) can adapt better to subtle transients like shadows.          pixelSplat: 3D Gaussian Splats from Image Pairs for Scalable Generalizable 3D
+The choice of regularizer weight 𝜆 seems to have little effect. In               Reconstruction. In CVPR.
+agglomerative clustering, more clusters generally lead to better re-          Jiahao Chen, Yipeng Qin, Lingjie Liu, Jiangbo Lu, and Guanbin Li. 2024. NeRF-HuGS:
+                                                                                 Improved Neural Radiance Fields in Non-static Scenes Using Heuristics-Guided
+sults, with gains diminishing after 100 clusters. Figure 10 further              Segmentation. CVPR (2024).
+illustrates the effectiveness of UBP in removing leaked distractors.          Xingyu Chen, Qi Zhang, Xiaoyu Li, Yue Chen, Ying Feng, Xuan Wang, and Jue Wang.
+Our other adaptations, GLO, warm-up stage and Bernoulli sampling                 2022. Hallucinated Neural Radiance Fields in the Wild. In CVPR.
+                                                                              Zhiqin Chen, Thomas Funkhouser, Peter Hedman, and Andrea Tagliasacchi. 2023.
+all show improvements.                                                           MobileNeRF: Exploiting the Polygon Rasterization Pipeline for Efficient Neural Field
+                                                                                 Rendering on Mobile Architectures. In CVPR.
+6     Conclusion                                                              Dmitry Chetverikov, Dmitry Svirko, Dmitry Stepanov, and Pavel Krsek. 2002. The
+                                                                                 trimmed iterative closest point algorithm. In ICPR, Vol. 3.
+We have presented SpotLessSplats, a method for transient distractor           Hiba Dahmani, Moussab Bennehar, Nathan Piasco, Luis Roldao, and Dzmitry Tsishkou.
+                                                                                 2024. SWAG: Splatting in the Wild images with Appearance-conditioned Gaussians.
+suppression for 3DGS. We established a class of masking strate-               Mohamed El Banani, Amit Raj, Kevis-Kokitsi Maninis, Abhishek Kar, Yuanzhen Li,
+gies that exploit semantic features to effectively identify transient            Michael Rubinstein, Deqing Sun, Leonidas Guibas, Justin Johnson, and Varun Jam-
+distractors without any explicit supervision. Specifically, we pro-              pani. 2024. Probing the 3D Awareness of Visual Foundation Models. In Proceedings
+                                                                                 of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR).
+posed a spatial clustering method ‘SLS-agg’ that is fast and does not            21795–21806.
+require further training, simply assigning an inlier-outlier classifi-        Lily Goli, Cody Reading, Silvia Sellán, Alec Jacobson, and Andrea Tagliasacchi. 2024.
+cation to each cluster. We then proposed a spatio-temporal learned               Bayes’ Rays: Uncertainty Quantification in Neural Radiance Fields. In CVPR.
+                                                                              Eric Hedlin, Gopal Sharma, Shweta Mahajan, Xingzhe He, Hossam Isack, Abhishek
+clustering based on training a light-weight MLP simultaneously                   Kar Helge Rhodin, Andrea Tagliasacchi, and Kwang Moo Yi. 2024. Unsupervised
+with the 3DGS model, ‘SLS-mlp’, that allows for higher precision                 Keypoints from Pretrained Diffusion Models. In CVPR.
+                                                                              Jonathan Ho, Ajay Jain, and Pieter Abbeel. 2020. Denoising diffusion probabilistic
+grouping of semantically associated pixels, while marginally slower              models. NeurIPS (2020).
+than clustering. Our methods leverage the semantic bias of Stable             Abdelhameed Ibrahim and El-Sayed M El-kenawy. 2020. Image segmentation meth-
+Diffusion features and robust techniques to achieve state of the art             ods based on superpixel techniques: A survey. Journal of Computer Science and
+                                                                                 Information Systems (2020).
+suppression of transient distractors. We also introduced a gradient-          Ajay Jain, Matthew Tancik, and Pieter Abbeel. 2021. Putting NeRF on a Diet: Semanti-
+based pruning method that offers same reconstruction quality as                  cally Consistent Few-Shot View Synthesis. In ICCV. https://arxiv.org/abs/2104.00677
+vanilla 3DGS, while using significantly lower number of splats, and           James T. Kajiya and Brian P. Von Herzen. 1984. Ray tracing volume densities. In ACM
+                                                                                 TOG.
+is compatible with our distractor suppression methods. We believe             Bernhard Kerbl, Georgios Kopanas, Thomas Leimkuehler, and George Drettakis. 2023.
+that our work is an important contribution necessary for widespread              3D Gaussian Splatting for Real-Time Radiance Field Rendering. ACM TOG (Proc.
+                                                                                 SIGGRAPH) (2023).
+adoption of 3DGS to real-world in-the-wild applications.                      Bernhard Kerbl, Andreas Meuleman, Georgios Kopanas, Michael Wimmer, Alexandre
+Limitations. Our reliance on text-to-image features, although gen-               Lanvin, and George Drettakis. 2024. A hierarchical 3d gaussian representation for
+                                                                                 real-time rendering of very large datasets. ACM TOG (Proc. SIGGRAPH) (2024).
+erally beneficial for robust detection of distractors, imposes some           Jonas Kulhanek, Songyou Peng, Zuzana Kukelova, Marc Pollefeys, and Torsten Sattler.
+limitations. One limitation is that when distractor and non-distractors          2024. WildGaussians: 3D Gaussian Splatting In the Wild. arXiv (2024).
+of the same semantic class are present and in close proximity, they           Axel Levy, Mark Matthews, Matan Sela, Gordon Wetzstein, and Dmitry Lagun. 2024.
+                                                                                 MELON: NeRF with Unposed Images in SO(3). In 3DV.
+may not be distinguished by our model. Details are discussed fur-             Zhengqin Li and Jiansheng Chen. 2015. Superpixel segmentation using linear spectral
+ther in the supplementary materials A. Further, the low-resolution               clustering. In CVPR.
+10   •   Sabour & Goli et al.
+
+
+Chen-Hsuan Lin, Wei-Chiu Ma, Antonio Torralba, and Simon Lucey. 2021. BARF:                Yifan Yang, Shuhai Zhang, Zixiong Huang, Yubing Zhang, and Mingkui Tan. 2023.
+    Bundle-Adjusting Neural Radiance Fields. In ICCV. https://arxiv.org/abs/2104.06405        Cross-Ray Neural Radiance Fields for Novel-View Synthesis from Unconstrained
+Hsueh-Ti Derek Liu, Francis Williams, Alec Jacobson, Sanja Fidler, and Or Litany. 2022.       Image Collections. In ICCV.
+    Learning Smooth Neural Functions via Lipschitz Regularization. ACM TOG (2022).         Alex Yu, Ruilong Li, Matthew Tancik, Hao Li, Ren Ng, and Angjoo Kanazawa. 2021a.
+Grace Luo, Lisa Dunlap, Dong Huk Park, Aleksander Holynski, and Trevor Darrell.               PlenOctrees for Real-Time Rendering of Neural Radiance Fields. In ICCV. https:
+    2023. Diffusion Hyperfeatures: Searching Through Time and Space for Semantic              //arxiv.org/abs/2103.14024
+    Correspondence. In NeurIPS.                                                            Alex Yu, Vickie Ye, Matthew Tancik, and Angjoo Kanazawa. 2021b. pixelNeRF: Neural
+Ricardo Martin-Brualla, Noha Radwan, Mehdi SM Sajjadi, Jonathan T Barron, Alexey              Radiance Fields from One or Few Images. In CVPR. https://arxiv.org/abs/2012.02190
+    Dosovitskiy, and Daniel Duckworth. 2021a. Nerf in the wild: Neural radiance fields     Zehao Yu, Anpei Chen, Binbin Huang, Torsten Sattler, and Andreas Geiger. 2024. Mip-
+    for unconstrained photo collections. In CVPR.                                             Splatting: Alias-free 3D Gaussian Splatting. In CVPR.
+Ricardo Martin-Brualla, Noha Radwan, Mehdi S. M. Sajjadi, Jonathan Barron, Alexey          Dongbin Zhang, Chuming Wang, Weitao Wang, Peihao Li, Minghan Qin, and Haoqian
+    Dosovitskiy, and Daniel Duckworth. 2021b. NeRF in the Wild: Neural Radiance Fields        Wang. 2024. Gaussian in the Wild: 3D Gaussian Splatting for Unconstrained Image
+    for Unconstrained Photo Collections. In CVPR. https://arxiv.org/abs/2008.02268            Collections.
+Ben Mildenhall, Pratul Srinivasan, Matthew Tancik, Jonathan Barron, Ravi Ramamoor-         Junyi Zhang, Charles Herrmann, Junhwa Hur, Luisa Polania Cabrera, Varun Jampani,
+    thi, and Ren Ng. 2020. NeRF: Representing Scenes as Neural Radiance Fields for            Deqing Sun, and Ming-Hsuan Yang. 2023. A Tale of Two Features: Stable Diffusion
+   View Synthesis. In ECCV.                                                                   Complements DINO for Zero-Shot Semantic Correspondence. In NeurIPS.
+Thomas Müller, Alex Evans, Christoph Schied, and Alexander Keller. 2022. Instant           Matthias Zwicker, Hanspeter Pfister, Jeroen Van Baar, and Markus Gross. 2001. Surface
+    neural graphics primitives with a multiresolution hash encoding. TOG (2022).              splatting. In ACM TOG.
+Daniel Müllner. 2011. Modern hierarchical, agglomerative clustering algorithms. arXiv
+    (2011).
+Maxime Oquab, Timothée Darcet, Théo Moutakanni, Huy V. Vo, Marc Szafraniec, Vasil
+    Khalidov, Pierre Fernandez, Daniel Haziza, Francisco Massa, Alaaeldin El-Nouby,
+    Mido Assran, Nicolas Ballas, Wojciech Galuba, Russell Howes, Po-Yao Huang, Shang-
+   Wen Li, Ishan Misra, Michael Rabbat, Vasu Sharma, Gabriel Synnaeve, Hu Xu, Herve
+    Jegou, Julien Mairal, Patrick Labatut, Armand Joulin, and Piotr Bojanowski. 2023.
+    DINOv2: Learning Robust Visual Features without Supervision. TMLR (2023).
+Simon Perreault and Patrick Hebert. 2007. Median Filtering in Constant Time. In IEEE
+    Transactions on Image Processing.
+Ravi Ramamoorthi and Pat Hanrahan. 2001. An efficient representation for irradiance
+    environment maps. In ACM TOG.
+Aditya Ramesh, Prafulla Dhariwal, Alex Nichol, Casey Chu, and Mark Chen. 2022.
+    Hierarchical text-conditional image generation with clip latents. arXiv (2022).
+Daniel Rebain, Mark Matthews, Kwang Moo Yi, Dmitry Lagun, and Andrea Tagliasacchi.
+    2022. LOLNerf: Learn From One Look. In CVPR.
+Konstantinos Rematas, Andrew Liu, Pratul P. Srinivasan, Jonathan T. Barron, Andrea
+    Tagliasacchi, Thomas Funkhouser, and Vittorio Ferrari. 2022. Urban Radiance Fields.
+    In CVPR.
+Weining Ren, Zihan Zhu, Boyang Sun, Jiaqi Chen, Marc Pollefeys, and Songyou Peng.
+    2024. NeRF On-the-go: Exploiting Uncertainty for Distractor-free NeRFs in the
+   Wild. In CVPR.
+Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser, and Björn Ommer.
+    2021. High-resolution image synthesis with latent diffusion models. 2022 IEEE. In
+    CVPR.
+Robin Rombach, Andreas Blattmann, Dominik Lorenz, Patrick Esser, and Björn Ommer.
+    2022. High-Resolution Image Synthesis With Latent Diffusion Models. In CVPR.
+Sara Sabour, Suhani Vora, Daniel Duckworth, Ivan Krasin, David J. Fleet, and Andrea
+    Tagliasacchi. 2023. RobustNeRF: Ignoring Distractors With Robust Losses. In CVPR.
+Chitwan Saharia, William Chan, Saurabh Saxena, Lala Li, Jay Whang, Emily L Denton,
+    Kamyar Ghasemipour, Raphael Gontijo Lopes, Burcu Karagol Ayan, Tim Salimans,
+    et al. 2022. Photorealistic text-to-image diffusion models with deep language under-
+    standing. NeurIPS (2022).
+Johannes Lutz Schönberger and Jan-Michael Frahm. 2016. Structure-from-Motion
+    Revisited. In CVPR.
+Johannes L Schonberger and Jan-Michael Frahm. 2016. Structure-from-motion revisited.
+    In CVPR.
+Noah Snavely, Steven M. Seitz, and Richard Szeliski. 2006. Photo tourism: Exploring
+    photo collections in 3D. In ACM TOG.
+Yang Song and Stefano Ermon. 2019. Generative modeling by estimating gradients of
+    the data distribution. NeurIPS (2019).
+Cheng Sun, Min Sun, and Hwann-Tzong Chen. 2022. Direct voxel grid optimization:
+    Super-fast convergence for radiance fields reconstruction. In CVPR.
+Matthew Tancik, Vincent Casser, Xinchen Yan, Sabeek Pradhan, Ben Mildenhall,
+    Pratul P. Srinivasan, Jonathan T. Barron, and Henrik Kretzschmar. 2022. Block-NeRF:
+    Scalable Large Scene Neural View Synthesis. In CVPR.
+Luming Tang, Menglin Jia, Qianqian Wang, Cheng Perng Phoo, and Bharath Hariharan.
+    2023. Emergent Correspondence from Image Diffusion. In NeurIPS.
+Yuze Wang, Junyi Wang, and Yue Qi. 2024. WE-GS: An In-the-wild Efficient 3D Gaussian
+    Representation for Unconstrained Photo Collections.
+Zirui Wang, Shangzhe Wu, Weidi Xie, Min Chen, and Victor Adrian Prisacariu. 2021.
+    NeRF–: Neural Radiance Fields Without Known Camera Parameters. (2021).
+Tianhao Walter Wu, Fangcheng Zhong, Andrea Tagliasacchi, Forrester Cole, and Cengiz
+    Oztireli. 2022. D^2NeRF: Self-Supervised Decoupling of Dynamic and Static Objects
+    from a Monocular Video. In NeurIPS.
+Jiacong Xu, Yiqun Mei, and Vishal M. Patel. 2024. Wild-GS: Real-Time Novel View
+    Synthesis from Unconstrained Photo Collections.
+                                                                                             SpotLessSplats: Ignoring Distractors in 3D Gaussian Splatting   •   11
+
+
+                                                                               the conventional format of NeRF datasets with separate test views.
+                                                                               We present additional results on Crab (2) scene in table 1, showing
+                                                                               that SLS-MLP has a very close performance to the ideal 3DGS model
+                                                                               trained on clean data, when tested from different viewpoints than
+                                                                               training datset.
+
+                                                                                                SLS-MLP        3DGS        3DGS Clean        3DGS* Clean
+                                                                                   PSNR ↑        34.35         26.33         33.43             35.58
+                                                                                   SSIM ↑         0.96          0.91          0.94              0.97
+                                                                                   LPIPS ↓        0.03          0.08          0.05              0.01
+                                                                               Table 1. Quantitative result on Crab (2) dataset, where a test set with differ-
+                                                                               ent viewpoints than training is provided, shows superior performance of
+                                                                               SLS-MLP to vanilla 3DGS and close performance to the ideal model trained
+                                                                               on clean data. 3DGS* denotes use of utility-based pruning.
+
+
+Fig. 11. SLS-MLP can correctly distinguish between similar-looking oranges
+when the non-dsitractor instances are far from the distractor instance (cen-
+tered on the table). However, the masking task becomes more difficult for
+                                                                               D    Additional Results on NeRF On-the-go dataset
+nearby instances of distractor and non-distractors.                            NeRF On-the-go dataset [Ren et al. 2024] provides six additional
+                                                                               scenes for qualitative evaluation only. We provide qualitative results
+                                                                               on these scenes in fig. 12. In the ‘Drone’ scene, our method is able
+Supplementary Material                                                         to detect harder shadows of people and remove them seamlessly.
+A Distinguishing between semantically similar instances                        However, complete robustness to softer shadows is a limitation of
+                                                                               our work, as the semantic class of shadows is not reflected very
+Our method relies on features extracted from text-to-image diffusion
+                                                                               well in the text-to-image features that we use. This can be seen in
+models, to reliably learn the subspace of features that represent
+                                                                               the ‘Train’ scene, where shadows of people are only detected to a
+distractors appearing in a casual capture. However, this implies that
+                                                                               degree. Further, in the‘Train Station’ and ‘Arc de Triomphe’ scenes
+in cases where similar instances of a semantic class appear as both
+                                                                               we see that our model shows robustness to transparent surfaces on
+distractors and non-distractors, our model would not be able to
+                                                                               distractors such as glass windshields. Finally, in the ‘Statue’ and
+distinguish the two. We show in fig. 11 that this is not generally
+                                                                               ‘Tree’ scenes, SLS-MLP works well in distinguishing between the
+true. When the instances of the same class are not very close in
+                                                                               distractor and the background, even though the distractors (mostly)
+image space, the model can distinguish between distractor and non-
+                                                                               have very similar color to their background.
+distractor orange instances, however in scenarios where they are
+very close we can see over-masking of the non-distractor orange.
+We hypothesize that this is a result of foundation features encoding
+not only semantics, but also appearance and position in the image
+as shown in [El Banani et al. 2024].
+
+B    Warm-up scheduler
+As explained in section 4.2, we use a staircase exponential scheduler
+for our warm up phase:
+                                            
+                                      (𝑡 + 1)
+                     𝛼 = exp −𝛽 1                ,               (13)
+                                         𝛽2
+where 𝑡 is the time step in optimization, 𝛽 1 controls the speed of
+decay and 𝛽 2 determines the length of steps in the staircase function.
+We use 𝛽 1 = 3 × 10 −4 and 𝛽 2 = 1.5 for all experiments, but the three
+highest occlusion rate scenes in NeRF On-the-go [Ren et al. 2024]
+dataset where we use 𝛽 1 = 3 × 10 −3 for a fastest decay.
+
+C    Additional results on the Crab dataset
+The Crab dataset in RobustNeRF [Sabour et al. 2023] has two released
+versions, one without any additional viewpoints for testing and one
+with an extra test set of camera viewpoints. In the main paper we
+refer to the first version as Crab (1) and the second version as Crab
+(2). While previous work has only tested on Crab (1), Crab (2) has
+12   •   Sabour & Goli et al.
+
+
+
+
+Fig. 12. Qualitative results on scenes from NeRF On-the-go [Ren et al. 2024] show robustness of our method to transparent surfaces such as glass windshields
+(Train Station, Arc de Triomphe), and similarly-colored distractors and backgrounds (Tree, Statue). Further, our method shows robustness to distractor shadows
+to a degree (Drone, Train).
+

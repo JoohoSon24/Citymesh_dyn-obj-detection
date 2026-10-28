@@ -1,0 +1,596 @@
+[
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 20.121102279274197,
+    "ghost": 0.28049620951068227
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 23.801615030299082,
+    "ghost": 0.22955974842767296
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 24.49696900982755,
+    "ghost": 0.22538552787663108
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 3,
+    "occupancy": 3,
+    "PSNR": 18.22965575461965,
+    "ghost": 0.45614035087719296
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 5,
+    "occupancy": 5,
+    "PSNR": 20.908508044156896,
+    "ghost": 0.4419134396355353
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 6,
+    "occupancy": 2,
+    "PSNR": 24.20886339653544,
+    "ghost": 0.12321792260692464
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 7,
+    "occupancy": 2,
+    "PSNR": 32.41750972674491,
+    "ghost": 0.03282051282051282
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 8,
+    "occupancy": 2,
+    "PSNR": 27.23382447759455,
+    "ghost": 0.2930672268907563
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 9,
+    "occupancy": 2,
+    "PSNR": 23.802358834291823,
+    "ghost": 0.16005121638924455
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 10,
+    "occupancy": 2,
+    "PSNR": 23.09006902169346,
+    "ghost": 0.4108187134502924
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 12,
+    "occupancy": 1,
+    "PSNR": 22.06320429650612,
+    "ghost": 0.03732809430255403
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 13,
+    "occupancy": 1,
+    "PSNR": 22.559245502373344,
+    "ghost": 0.16983240223463686
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 14,
+    "occupancy": 1,
+    "PSNR": 29.12300037684522,
+    "ghost": 0.08914285714285715
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 15,
+    "occupancy": 1,
+    "PSNR": 25.989277687945574,
+    "ghost": 0.0563564875491481
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 16,
+    "occupancy": 1,
+    "PSNR": 27.780446526198173,
+    "ghost": 0.006613756613756613
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 17,
+    "occupancy": 1,
+    "PSNR": 28.343201083113662,
+    "ghost": 0.1301460823373174
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 20.60833225281259,
+    "ghost": 0.2715368711233632
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 23.88193823822978,
+    "ghost": 0.23060796645702306
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 24.532129882980918,
+    "ghost": 0.21352313167259787
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 3,
+    "occupancy": 3,
+    "PSNR": 18.143270134991198,
+    "ghost": 0.4584795321637427
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 5,
+    "occupancy": 5,
+    "PSNR": 22.246926140354987,
+    "ghost": 0.265375854214123
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 6,
+    "occupancy": 2,
+    "PSNR": 24.12415237507941,
+    "ghost": 0.12321792260692464
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 7,
+    "occupancy": 2,
+    "PSNR": 32.33181190367802,
+    "ghost": 0.031794871794871796
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 8,
+    "occupancy": 2,
+    "PSNR": 27.003206701718938,
+    "ghost": 0.296218487394958
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 9,
+    "occupancy": 2,
+    "PSNR": 23.84398371891246,
+    "ghost": 0.1382842509603073
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 10,
+    "occupancy": 2,
+    "PSNR": 22.900344495842134,
+    "ghost": 0.40497076023391815
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 12,
+    "occupancy": 1,
+    "PSNR": 21.85021813130178,
+    "ghost": 0.036345776031434185
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 13,
+    "occupancy": 1,
+    "PSNR": 22.544537859637973,
+    "ghost": 0.16983240223463686
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 14,
+    "occupancy": 1,
+    "PSNR": 29.120901168418914,
+    "ghost": 0.08685714285714285
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 15,
+    "occupancy": 1,
+    "PSNR": 25.99738967277179,
+    "ghost": 0.05504587155963303
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 16,
+    "occupancy": 1,
+    "PSNR": 27.802984837017245,
+    "ghost": 0.006613756613756613
+  },
+  {
+    "scene": "industrial_b",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 17,
+    "occupancy": 1,
+    "PSNR": 28.334306091884418,
+    "ghost": 0.12749003984063745
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 22.92203489615207,
+    "ghost": 0.18791451731761238
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 20.88708250718748,
+    "ghost": 0.16519174041297935
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 16.92332875592729,
+    "ghost": 0.22621722846441947
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 4,
+    "occupancy": 4,
+    "PSNR": 27.748202546880684,
+    "ghost": 0.08325358851674641
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 5,
+    "occupancy": 4,
+    "PSNR": 31.633434340904174,
+    "ghost": 0.09025641025641026
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 6,
+    "occupancy": 4,
+    "PSNR": 23.205339618521062,
+    "ghost": 0.17805383022774326
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 7,
+    "occupancy": 4,
+    "PSNR": 17.86880849828179,
+    "ghost": 0.29276315789473684
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 8,
+    "occupancy": 4,
+    "PSNR": 27.933661293258794,
+    "ghost": 0.09854423292273236
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 9,
+    "occupancy": 4,
+    "PSNR": 32.300406127222445,
+    "ghost": 0.09941520467836257
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 10,
+    "occupancy": 3,
+    "PSNR": 19.21824296262421,
+    "ghost": 0.45925925925925926
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 11,
+    "occupancy": 3,
+    "PSNR": 30.3357474514196,
+    "ghost": 0.010566762728146013
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 12,
+    "occupancy": 3,
+    "PSNR": 24.162520234554663,
+    "ghost": 0.0871694417238002
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 13,
+    "occupancy": 3,
+    "PSNR": 33.94936069435367,
+    "ghost": 0.017453798767967144
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 14,
+    "occupancy": 3,
+    "PSNR": 30.431128461964263,
+    "ghost": 0.07023060796645703
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 15,
+    "occupancy": 3,
+    "PSNR": 30.003685261510178,
+    "ghost": 0.07085714285714285
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 16,
+    "occupancy": 3,
+    "PSNR": 26.535772261389468,
+    "ghost": 0.07665903890160183
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "gradient_harmonize",
+    "id": 17,
+    "occupancy": 3,
+    "PSNR": 19.149891325720812,
+    "ghost": 0.011494252873563218
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 0,
+    "occupancy": 4,
+    "PSNR": 23.644426957369774,
+    "ghost": 0.14812085482682388
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 1,
+    "occupancy": 4,
+    "PSNR": 20.595358394956396,
+    "ghost": 0.18436578171091444
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 2,
+    "occupancy": 4,
+    "PSNR": 16.71013246888815,
+    "ghost": 0.23146067415730337
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 4,
+    "occupancy": 4,
+    "PSNR": 27.74361621309399,
+    "ghost": 0.0861244019138756
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 5,
+    "occupancy": 4,
+    "PSNR": 32.35934123122166,
+    "ghost": 0.09333333333333334
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 6,
+    "occupancy": 4,
+    "PSNR": 23.179452072542638,
+    "ghost": 0.20910973084886128
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 7,
+    "occupancy": 4,
+    "PSNR": 17.53400824817698,
+    "ghost": 0.32127192982456143
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 8,
+    "occupancy": 4,
+    "PSNR": 27.848314405612822,
+    "ghost": 0.0940649496080627
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 9,
+    "occupancy": 4,
+    "PSNR": 30.25280047287259,
+    "ghost": 0.10526315789473684
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 10,
+    "occupancy": 3,
+    "PSNR": 19.089779655858926,
+    "ghost": 0.46296296296296297
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 11,
+    "occupancy": 3,
+    "PSNR": 30.348660203491544,
+    "ghost": 0.010566762728146013
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 12,
+    "occupancy": 3,
+    "PSNR": 23.680686136326628,
+    "ghost": 0.0930460333006856
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 13,
+    "occupancy": 3,
+    "PSNR": 33.69315584686913,
+    "ghost": 0.018480492813141684
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 14,
+    "occupancy": 3,
+    "PSNR": 29.837216539457565,
+    "ghost": 0.07337526205450734
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 15,
+    "occupancy": 3,
+    "PSNR": 29.93678247227994,
+    "ghost": 0.072
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 16,
+    "occupancy": 3,
+    "PSNR": 25.94648899848636,
+    "ghost": 0.08352402745995423
+  },
+  {
+    "scene": "industrial_c",
+    "seed": 42,
+    "method": "patch_transfer",
+    "id": 17,
+    "occupancy": 3,
+    "PSNR": 19.081551431433176,
+    "ghost": 0.010344827586206896
+  }
+]

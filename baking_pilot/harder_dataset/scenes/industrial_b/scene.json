@@ -1,0 +1,111 @@
+{
+  "name": "Utrecht industrial B - dense paved lots",
+  "lat": 52.074,
+  "lon": 5.046,
+  "ground_polygons": [
+    [
+      [
+        25,
+        600
+      ],
+      [
+        1450,
+        925
+      ],
+      [
+        1370,
+        1260
+      ],
+      [
+        25,
+        945
+      ]
+    ],
+    [
+      [
+        1140,
+        230
+      ],
+      [
+        1480,
+        300
+      ],
+      [
+        1450,
+        850
+      ],
+      [
+        1030,
+        750
+      ]
+    ]
+  ],
+  "exclude_polygons": [
+    [
+      [
+        850,
+        855
+      ],
+      [
+        1220,
+        955
+      ],
+      [
+        1195,
+        1040
+      ],
+      [
+        825,
+        935
+      ]
+    ],
+    [
+      [
+        1160,
+        430
+      ],
+      [
+        1310,
+        460
+      ],
+      [
+        1290,
+        550
+      ],
+      [
+        1150,
+        515
+      ]
+    ]
+  ],
+  "crops": {
+    "cars": [
+      350,
+      480,
+      650,
+      780
+    ],
+    "background": [
+      450,
+      600,
+      750,
+      900
+    ],
+    "markings": [
+      40,
+      450,
+      340,
+      750
+    ]
+  },
+  "size_m": 120,
+  "train_years": [
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "holdout_year": 2026,
+  "selection": "Selected from source-year previews and occupancy diagnostics before method outputs. Ground ROI excludes visible roofs; results not used in selection."
+}

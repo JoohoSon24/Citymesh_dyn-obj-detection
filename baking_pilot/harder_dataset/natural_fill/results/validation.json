@@ -1,0 +1,16 @@
+{
+  "industrial_b": {
+    "cg_converged_all_channels": true,
+    "patch_known_pixels_unchanged": true,
+    "patch_hole_filled_fraction": 0.4272025698280252
+  },
+  "industrial_c": {
+    "cg_converged_all_channels": true,
+    "patch_known_pixels_unchanged": true,
+    "patch_hole_filled_fraction": 0.9809546523116759
+  },
+  "original_54_rows_preserved": true,
+  "new_metric_rows": 4,
+  "identical_S_to_shadow_guard": true,
+  "protocol_sha256": "e3c0127e626730ba45ae25d57edf163d342229ba31be7bc5cff2887240195e3e"
+}

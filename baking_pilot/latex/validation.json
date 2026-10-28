@@ -1,0 +1,44 @@
+{
+  "pdf_pages": 25,
+  "compilation": "XeLaTeX, two final passes with red masks and two natural-fill methods",
+  "warnings": 0,
+  "source_checksums_match": true,
+  "table_generation": "original frozen CSV, no experiment rerun",
+  "sections": [
+    "Intro",
+    "Method",
+    "Result"
+  ],
+  "methods": [
+    "L2",
+    "temporal median",
+    "Block-type",
+    "HuGS-type",
+    "Robust base/OR/car/depth",
+    "UV fusion",
+    "UV shadow guard",
+    "geometry mask/init/prior"
+  ],
+  "all_referenced_assets_exist": true,
+  "visual_inspection": "red exclusion figures, fixed qualitative/hole crops and rendered new results page inspected",
+  "method_structure": "Common S x L2 loss -> method-specific S -> shared bake; exact implementation formulas in appendix",
+  "results_unchanged": true,
+  "underfull_layout_notices": 1,
+  "new_experiment_validation": {
+    "industrial_b": {
+      "cg_converged_all_channels": true,
+      "patch_known_pixels_unchanged": true,
+      "patch_hole_filled_fraction": 0.4272025698280252
+    },
+    "industrial_c": {
+      "cg_converged_all_channels": true,
+      "patch_known_pixels_unchanged": true,
+      "patch_hole_filled_fraction": 0.9809546523116759
+    },
+    "original_54_rows_preserved": true,
+    "new_metric_rows": 4,
+    "identical_S_to_shadow_guard": true,
+    "protocol_sha256": "e3c0127e626730ba45ae25d57edf163d342229ba31be7bc5cff2887240195e3e"
+  },
+  "original_54_metric_rows_unchanged": true
+}

@@ -1,0 +1,29 @@
+{
+  "seed": 42,
+  "updates": 600,
+  "seconds": 7.479893922805786,
+  "trace": [
+    {
+      "step": 0,
+      "data": 0.48795902729034424,
+      "color": 0.0
+    },
+    {
+      "step": 199,
+      "data": 0.48567861318588257,
+      "color": 1.6610695183771895e-06
+    },
+    {
+      "step": 399,
+      "data": 0.4470142722129822,
+      "color": 6.14016880717827e-06
+    },
+    {
+      "step": 599,
+      "data": 0.49525466561317444,
+      "color": 1.2174649782537017e-05
+    }
+  ],
+  "mask_is_fixed": true,
+  "mask_path": "/root/sonjooho/baking_pilot/reference_study_v3/results/industrial_b/dino_ssim_soft_mask.npz"
+}

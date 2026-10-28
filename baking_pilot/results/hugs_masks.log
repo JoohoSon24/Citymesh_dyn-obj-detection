@@ -1,0 +1,22 @@
+/root/project/baking_pilot/.venv/lib/python3.11/site-packages/segment_anything/build_sam.py:105: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state_dict = torch.load(f)
+07:52:34 HuGS {'view': 0, 'sift_features': 2501, 'static_points': 113, 'sam_masks': 191, 'static_fraction': 0.8503376339218349, 'seconds': 12.493579626083374}
+07:52:46 HuGS {'view': 1, 'sift_features': 2500, 'static_points': 113, 'sam_masks': 181, 'static_fraction': 0.8705685487304092, 'seconds': 11.964682340621948}
+07:53:01 HuGS {'view': 2, 'sift_features': 1897, 'static_points': 81, 'sam_masks': 167, 'static_fraction': 0.8426828398144844, 'seconds': 14.90541696548462}
+07:53:17 HuGS {'view': 3, 'sift_features': 1816, 'static_points': 55, 'sam_masks': 120, 'static_fraction': 0.7605068349726454, 'seconds': 15.759621381759644}
+07:53:33 HuGS {'view': 4, 'sift_features': 2500, 'static_points': 127, 'sam_masks': 176, 'static_fraction': 0.9000270358633872, 'seconds': 15.856361150741577}
+07:53:49 HuGS {'view': 5, 'sift_features': 2501, 'static_points': 107, 'sam_masks': 154, 'static_fraction': 0.8595656473701101, 'seconds': 16.133886337280273}
+07:54:05 HuGS {'view': 6, 'sift_features': 2100, 'static_points': 70, 'sam_masks': 153, 'static_fraction': 0.8332215483410631, 'seconds': 15.822142124176025}
+07:54:17 HuGS {'view': 7, 'sift_features': 1849, 'static_points': 45, 'sam_masks': 99, 'static_fraction': 0.9289074366271953, 'seconds': 11.522045850753784}
+07:54:28 HuGS {'view': 8, 'sift_features': 2501, 'static_points': 100, 'sam_masks': 143, 'static_fraction': 0.8377785322669886, 'seconds': 11.484816074371338}
+07:54:39 HuGS {'view': 9, 'sift_features': 2502, 'static_points': 94, 'sam_masks': 132, 'static_fraction': 0.8680143037717684, 'seconds': 11.413967847824097}
+07:54:51 HuGS {'view': 10, 'sift_features': 2500, 'static_points': 64, 'sam_masks': 110, 'static_fraction': 0.863093114520157, 'seconds': 11.412280797958374}
+07:55:03 HuGS {'view': 11, 'sift_features': 2057, 'static_points': 32, 'sam_masks': 90, 'static_fraction': 0.8396767581437188, 'seconds': 11.763794898986816}
+07:55:14 HuGS {'view': 12, 'sift_features': 828, 'static_points': 42, 'sam_masks': 141, 'static_fraction': 0.830812081887229, 'seconds': 10.81218433380127}
+07:55:25 HuGS {'view': 13, 'sift_features': 837, 'static_points': 20, 'sam_masks': 109, 'static_fraction': 0.811146332038746, 'seconds': 11.613852739334106}
+07:55:36 HuGS {'view': 14, 'sift_features': 597, 'static_points': 18, 'sam_masks': 109, 'static_fraction': 0.8412700677845166, 'seconds': 10.711975574493408}
+07:55:47 HuGS {'view': 15, 'sift_features': 467, 'static_points': 9, 'sam_masks': 103, 'static_fraction': 0.8416933331367142, 'seconds': 11.274563789367676}
+07:56:00 HuGS {'view': 16, 'sift_features': 2501, 'static_points': 16, 'sam_masks': 539, 'static_fraction': 0.7220713243800614, 'seconds': 13.159302949905396}
+07:56:14 HuGS {'view': 17, 'sift_features': 2458, 'static_points': 8, 'sam_masks': 468, 'static_fraction': 0.995317217575825, 'seconds': 13.295057535171509}
+07:56:27 HuGS {'view': 18, 'sift_features': 2242, 'static_points': 9, 'sam_masks': 459, 'static_fraction': 0.7076061362825544, 'seconds': 12.831228494644165}
+07:56:40 HuGS {'view': 19, 'sift_features': 1888, 'static_points': 7, 'sam_masks': 380, 'static_fraction': 0.9891097577160721, 'seconds': 13.145204305648804}

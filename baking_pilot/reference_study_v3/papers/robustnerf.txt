@@ -1,0 +1,598 @@
+                              This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.
+                                           Except for this watermark, it is identical to the accepted version;
+                                     the final published version of the proceedings is available on IEEE Xplore.
+
+
+
+
+                     RobustNeRF: Ignoring Distractors with Robust Losses4
+
+                      Sara Sabour1,2 Suhani Vora1 Daniel Duckworth1 Ivan Krasin1
+                                  David J. Fleet1,2 Andrea Tagliasacchi1,2,3
+                          1                                 2                           3
+                              Google Research, Brain Team       University of Toronto       Simon Fraser University
+
+
+
+                           Abstract
+    Neural radiance fields (NeRF) excel at synthesizing new
+views given multi-view, calibrated images of a static scene.
+When scenes include distractors, which are not persistent
+during image capture (moving objects, lighting variations,
+shadows), artifacts appear as view-dependent effects or
+’floaters’. To cope with distractors, we advocate a form
+of robust estimation for NeRF training, modeling distrac-
+tors in training data as outliers of an optimization problem.
+Our method successfully removes outliers from a scene and
+improves upon our baselines, on synthetic and real-world
+                                                                          Figure 1. NeRF assumes photometric consistency in the observed
+scenes. Our technique is simple to incorporate in modern
+                                                                          images of a scene. Violations of this assumption, as with the im-
+NeRF frameworks, with few hyper-parameters. It does not                   ages in the top row, yield reconstructed scenes with inconsistent
+assume a priori knowledge of the types of distractors, and                content in the form of “floaters” (highlighted with ellipses). We
+is instead focused on the optimization problem rather than                introduce a simple technique that produces clean reconstruction
+pre-processing or modeling transient objects. More results                by automatically ignoring distractors without explicit supervision.
+at https://robustnerf.github.io/public.
+                                                                          that images are photometrically consistent – two photos
+1. Introduction                                                           taken from the same vantage point should be identical up
+                                                                          to noise. Unless one employs a method explicitly account-
+    The ability to understand the structure of a static 3D                ing for it [35], one should manually hold a camera’s focus,
+scene from 2D images alone is a fundamental problem is                    exposure, white-balance, and ISO fixed.
+computer vision [44]. It finds applications in AR/VR for
+                                                                             However, properly configuring one’s camera is not all
+mapping virtual environments [6, 36, 61], in autonomous
+                                                                          that is required to capture high-quality NeRFs – it is also
+robotics for action planning [1], and in photogrammetry to
+                                                                          important to avoid distractors: anything that isn’t persistent
+create digital copies of real-world objects [34].
+                                                                          throughout the entire capture session. Distractors come in
+    Neural fields [55] have recently revolutionized this clas-
+                                                                          many shapes and forms, from the hard-shadows cast by the
+sical task, by storing 3D representations within the weights
+                                                                          operators as they explore the scene to a pet or child casually
+of a neural network [39]. These representations are opti-
+                                                                          walking within the camera’s field of view. Distractors are
+mized by back-propagating image differences. When the
+                                                                          tedious to remove manually, as this would require pixel-by-
+fields store view-dependent radiance and volumetric ren-
+                                                                          pixel labeling. They are also tedious to detect, as typical
+dering is employed [21], we can capture 3D scenes with
+                                                                          NeRF scenes are trained from hundreds of input images,
+photo-realistic accuracy, and we refer to the generated rep-
+                                                                          and the types of distractors are not known a priori. If dis-
+resentation as Neural Radiance Fields, or NeRF [25]).
+                                                                          tractors are ignored, the quality of the reconstruction scene
+    Training of NeRF models generally requires a large
+                                                                          suffers significantly; see Figure 1.
+collection of images equipped with accurate camera cali-
+                                                                             In a typical capture session, it is difficult to to capture
+bration, which can often be recovered via structure-from-
+                                                                          multiple images of the same scene from the same viewpoint,
+motion [37]. Behind its simplicity, NeRF hides several as-
+                                                                          rendering distractors challenging to model mathematically.
+sumptions. As models are typically trained to minimize
+                                                                          As such, while view-dependent effects are what give NeRF
+error in RGB color space, it is of paramount importance
+                                                                          their realistic look, how can the model tell the difference
+  4 Work done at Google Research.                                         between a distractor and a view-dependent effect?
+
+
+
+                                                                      20626
+   Despite the challenges, the research community has de-                                                                                                                   correctly predict the colors of the pixels in the batch via the
+vised several approaches to overcome this issue:                                                                                                                            L2 photometric-reconstruction loss:
+• If distractors are known to belong to a specific class (e.g.,
+  people), one can remove them with a pre-trained seman-                                                                                                                                    \loss {rgb}(\params ) &= \sum _{i} \expect _{\ray \sim \image _i} \left [ \loss {rgb}^{\ray , i}(\params ) \right ] \\ \loss {rgb}^{\ray , i}(\params ) &= ||\C (\ray ; \params ) - \image _i(\ray ) ||_2^2 \label {eq:nerfloss}
+  tic segmentation model [35, 43] – this process does not
+  generalize to “unexpected” distractors such as shadows.
+                                                                                                                                                                                                                                                                                                                                                                                                                               (3)
+• One can model distractors as per-image transient phe-
+  nomena, and control the balance of transient/persistent
+                                                                                                                                                                            Parameterizing the ray as r(t) = o + td, the NeRF model
+  modeling [23] – however, it is difficult to tune the losses
+                                                                                                                                                                            image C(r; θ) is generated pixel-by-pixel volumetric ren-
+  that control this Pareto-optimal objective.
+                                                                                                                                                                            dering based on σ(·) and c(·) (e.g., see [25, 42]).
+• One can model data in time (i.e., high-framerate video)
+  and decompose the scene into static and dynamic (i.e.,                                                                                                                    Recent progress on NeRF models. NeRF models have re-
+  distractor) components [53] – but this clearly only applies                                                                                                               cently been extended in several ways. A major thread has
+  to video rather than photo collection captures.                                                                                                                           been the speedup of training [15, 27] and inference [6, 13],
+Conversely, we approach the problem of distractors by mod-                                                                                                                  enabling today’s models to be trained in minutes [27], and
+eling them as outliers in NeRF optimization.                                                                                                                                rendered on mobile in real-time [6]. While initially re-
+   We analyze the aforementioned techniques through the                                                                                                                     stricted to forward-facing scenes, researchers quickly found
+lens of robust estimation, allowing us to understand their be-                                                                                                              ways to model real-world 360◦ scenes [4,59], and to reduce
+havior, and to design a method that is not only simpler to im-                                                                                                              the required number of images, via sensor fusion [35] or
+plement but also more effective (see Figure 1). As a result,                                                                                                                hand-designed priors [28]. We can now deal with image
+we obtain a method that is straightforward to implement, re-                                                                                                                artifacts such as motion blur [22], exposure [24], and lens
+quires minimal-to-no hyper-parameter tuning, and achieves                                                                                                                   distortion [14]. And the requirement of (precise) camera
+state-of-the-art performance. We evaluate our method:                                                                                                                       calibrations is quickly being relaxed with the introduction
+• quantitatively, in terms of reconstruction with syntheti-                                                                                                                 of techniques for local camera refinement [8, 19], or direct
+  cally, yet photo-realistically, rendered data;                                                                                                                            inference [58]. While a NeRF typically represents geometry
+• qualitatively on publicly available datasets (often fine-                                                                                                                 via volumetric density, there exist models custom-tailored
+  tuned to work effectively with previous methods);                                                                                                                         to predict surfaces [29, 51], which can be extended to use
+• on a new collection of natural and synthetic scenes, in-                                                                                                                  predicted normals to significantly improve reconstruction
+  cluding those autonomously acquired by a robot, allow-                                                                                                                    quality [50, 57]. Given high-quality normals [47], infer-
+  ing us to demonstrate the sensitivity of previous methods                                                                                                                 ring the (rendering) structure of a scene becomes a possibil-
+  to hyper-parameter tuning.                                                                                                                                                ity [5]. We also note recent papers about additional appli-
+                                                                                                                                                                            cations to generalization [56], semantic understanding [48],
+2. Related Work                                                                                                                                                             generative modeling [33], robotics [1], and text-to-3D [31].
+   We briefly review the basics and notation of Neural Ra-                                                                                                                  Modeling non-static scenes.            For unstructured scenes
+diance Fields. We then describe recent progress in NeRF                                                                                                                     like those considered here, the community has focused
+research, paying particular attention to techniques for mod-                                                                                                                on reconstructing both static and non-static elements from
+eling of static/dynamic scenes.                                                                                                                                             video. The most direct approach, treating time as an
+Neural Radiance Fields. A neural radiance field (NeRF)                                                                                                                      auxiliary input, leads to cloudy geometry and a lack of
+is a continuous volumetric representation of a 3D scene,                                                                                                                    fine detail [11, 54]. Directly optimizing per-frame la-
+stored within the parameters of a neural network θ. The                                                                                                                     tent codes as an auxiliary input has proved more effec-
+representation maps a position x and view direction d to a                                                                                                                  tive [17, 30, 53]. The most widely-adopted approach is to
+view-dependent RGB color and view-independent density:                                                                                                                      fit a time-conditioned deformation field mapping 3D points
+                                                                                                                                                                            between pairs of frames [18, 49] or to a canonical coordi-
+                      \begin {rcases} \radiance (\position , \dir ) \\ \density (\position ) \end {rcases} f(\position , \dir ; \params ) \label {eq:nerfmodel}             nate frame [9, 10, 20, 32, 45]. Given how sparsely space-
+                                                                                                                                                                   (1)      time is sampled, all methods require careful regularization,
+                                                                                                                                                                            optimization, or additional training signals to achieve ac-
+This representation is trained from a collection, {(Ci , Ti )},                                                                                                             ceptable results.
+of images Ci with corresponding calibration parame-                                                                                                                             Relatively little attention has been given to removing
+ters Ti (camera extrinsics and intrinsics).                                                                                                                                 non-static elements. One common approach is to segment
+   During training the calibration information is employed                                                                                                                  and ignore pixels which are likely to be distractors [35, 43].
+to convert each pixel of the image into a ray r=(o, d), and                                                                                                                 While this eliminates larger objects, it fails to account for
+rays are drawn randomly from input images to form a train-                                                                                                                  secondary effects like shadows. Prior attempts to model dis-
+ing mini-batch (r∼Ci ). The parameters θ are optimized to                                                                                                                   tractors as outliers still leave residual cloudy geometry [23].
+
+
+
+                                                                                                                                                                         20627
+Figure 2. Ambiguity – A simple 2D scene where a static object (blue) is captured by three cameras. During the first and third capture
+the scene is not photo-consistent as a distractor was within the field of view. Not photo-consistent portions of the scene can end up being
+encoded as view-dependent effects – even when we assume ground truth geometry.
+
+3. Method                                                               loss (3) yields significant errors in reconstruction; see Fig-
+                                                                        ure 1. Problems like these are pervasive in NeRF model fit-
+   The classical NeRF training losses (3) are effective for
+                                                                        ting, especially in uncontrolled environments with complex
+capturing scenes that are photometrically consistent, lead-
+                                                                        reflectance, non-rigidity, or independently moving objects.
+ing to the photo-realistic novel-view synthesis that we are
+now accustomed to seeing in recent research. However,                   3.2. Robustness to outliers
+“what happens when there are elements of the scene that
+are not persistent throughout the entire capture session?”              Robustness via semantic segmentation. One way to re-
+Simple examples of such scenes include those in which an                duce outlier contamination during NeRF model optimiza-
+object is only present in some fraction of the observed im-             tion is to rely on an oracle S that specifies whether a given
+ages, or may not remain in the same position in all observed            pixel r from image i is an outlier, and should therefore be
+images. For example, Figure 2 depicts a 2D scene compris-               excluded from the empirical loss, replacing (3) with:
+ing a persistent object (the truck), along with several tran-                       \loss {oracle}^{\ray , i}(\params ) = \oracle _i(\ray ) \cdot ||\C (\ray ; \params ) - \image _i(\ray ) ||_2^2 \label {eq:oracleloss}    (4)
+sient objects (e.g., people and a dog). While rays in blue
+from the three cameras intersect the truck, the green and or-           In practice, a pre-trained (semantic) segmentation network
+ange rays from cameras 1 and 3 intersect transient objects.             S might serve as an oracle, Si =S(Ci ). E.g., Nerf-in-the-
+For video capture and spatio-temporal NeRF models, the                  wild [23] employed a semantic segmenter to remove pixels
+persistent objects comprise the “static” portion of the scene,          occupied by people, as they are outliers in the context of
+while the rest would be called the “dynamic”.                           photo-tourism. Urban Radiance Fields [35] segmented out
+                                                                        sky pixels, while LOL-NeRF [33] ignored pixels not be-
+3.1. Sensitivity to outliers                                            longing to faces. The obvious problem with this approach
+                                                                        is the need for an oracle to detect arbitrary distractors.
+   For Lambertian scenes, photo-consistent structure is
+view independent, as scene radiance only depends on the                 Robust estimators. Another way to reduce sensitivity to
+incident light [16]. For such scenes, view-dependent NeRF               outliers is to replace the conventional L2 loss (3) with a ro-
+models like (1), trained by minimizing (3), admit local                 bust loss (e.g., [2, 41]), so that photometrically-inconsistent
+optima in which transient objects are explained by view-                observations can be down-weighted during optimization.
+dependent terms. Figure 2 depicts this, with the outgoing               Given a robust kernel κ(·), we rewrite our training loss as:
+color corresponding to the memorized color of the outlier
+                                                                                          \loss {robust}^{\ray , i}(\params ) = \kernel (||\C (\ray ; \params ) - \image _i(\ray ) ||_2) \label {eq:robustloss}              (5)
+– i.e. view-dependent radiance. Such models exploit the
+view-dependent capacity of the model to over-fit observa-               where κ(·) is positive and monotonically increasing. Mip-
+tions, effectively memorizing the transient objects. One can            NeRF [3], for example, employs an L1 loss κ(ϵ)=|ϵ|, which
+alter the model to remove dependence on d, but the L2                   provides some degree of robustness to outliers during NeRF
+loss remains problematic as least-squares (LS) estimators               training. Given our analysis, a valid question is whether we
+are sensitive to outliers, or heavy-tailed noise distributions.         can straightforwardly employ a robust kernel to approach
+   Under more natural conditions, dropping the Lambertian               our problem, and if so, given the large variety of robust ker-
+assumption, the problem becomes more complex as both                    nels [2], which is the kernel of choice.
+non-Lambertian reflectance phenomena and outliers can be                    Unfortunately, as discussed above, outliers and non-
+explained as view-dependent radiance. While we want the                 Lambertian effects can both be modelled as view-dependent
+models to capture photo-consistent view-dependent radi-                 effects (see Figure 3). As a consequence, with simple appli-
+ance, outliers and other transient phenomena should ideally             cation of robust estimators it can be difficult to separate sig-
+be ignored. And in such cases, optimization with an L2                  nal from noise. Figure 4 shows examples in which outliers
+
+
+
+                                                                    20628
+Figure 3. Histograms – Robust estimators perform well when the                                                                                                                                                                                                                                                                                                Figure 4. Kernels – (top-left) Family of robust kernels [2], includ-
+distribution of residuals agrees with the one implied by the esti-                                                                                                                                                                                                                                                                                            ing L2 (α=2), Charbonnier (α=1) and Geman-McClure (α=−2).
+mator (e.g., Gaussian for L2, Laplacian for L1). Here we visualize                                                                                                                                                                                                                                                                                            (top-right) Mid-training, residual magnitudes are similar for dis-
+the ground-truth distribution of residuals (bottom-left), which is                                                                                                                                                                                                                                                                                            tractors and fine-grained details, and pixels with large residuals
+hardly a good match with any simple parametric distribution.                                                                                                                                                                                                                                                                                                  are learned more slowly, as the gradient of re-descending kernels
+                                                                                                                                                                                                                                                                                                                                                              flattens out. (bottom-right) A too aggressive Geman-McClure in
+                                                                                                                                                                                                                                                                                                                                                              down-weighting large residuals removes both outliers and high-
+are removed, but fine-grained texture and view-dependent                                                                                                                                                                                                                                                                                                      frequency detail. (bottom-left) A less aggressive Geman-McClure
+details are also lost, or conversely, fine-grained details are                                                                                                                                                                                                                                                                                                does not effectively remove outliers.
+preserved, but outliers cause artifacts in the reconstructed
+scene. One can also observe mixtures of these cases in                                                                                                                                                                                                                                                                                                        at iteration t, one can write the loss as
+which details are not captured well, nor are outliers fully
+removed. We find that this behaviour occurs consistently                                                                                                                                                                                                                                                                                                             \loss {robust}^{\ray , i}(\params ^{(t)}) &= \weight (\residuals ^{(t-1)}(\ray )) \cdot || \C (\ray ; \params ^{(t)}) - \image _i(\ray ) ||_2^2 \label {eq:irls} \nonumber \\ \residuals ^{(t-1)}(\ray ) &= || \C (\ray ; \params ^{(t-1)}) - \image _i(\ray ) ||_2
+for many different robust estimators and parameter settings.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           (7)
+   Training time can also be problematic. The robust es-
+timator gradient w.r.t. model parameters can be expressed                                                                                                                                                                                                                                                                                                     For weight functions given by ω(ϵ)=ϵ−1 ·∂κ(ϵ)/∂ϵ one can
+using the chain rule as                                                                                                                                                                                                                                                                                                                                       show that, under suitable conditions, the iteration converges
+                                                                                                                                                                                                                                                                                                                                                              to a local minima of (5) (see [41, Sec. 3]).
+           \left . \frac {\partial \kernel (\residual (\params ))}{\partial \params } \right |_{\params ^{(t)}} = \left . \frac {\partial \kernel (\residual )}{\partial \residual } \right |_{\residual (\params ^{(t)})} \cdot \left . \frac {\partial \residual (\params )}{\partial \params } \right |_{\params ^{(t)}} \label {eq:chainrule} 
+                                                                                                                                                                                                                                                                                                                                                     (6)         This framework admits a broad family of losses, includ-
+                                                                                                                                                                                                                                                                                                                                                              ing maximum likelihood estimators for heavy-tailed noise
+                                                                                                                                                                                                                                                                                                                                                              processes. Examples in Figure 4 include the Charbonnier
+The second factor is the classical NeRF gradient. The first                                                                                                                                                                                                                                                                                                   loss (smoothed L1), and more aggressive redescending esti-
+factor is the kernel gradient evaluated at the current er-                                                                                                                                                                                                                                                                                                    mators such as the Lorentzian or Geman-McClure [2]. The
+ror residual ϵ(θ (t) ). During training, large residuals can                                                                                                                                                                                                                                                                                                  objective in (4) can also be viewed as a weighted LS objec-
+equivalently come from high-frequency details that have not                                                                                                                                                                                                                                                                                                   tive, the binary weights of which are provided by an oracle.
+yet been learnt, or they may arise from outliers (see Fig-                                                                                                                                                                                                                                                                                                    And, as discussed at length below, one can also view several
+ure 4 (bottom)). This explain why robust optimization, im-                                                                                                                                                                                                                                                                                                    recent methods like NeRFW [23] and D2 NeRF [53] through
+plemented as (5), should not be expected to decouple high-                                                                                                                                                                                                                                                                                                    the lens of IRLS and weighted LS.
+frequency details from outliers. Further, when strongly ro-                                                                                                                                                                                                                                                                                                      Nevertheless, choosing a suitable weight function ω(ϵ)
+bust kernels are employed, like redescending estimators,                                                                                                                                                                                                                                                                                                      for NeRF optimization is non-trivial, due in large part to the
+this also explains the loss of visual fidelity. That is, because                                                                                                                                                                                                                                                                                              intrinsic ambiguity between view-dependent radiance phe-
+the gradient of (large) residuals get down-weighted by the                                                                                                                                                                                                                                                                                                    nomena and outliers. One might try to solve this problem
+(small) gradients of the kernel, slowing down the learning                                                                                                                                                                                                                                                                                                    by learning a neural weight function [40], although gener-
+of these fine-grained details (see Figure 4 (top)).                                                                                                                                                                                                                                                                                                           ating enough annotated training data might be prohibitive.
+                                                                                                                                                                                                                                                                                                                                                              Instead, the approach taken below is to exploit inductive
+3.3. Robustness via Trimmed Least Squares                                                                                                                                                                                                                                                                                                                     biases in the structure of outliers, combined with the sim-
+   In what follows we advocate a form of iteratively                                                                                                                                                                                                                                                                                                          plicity of a robust, trimmed LS estimator.
+reweighted least-squares (IRLS) with a Trimmed least                                                                                                                                                                                                                                                                                                          Trimmed Robust Kernels. Our goal is to develop a weight
+squares (LS) loss for NeRF model fitting.                                                                                                                                                                                                                                                                                                                     function for use in iteratively weighted LS optimization that
+Iteratively Reweighted least Squares. IRLS is a widely                                                                                                                                                                                                                                                                                                        is simple and captures useful inductive biases for NeRF op-
+used method for robust estimation that involves solving a                                                                                                                                                                                                                                                                                                     timization. For simplicity we opt for a binary weight func-
+sequence of weighted LS problems, the weights of which                                                                                                                                                                                                                                                                                                        tion with intuitive parameters that adapts naturally through
+are adapted to reduce the influence of outliers. To that end,                                                                                                                                                                                                                                                                                                 model fitting so that fine-grained image details that are not
+
+
+
+                                                                                                                                                                                                                                                                                                                                                           20629
+Figure 5. Algorithm – We visualize our weight function computed by residuals on two examples: (top) the residuals of a (mid-training)
+NeRF rendered from a training viewpoint, (bottom) a toy residual image containing residual of small spatial extent (dot, line) and residuals
+of large spatial extent (squares). Notice residuals with large magnitude but small spatial extent (texture of the box, dot, line) are included
+in the optimization, while weaker residuals with larger spatial extent are excluded. Note that while we operate on patches, we visualize the
+weight function on the whole image to facilitate visualization.
+
+outliers can be learned quickly. It is also important to cap-
+ture the structured nature of typical outliers, contrary to the
+typical i.i.d. assumption in most robust estimator formula-
+tions. To this end, the weight function should capture spatial
+smoothness of the outlier process, recognizing that objects
+typically have continuous local support, and hence outliers
+are expected to occupy large, connected regions of an im-
+age (e.g., the silhouette of a person to be segmented out
+from a photo-tourism dataset).
+   Surprisingly, a relatively simple weight function embod-
+ies these properties and performs extremely well in practice.
+The weight function is based on so-called trimmed estima-
+tors that are used in trimmed least-squares, like that used in
+trimmed ICP [7]. We first sort residuals, and assume that
+residuals below a certain percentile are inliers. Picking the
+50% percentile for convenience (i.e., median), we define                                                                                                                                                                           Figure 6. Residuals – For the dataset shown in the top row,
+                                                                                                                                                                                                                                   we visualize the dynamics of the RobustNeRF training residu-
+                           \tilde {\weight }(\ray ) = \residual (\ray ) \leq \threshold _\residual ~, ~~~ \threshold _\residual = \text {Median}_\ray \{\residual (\ray )\} ~. \label {eq:trimming}              (8)               als, which show how over time the estimated distractor weights
+                                                                                                                                                                                                                                   go from being random ((t/T )=0.5%) to identify distractor pix-
+   To capture spatial smoothness of outliers we spatially                                                                                                                                                                          els ((t/T )=100%) without any explicit supervision.
+diffuse inlier/outlier labels ω with a 3×3 box kernel B3×3 .
+Formally, we define
+                                                                                                                                                                                                                                   The final weight function is the union of the three masks
+                       \mathcal {W}(\ray ) = (\tilde \weight (\ray ) \circledast \mathcal {B}_{3\times 3}) \geq \threshold _\circledast ~, ~~~ \threshold _\circledast = 0.5 ~. \label {eq:smoothing}            (9)               in Eqns. 8 -10. This robust weight function evolves during
+                                                                                                                                                                                                                                   optimization, as one expects with IRLS where the weights
+This helps to avoid classifying high-frequency details as
+                                                                                                                                                                                                                                   are a function of the residuals at the previous iteration. That
+outliers, allowing them to be captured by the NeRF model
+                                                                                                                                                                                                                                   is, the labeling of pixels as inliers/outliers changes during
+during optimization (see Figure 5).
+                                                                                                                                                                                                                                   training, and settles around masks similar to the one an ora-
+    While the trimmed weight function (9) improves the ro-
+                                                                                                                                                                                                                                   cle would provide as training converges (see Figure 6).
+bustness of model fitting, it sometimes misclassifies fine-
+grained image details early in training where the NeRF
+                                                                                                                                                                                                                                   4. Experiments
+model first captures coarse-grained structure. These local-
+ized texture elements may emerge but only after very long                                                                                                                                                                             We implement our robust loss function in the MultiN-
+training times. We find that stronger inductive bias to spa-                                                                                                                                                                       eRF codebase [26] and apply it to mip-NeRF 360 [4]. We
+tially coherence allows fine-grained details to be learned                                                                                                                                                                         dub this method “RobustNeRF”. To evaluate RobustNeRF,
+more quickly. To that end, we aggregate the detection of                                                                                                                                                                           we compare against baselines on several scenes containing
+outliers on 16×16 neighborhoods; i.e., we label entire 8×8                                                                                                                                                                         different types of distractors. Where possible, we quantita-
+patches as outliers or inliers based on the behavior of W in                                                                                                                                                                       tively compare reconstructions to held-out, distraction-free
+the 16×16 neighborhood of the patch . Denoting the N ×N                                                                                                                                                                            images; we report three metrics, averaged across held-out
+neighborhood of pixels around r as RN (r), we define                                                                                                                                                                               frames, namely, PSNR, SSIM [52], and LPIPS [60].
+                                                                                                                                                                                                                                      We compare different methods on two collections of
+   \weight (\mathcal {R}_8(\ray )) &= \expect _{\sray \sim \mathcal {R}_{16}(\ray )} \left [ \mathcal {W}(\sray ) \right ] \geq \threshold _\mathcal {R} \, , ~~~ \threshold _\mathcal {R}=0.6 \, . \label {eq:patching} (10)      scenes, i.e., those provided by the authors of D2 NeRF, and
+
+
+
+                                                                                                                                                                                                                                20630
+                                                                       material. We also capture additional frames without dis-
+                                                                       tractors to enable quantitative evaluations. Camera poses
+                                                                       are estimated using COLMAP [38]. A full description of
+                                                                       each scene in the supplementary material.
+                                                                       Synthetic scenes. To further evaluate RobustNeRF, we
+                                                                       generate synthetic scenes using the Kubric dataset gener-
+                                                                       ator [12]. Each scene is constructed by placing a set of
+                                                                       simple geometries in an empty, texture-less room. In each
+                                                                       scene, a subset of objects remain fixed while the other ob-
+                                                                       jects (i.e., distractors) change position from frame to frame.
+                                                                       By varying the number of objects, their size, and the way
+                                                                       they move, we control the level of distraction in each scene.
+                                                                       We use these scenes to examine RobustNeRF’s sensitivity
+Figure 7. Dataset – Sample training images showing the distrac-
+                                                                       to its hyperparameters, see supplementary material.
+tors in each scene. Statue and Android were acquired manually,
+and the others with a robotic arm. In the robotic setting we have      4.3. Evaluation
+pixel-perfect alignment of distractor vs. distractor-free images.
+                                                                           We evaluate RobustNeRF on its ability to ignore distrac-
+                                                                       tors while accurately reconstructing the static elements of
+novel datasets described below. We also present a series of            a scene. We train RobustNeRF, D2 NeRF, and variants of
+illustrative experiments on synthetic scenes, shedding light           mip-NeRF 360 on scenes where distraction-free frames are
+on RobustNeRF’s efficacy and inner workings.                           available. Models are trained on frames with distractors and
+                                                                       evaluated on distractor-free frames.
+4.1. Baselines
+                                                                       Comparison to mip-NeRF 360 – Figure 8. On natu-
+    We compare RobustNeRF to variants of mip-NeRF 360                  ral scenes, RobustNeRF generally outperforms variants of
+optimized with different loss functions (L2 , L1 , and Char-           mip-NeRF 360 by 1.3 to 4.7 dB in PSNR. As L2 , L1 ,
+bonnier). These variants serve as natural baselines for mod-           and Charbonnier losses weigh all pixels equally, the model
+els with limited or no robustness to outliers.We also com-             is forced to represent, rather than ignore, distractors as
+pare to D2 NeRF, a recent method for reconstructing dy-                “clouds” with view-dependent appearance. We find clouds
+namic scenes from monocular video. Unlike our method,                  to be most apparent when distractors remain stationary for
+D2 NeRF is designed to reconstruct distractors rather than             multiple frames. In contrast, RobustNeRF’s loss isolates
+discard them. While D2 NeRF is presented as a method for               distractor pixels and assigns them a weight of zero (see
+monocular video, it does not presuppose temporal continu-              Figure 6). To establish an upper bound on reconstruction
+ity, and can be directly applied to unordered images. We               accuracy, we train mip-NeRF 360 with Charbonnier loss
+omit additional comparisons to NeRF-W as its performance               on distraction-free versions of each scene, the images for
+falls short of D2 NeRF [53]. For more details on model                 which are taken from (approximately) the same viewpoints.
+training, see the supplementary material.                              Reassuringly, RobustNeRF when trained on distraction-free
+                                                                       frames, achieves nearly identical accuracy; see Figure 11.
+4.2. Datasets – Figure 7                                                   While RobustNeRF consistently outperforms mip-NeRF
+   In addition to scenes from D2 NeRF, we introduce a set of           360, the gap is smaller in the Apartment scenes (Statue,
+natural and synthetic scenes. They facilitate the evaluation           Android) than the Robotics Lab scenes (Crab, BabyYoda).
+of RobustNeRF’s effectiveness on illustrative use cases, and           This can be explained by challenging background geome-
+they enable empirical analysis under controlled conditions.            try, errors in camera parameter estimation, and impercep-
+Natural scenes. We capture seven natural scenes exempli-               tible changes to scene appearance. For further discussion,
+fying different types of distractors. Scenes are captured in           see the supplementary material.
+three settings, on the street, in an apartment and in a robotics       Comparison to D2 NeRF – Figure 9. Quantitatively, Ro-
+lab. Distractor objects are moved, or are allowed to move,             bustNeRF matches or outperforms D2 NeRF by as much
+between frames to simulate capture over extended periods               as 12 dB PSNR depending on the number of unique out-
+of time. We vary the number of unique distractors from 1               lier objects in the capture. Results on D2 NeRF real scenes
+(Statue) to 150 (BabyYoda), and their movements. Unlike                are provided in the supplementary material for qualitative
+prior work on monocular video, frames are captured with-               comparison. In Statue and Android, 1 and 3 non-rigid ob-
+out a clear temporal ordering (see Figure 7). The other three          jects are moved around the scene, respectively. D2 NeRF
+(i.e., Street1, Street2, and Gloss) include view-dependence            is able to model these objects and thus separate them from
+effects, the results of which are shown in the supplementary           the scenes’ static content. In the remaining scenes, a much
+
+
+
+                                                                    20631
+                                    Statue                     Android                      Crab                      BabyYoda
+                           LPIPS↓   SSIM↑    PSNR↑    LPIPS↓    SSIM↑      PSNR↑   LPIPS↓   SSIM↑    PSNR↑    LPIPS↓    SSIM↑    PSNR↑
+
+mip-NeRF 360 (L2 )         0.36      0.66    19.09     0.40      0.65      19.35   0.27      0.77    25.73     0.31      0.75    22.97
+mip-NeRF 360 (L1 )         0.30      0.72    19.55     0.40      0.66      19.38   0.22      0.79    26.69     0.22      0.80    26.15
+mip-NeRF 360 (Ch.)         0.30      0.73    19.64     0.40      0.66      19.53   0.21      0.80    27.72     0.23      0.80    25.22
+D2 NeRF                    0.48      0.49    19.09     0.43      0.57      20.61   0.42      0.68    21.18     0.44      0.65    17.32
+RobustNeRF                 0.28      0.75    20.89     0.31      0.65      21.72   0.21      0.81    30.75     0.20      0.83    30.87
+mip-NeRF 360 (clean)        0.19     0.80    23.57     0.31      0.71      23.10   0.16      0.84    32.55     0.16      0.84    32.63
+
+
+
+
+Figure 8. Evaluation on Natural Scenes – RobustNeRF outperforms baselines and D2 NeRF [53] on novel view synthesis with real-world
+captures. The table provides a quantitative comparison of RobustNeRF, D2 NeRF and mip-NeRF 360 using different reconstruction losses.
+The last row reports mip-NeRF 360 trained on a distractor-free version of each dataset, giving an upperbound for RobustNeRF performance.
+We also visualize samples from each scene rendered with each of the methods. See Supplementary Material for more samples.
+
+larger pool of 100 to 150 unique, non-static objects are used           Ablations – Figure 10. We ablate elements of the Robust-
+– too many for D2 NeRF to model effectively. As a result,               NeRF loss on the crab scene, comparing to an upper bound
+“cloud” artifacts appear in its static representation, similar          on the reconstruction accuracy of mip-NeRF 360 trained
+to those produced by mip-NeRF 360. In contrast, Robust-                 on distractor-free (clean) images from identical viewpoints.
+NeRF identifies non-static content as outliers and omits it             Our trimmed estimator (8) successfully eliminates distrac-
+during reconstruction. Although both methods use a simi-                tors at the expense of high frequency texture and a lower
+lar number of parameters, D2 NeRF’s peak memory usage is                PSNR. With smoothing (9), fine details are recovered, at the
+2.3x higher than RobustNeRF and 37x higher when normal-                 cost of longer training times. With the spatial window (10),
+izing for batch size. This is a direct consequence of model             RobustNeRF training time is on-par with mip-NeRF 360.
+architecture: D2 NeRF is tailored to simultaneously model-              We also ablate patch size and the trimming threshold (see
+ing static and dynamic content and thus merits higher com-              Supplementary Material); we find that RobustNeRF is in-
+plexity. To remain comparable, we limit image resolution                sensitive to trimming threshold, and that reducing the patch
+to 0.2 megapixels for all experiments.                                  size offsets the gains from smoothing and patching.
+
+
+
+
+                                                                   20632
+                               Car                     Cars                      Bag                   Chairs                  Pillow
+                   LPIPS↓ MS-SSIM↑ PSNR↑ LPIPS↓ MS-SSIM↑ PSNR↑ LPIPS↓ MS-SSIM↑ PSNR↑ LPIPS↓ MS-SSIM↑ PSNR↑ LPIPS↓ MS-SSIM↑ PSNR↑
+
+ NeRF-W [23]       .218       .814      24.23   .243   .873    24.51   .139      .791   20.65   .150    .681    23.77   .088    .935    28.24
+ NSFF [18]         .200       .806      24.90   .620   .376    10.29   .108      .892   25.62   .682    .284    12.82   .782    .343     4.55
+ NeuralDiff [46]   .065       .952      31.89   .098   .921    25.93   .117      .910   29.02   .112    .722    24.42   .565    .652    20.09
+ D2 NeRF [53]      .062       .975      34.27   .090   .953    26.27   .076      .979   34.14   .095    .707    24.63   .076    .979    36.58
+ RobustNeRF        .013       .988      37.73   .063   .957    26.31   .006      .995   41.82   .007    .992    41.23   .018    .990    38.95
+
+
+
+
+Figure 9. Evaluations on D2 NeRF Synthetic Scenes – Quantitative and qualitative evaluations on the Kubric synthetic dataset introduced
+by D2 NeRF, consisting of 200 training frames (with distractor) and 100 novel views for evaluation (without distractor).
+
+                      LPIPS↓     SSIM↑    PSNR↑   Updates to PSNR=30
+mip-NeRF 360 (L2 )     0.31      0.75     22.97           –
++ robust (8)           0.39      0.60     18.21           –
++ smoothing (9)        0.22      0.81     30.01         250K
++ patching (10)        0.21      0.81     30.75         70K
+oracle (clean)         0.16      0.84     32.55          25K
+
+
+                                                                              Figure 11. Sensitivity and Limitations – (left) Reconstruction
+                                                                              accuracy for BabyYoda as we increase the fraction of train im-
+                                                                              ages with distractors. (right) Accuracy vs training time on clean
+                                                                              BabyYoda images (distractor-free).
+
+Figure 10. Ablations – Blindly trimming the loss causes details
+                                                                                 Viewed through the lens of robust estimation, we for-
+to be lost. Smoothing recovers fine-grained detail, while patch-
+                                                                              mulate training as a form of iteratively re-weighted least
+based evaluation speeds up training and adds more detail. Patching
+enables the model to reach PSNR of 30, almost 4× faster.                      squares, with a variant of trimmed LS, and an inductive
+                                                                              bias on the smoothness of the outlier process. Robust-
+                                                                              NeRF is surprisingly simple, yet effective on a wide range
+Sensitivity – Figure 11. We find that RobustNeRF is re-                       of datasets. RobustNeRF is shown to outperform recent
+markably robust to the amount of clutter in a dataset. We                     state-of-the-art methods [4, 53], qualitatively and quantita-
+define an image as “cluttered” if it contains some num-                       tively, on a suite of synthetic datasets, common benchmark
+ber of distractor pixels. The figure shows how the recon-                     datasets, and new datasets captured by a robot, allowing
+struction accuracy of RobustNeRF and mip-NeRF 360 de-                         fine-grained control over distractors for comparison with
+pends on the fraction of training images with distractors,                    previous methods. While our experiments explore robust
+keeping the training set size constant. As the fraction in-                   estimation in the context of mip-NeRF 360, the Robust-
+creases, mip-NeRF 360’s accuracy steadily drops from 33                       NeRF loss can be incorporated within other NeRF models.
+to 25 dB, while RobustNeRF’s remains steadily above 31                        Limitations. While RobustNeRF performs well on scenes
+dB throughout. In the distraction-free regime, we find that                   with distractors, the loss entails some statistical inefficiency.
+RobustNeRF mildly under-performs mip-NeRF 360, both                           On clean data, this yields somewhat poorer reconstructions,
+in reconstruction quality and the time needed for training.                   often taking longer to train (see Figure 11). Future work
+This follows from the statistical inefficiency induced by the                 will consider very small distractors, which may require
+trimmed estimator (8), for which a percentage of pixels will                  adaptation of the spatial support used for outlier/inlier de-
+be discarded even if they do not correspond to distractors.                   cisions. It would also be interesting to learn a neural weight
+                                                                              function, further improving RobustNeRF; active learning
+5. Conclusions                                                                may be useful in this context. Finally, it would be inter-
+   We address a central problem in training NeRF models,                      esting to include our robust loss in other NeRF frameworks.
+namely, optimization in the presence of distractors, such                     Acknowledgements We thank Pete Florence and Kon-
+as transient or moving objects and photometric phenomena                      stantinos Rematas for helpful feedback, and Tianhao Wu
+that are not persistent throughout the capture session.                       for help with D2 NeRF experiments.
+
+
+
+                                                                        20633
+References                                                                     ance fields for real-time view synthesis. Proc. ICCV, 2021.
+                                                                               2
+ [1] Michal Adamkiewicz, Timothy Chen, Adam Caccavale,                    [14] Yoonwoo Jeong, Seokjun Ahn, Christopher Choy, Anima
+     Rachel Gardner, Preston Culbertson, Jeannette Bohg, and                   Anandkumar, Minsu Cho, and Jaesik Park. Self-calibrating
+     Mac Schwager. Vision-only robot navigation in a neural ra-                neural radiance fields. In Proc. ICCV, 2021. 2
+     diance world. IEEE Robotics and Automation Letters, 2022.
+                                                                          [15] Animesh Karnewar, Tobias Ritschel, Oliver Wang, and Niloy
+     1, 2
+                                                                               Mitra. Relu fields: The little non-linearity that could. TOG
+ [2] Jonathan T. Barron. A general and adaptive robust loss func-              (Proc. SIGGRAPH), 2022. 2
+     tion. Proc. CVPR, 2019. 3, 4                                         [16] KN Kutulakos and SM Seitz. A theory of shape by space
+ [3] Jonathan T. Barron, Ben Mildenhall, Matthew Tancik, Peter                 carving. IJCV, 2000. 3
+     Hedman, Ricardo Martin-Brualla, and Pratul P. Srinivasan.            [17] Tianye Li, Mira Slavcheva, Michael Zollhoefer, Simon
+     Mip-nerf: A multiscale representation for anti-aliasing neu-              Green, Christoph Lassner, Changil Kim, Tanner Schmidt,
+     ral radiance fields. ICCV, 2021. 3                                        Steven Lovegrove, Michael Goesele, Richard Newcombe,
+ [4] Jonathan T Barron, Ben Mildenhall, Dor Verbin, Pratul P                   et al. Neural 3d video synthesis from multi-view video. In
+     Srinivasan, and Peter Hedman. Mip-nerf 360: Unbounded                     Proc. CVPR, 2022. 2
+     anti-aliased neural radiance fields. In Proc. CVPR, 2022. 2,         [18] Zhengqi Li, Simon Niklaus, Noah Snavely, and Oliver Wang.
+     5, 8                                                                      Neural scene flow fields for space-time view synthesis of dy-
+ [5] Mark Boss, Andreas Engelhardt, Abhishek Kar, Yuanzhen                     namic scenes. In Proc. CVPR, 2021. 2, 8
+     Li, Deqing Sun, Jonathan T. Barron, Hendrik P.A. Lensch,             [19] Chen-Hsuan Lin, Wei-Chiu Ma, Antonio Torralba, and Si-
+     and Varun Jampani. SAMURAI: Shape And Material from                       mon Lucey. Barf: Bundle-adjusting neural radiance fields.
+     Unconstrained Real-world Arbitrary Image collections. In                  In Proc. CVPR, 2021. 2
+     Proc. NeurIPS, 2022. 2                                               [20] Jia-Wei Liu, Yan-Pei Cao, Weijia Mao, Wenqiao Zhang,
+ [6] Zhiqin Chen, Thomas Funkhouser, Peter Hedman, and An-                     David Junhao Zhang, Jussi Keppo, Ying Shan, Xiaohu
+     drea Tagliasacchi. Mobilenerf: Exploiting the polygon ras-                Qie, and Mike Zheng Shou. Devrf: Fast deformable
+     terization pipeline for efficient neural field rendering on mo-           voxel radiance fields for dynamic scenes. arXiv preprint
+     bile architectures. arXiv preprint arXiv:2208.00277, 2022.                arXiv:2205.15723, 2022. 2
+     1, 2                                                                 [21] Stephen Lombardi, Tomas Simon, Jason Saragih, Gabriel
+ [7] Dmitry Chetverikov, Dmitry Svirko, Dmitry Stepanov, and                   Schwartz, Andreas Lehrmann, and Yaser Sheikh. Neural vol-
+     Pavel Krsek. The trimmed iterative closest point algorithm.               umes: Learning dynamic renderable volumes from images.
+     In International Conference on Pattern Recognition, 2002. 5               ACM TOG, 2019. 1
+ [8] Shin-Fang Chng, Sameera Ramasinghe, Jamie Sherrah, and               [22] Li Ma, Xiaoyu Li, Jing Liao, Qi Zhang, Xuan Wang, Jue
+     Simon Lucey. Garf: Gaussian activated radiance fields for                 Wang, and Pedro V. Sander. Deblur-nerf: Neural radiance
+     high fidelity reconstruction and pose estimation. arXiv e-                fields from blurry images. In Proc. CVPR, 2022. 2
+     prints, 2022. 2                                                      [23] Ricardo Martin-Brualla, Noha Radwan, Mehdi SM Sajjadi,
+ [9] Yilun Du, Yinan Zhang, Hong-Xing Yu, Joshua B Tenen-                      Jonathan T Barron, Alexey Dosovitskiy, and Daniel Duck-
+     baum, and Jiajun Wu. Neural radiance flow for 4d view syn-                worth. Nerf in the wild: Neural radiance fields for uncon-
+     thesis and video processing. In Proc. ICCV. IEEE Computer                 strained photo collections. In Proc. CVPR, 2021. 2, 3, 4,
+     Society, 2021. 2                                                          8
+[10] Jiemin Fang, Taoran Yi, Xinggang Wang, Lingxi Xie, Xi-               [24] Ben Mildenhall, Peter Hedman, Ricardo Martin-Brualla,
+     aopeng Zhang, Wenyu Liu, Matthias Nießner, and Qi Tian.                   Pratul P. Srinivasan, and Jonathan T. Barron. NeRF in the
+     Fast dynamic radiance fields with time-aware neural voxels.               dark: High dynamic range view synthesis from noisy raw
+     arXiv preprint arXiv:2205.15285, 2022. 2                                  images. In Proc. CVPR, 2021. 2
+[11] Chen Gao, Ayush Saraf, Johannes Kopf, and Jia-Bin Huang.             [25] Ben Mildenhall, Pratul P. Srinivasan, Matthew Tancik, Ravi
+     Dynamic view synthesis from dynamic monocular video. In                   Ramamoorthi, and Ren Ng. Nerf: Representing scenes as
+     Proc. ICCV, 2021. 2                                                       neural radiance fields for view synthesis. In Proc. ECCV,
+[12] Klaus Greff, Francois Belletti, Lucas Beyer, Carl Doersch,                2020. 1, 2
+     Yilun Du, Daniel Duckworth, David J Fleet, Dan Gnanapra-             [26] Ben Mildenhall, Dor Verbin, Pratul P. Srinivasan, Peter
+     gasam, Florian Golemo, Charles Herrmann, Thomas Kipf,                     Hedman, Ricardo Martin-Brualla, and Jonathan T. Barron.
+     Abhijit Kundu, Dmitry Lagun, Issam Laradji, Hsueh-                        Multinerf: a code release for Mip-NeRF 360, Ref-NeRF, and
+     Ti (Derek) Liu, Henning Meyer, Yishu Miao, Derek                          RawNeRF, 2022. 5
+     Nowrouzezahrai, Cengiz Oztireli, Etienne Pot, Noha Rad-              [27] Thomas Müller, Alex Evans, Christoph Schied, and Alexan-
+     wan, Daniel Rebain, Sara Sabour, Mehdi S. M. Sajjadi,                     der Keller. Instant neural graphics primitives with a mul-
+     Matan Sela, Vincent Sitzmann, Austin Stone, Deqing Sun,                   tiresolution hash encoding. TOG (Proc. SIGGRAPH), 2022.
+     Suhani Vora, Ziyu Wang, Tianhao Wu, Kwang Moo Yi,                         2
+     Fangcheng Zhong, and Andrea Tagliasacchi. Kubric: a scal-            [28] Michael Niemeyer, Jonathan T. Barron, Ben Mildenhall,
+     able dataset generator. In Proc. CVPR, 2022. 6                            Mehdi S. M. Sajjadi, Andreas Geiger, and Noha Radwan.
+[13] Peter Hedman, Pratul P. Srinivasan, Ben Mildenhall,                       Regnerf: Regularizing neural radiance fields for view syn-
+     Jonathan T. Barron, and Paul Debevec. Baking neural radi-                 thesis from sparse inputs. In Proc. CVPR, 2022. 2
+
+
+
+
+                                                                       20634
+[29] Michael Oechsle, Songyou Peng, and Andreas Geiger.                  [45] Edgar Tretschk, Ayush Tewari, Vladislav Golyanik, Michael
+     Unisurf: Unifying neural implicit surfaces and radiance                  Zollhöfer, Christoph Lassner, and Christian Theobalt. Non-
+     fields for multi-view reconstruction. In Proc. ICCV, 2021.               rigid neural radiance fields: Reconstruction and novel view
+     2                                                                        synthesis of a dynamic scene from monocular video. In Proc.
+[30] Keunhong Park, Utkarsh Sinha, Peter Hedman, Jonathan T                   ICCV, 2021. 2
+     Barron, Sofien Bouaziz, Dan B Goldman, Ricardo Martin-              [46] Vadim Tschernezki, Diane Larlus, and Andrea Vedaldi. Neu-
+     Brualla, and Steven M Seitz.          Hypernerf: a higher-               ralDiff: Segmenting 3D objects that move in egocentric
+     dimensional representation for topologically varying neu-                videos. In Proc. 3DV, 2021. 8
+     ral radiance fields. ACM Transactions on Graphics (TOG),            [47] Dor Verbin, Peter Hedman, Ben Mildenhall, Todd Zickler,
+     2021. 2                                                                  Jonathan T. Barron, and Pratul P. Srinivasan. Ref-NeRF:
+[31] Ben Poole, Ajay Jain, Jonathan T. Barron, and Ben Milden-                Structured view-dependent appearance for neural radiance
+     hall. Dreamfusion: Text-to-3d using 2d diffusion. arXiv                  fields. Proc. CVPR, 2022. 2
+     preprint 2209.14988, 2022. 2                                        [48] Suhani Vora, Noha Radwan, Klaus Greff, Henning Meyer,
+[32] Albert Pumarola, Enric Corona, Gerard Pons-Moll, and                     Kyle Genova, Mehdi SM Sajjadi, Etienne Pot, Andrea
+     Francesc Moreno-Noguer. D-nerf: Neural radiance fields for               Tagliasacchi, and Daniel Duckworth. Nesf: Neural semantic
+     dynamic scenes. In Proc. CVPR, 2021. 2                                   fields for generalizable semantic segmentation of 3d scenes.
+[33] Daniel Rebain, Mark Matthews, Kwang Moo Yi, Dmitry La-                   TMLR, 2021. 2
+     gun, and Andrea Tagliasacchi. LOLNeRF: Learn from One               [49] Chaoyang Wang, Ben Eckart, Simon Lucey, and Orazio
+     Look. In Proc. CVPR, 2022. 2, 3                                          Gallo. Neural trajectory fields for dynamic novel view syn-
+[34] Jeremy Reizenstein, Roman Shapovalov, Philipp Henzler,                   thesis. arXiv preprint arXiv:2105.05994, 2021. 2
+     Luca Sbordone, Patrick Labatut, and David Novotny. Com-             [50] Jiepeng Wang, Peng Wang, Xiaoxiao Long, Christian
+     mon objects in 3d: Large-scale learning and evaluation of                Theobalt, Taku Komura, Lingjie Liu, and Wenping Wang.
+     real-life 3d category reconstruction. In Proc. ICCV, 2021. 1             Neuris: Neural reconstruction of indoor scenes using normal
+[35] Konstantinos Rematas, Andrew Liu, Pratul P. Srinivasan,                  priors. arXiv preprint, 2022. 2
+     Jonathan T. Barron, Andrea Tagliasacchi, Tom Funkhouser,            [51] Peng Wang, Lingjie Liu, Yuan Liu, Christian Theobalt, Taku
+     and Vittorio Ferrari. Urban radiance fields. Proc. CVPR,                 Komura, and Wenping Wang. Neus: Learning neural implicit
+     2022. 1, 2, 3                                                            surfaces by volume rendering for multi-view reconstruction.
+[36] Antoni Rosinol, John J Leonard, and Luca Carlone. Nerf-                  Proc. NeurIPS, 2021. 2
+     slam: Real-time dense monocular slam with neural radiance           [52] Z. Wang, A.C. Bovik, H.R. Sheikh, and E.P. Simoncelli. Im-
+     fields. arXiv preprint arXiv:2210.13641, 2022. 1                         age quality assessment: From error visibility to structural
+[37] Johannes L Schonberger and Jan-Michael Frahm. Structure-                 similarity. IEEE Transactions on Image Processing, 2004.
+     from-motion revisited. In Proc. CVPR, 2016. 1                            5
+[38] Johannes Lutz Schönberger, Enliang Zheng, Marc Pollefeys,          [53] Tianhao Wu, Fangcheng Zhong, Forrester Cole, Andrea
+     and Jan-Michael Frahm. Pixelwise view selection for un-                  Tagliasacchi, and Cengiz Oztireli. D2nerf: Self-supervised
+     structured multi-view stereo. In Proc. ECCV, 2016. 6                     decoupling of dynamic and static objects from a monocular
+[39] Vincent Sitzmann, Michael Zollhöfer, and Gordon Wet-                    video. In Proc. NeurIPS, 2022. 2, 4, 6, 7, 8
+     zstein. Scene representation networks: Continuous 3d-               [54] Wenqi Xian, Jia-Bin Huang, Johannes Kopf, and Changil
+     structure-aware neural scene representations.        In Proc.            Kim. Space-time neural irradiance fields for free-viewpoint
+     NeurIPs, 2019. 1                                                         video. In Proc. CVPR, 2021. 2
+[40] Weiwei Sun, Wei Jiang, Andrea Tagliasacchi, Eduard Trulls,          [55] Yiheng Xie, Towaki Takikawa, Shunsuke Saito, Or Litany,
+     and Kwang Moo Yi. ACNe: Attentive Context Normal-                        Shiqin Yan, Numair Khan, Federico Tombari, James Tomp-
+     ization for Robust Permutation-Equivariant Learning. Proc.               kin, Vincent Sitzmann, and Srinath Sridhar. Neural fields in
+     CVPR, 2020. 4                                                            visual computing and beyond. Comput. Graph. Forum, 2022.
+[41] Andrea Tagliasacchi and Hao Li. Modern techniques and ap-                1
+     plications for real-time non-rigid registration. In Proc. SIG-      [56] Alex Yu, Vickie Ye, Matthew Tancik, and Angjoo Kanazawa.
+     GRAPH Asia (Technical Course Notes), 2016. 3, 4                          pixelnerf: Neural radiance fields from one or few images. In
+[42] Andrea Tagliasacchi and Ben Mildenhall. Volume Rendering                 Proc. CVPR, 2021. 2
+     Digest (for NeRF), 2022. 2                                          [57] Zehao Yu, Songyou Peng, Michael Niemeyer, Torsten Sat-
+[43] Matthew Tancik, Vincent Casser, Xinchen Yan, Sabeek Prad-                tler, and Andreas Geiger. Monosdf: Exploring monocular
+     han, Ben Mildenhall, Pratul P Srinivasan, Jonathan T Barron,             geometric cues for neural implicit surface reconstruction. In
+     and Henrik Kretzschmar. Block-nerf: Scalable large scene                 Proc. NeurIPS, 2022. 2
+     neural view synthesis. In Proc. CVPR, 2022. 2                       [58] Jason Y Zhang, Deva Ramanan, and Shubham Tulsiani. Rel-
+[44] Ayush Tewari, Justus Thies, Ben Mildenhall, Pratul Srini-                pose: Predicting probabilistic relative rotation for single ob-
+     vasan, Edgar Tretschk, W Yifan, Christoph Lassner, Vincent               jects in the wild. In Proc. ECCV, 2022. 2
+     Sitzmann, Ricardo Martin-Brualla, Stephen Lombardi, et al.          [59] Kai Zhang, Gernot Riegler, Noah Snavely, and Vladlen
+     Advances in neural rendering. In Computer Graphics Forum,                Koltun. Nerf++: Analyzing and improving neural radiance
+     2022. 1                                                                  fields. arXiv preprint arXiv:2010.07492, 2020. 2
+
+
+
+
+                                                                      20635
+[60] Richard Zhang, Phillip Isola, Alexei A Efros, Eli Shechtman,
+     and Oliver Wang. The unreasonable effectiveness of deep
+     features as a perceptual metric. In Proc. CVPR, 2018. 5
+[61] Zihan Zhu, Songyou Peng, Viktor Larsson, Weiwei Xu, Hu-
+     jun Bao, Zhaopeng Cui, Martin R Oswald, and Marc Polle-
+     feys. Nice-slam: Neural implicit scalable encoding for slam.
+     In Proc. CVPR, 2022. 1
+
+
+
+
+                                                                    20636
+

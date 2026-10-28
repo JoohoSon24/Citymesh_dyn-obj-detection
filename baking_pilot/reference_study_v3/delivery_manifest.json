@@ -1,0 +1,58 @@
+{
+  "render_equations.py": {
+    "bytes": 1857,
+    "sha256": "89892d5d41a659f7a1742f870e2869048e4f0c5991df066fc916ea9e37f7bc72"
+  },
+  "make_results.py": {
+    "bytes": 10320,
+    "sha256": "da8845a9b4585291fc5e0d9f71ad055d73d373f330a997cf996a8a83dcca6270"
+  },
+  "run_experiments.py": {
+    "bytes": 6643,
+    "sha256": "dc25b1bc33cc4f0c4498e65a359c10bc73af6dd51adcb24b4cfc3b7bdf9c9a23"
+  },
+  "write_references.py": {
+    "bytes": 15385,
+    "sha256": "8d2e377a8b03a7f796527fe5102babf1db14bc56e4938fbd25e4bd038b7c302c"
+  },
+  "extract_figures.py": {
+    "bytes": 1008,
+    "sha256": "ed7358ae98332b2958075bb0ff7d3ca9193919289dfe9851b62e13d1af8ed642"
+  },
+  "build_v3.py": {
+    "bytes": 18666,
+    "sha256": "036adfbcda58226a53c4a956096e19a3f90863b49d16d2fe7436ecbbae9126f0"
+  },
+  "evaluate.py": {
+    "bytes": 4506,
+    "sha256": "afb117d5b7ee3db87ef252c9f7700853402d6b2c1ad6a1d221abe5632e9a7714"
+  },
+  "prepare_dino.py": {
+    "bytes": 2017,
+    "sha256": "8f3853cf26878aa4c9d35cd08525a2de0794db67e138b191f00803b9ba6a8b63"
+  },
+  "download_papers.py": {
+    "bytes": 1138,
+    "sha256": "e5caf27cea506d3d1608f7eb23e423d8540782669ceaabed28ef527c5bc57c4d"
+  },
+  "protocol.json": {
+    "bytes": 2325,
+    "sha256": "df32da21fb601abd3b02dd222f5e07dfff354ceb19166afa59b1d25bbe06caea"
+  },
+  "references.json": {
+    "bytes": 9681,
+    "sha256": "5697ff7088cdad0686ccdc0f39ad23dedc95486d8cc0897f360513fd1b5a7a86"
+  },
+  "results/metrics.csv": {
+    "bytes": 4253,
+    "sha256": "d3f22e6700e070ca7d2c9a53f7ef7c8e018e0babfe99fbd2163234a5a4528af1"
+  },
+  "results/summary.json": {
+    "bytes": 20253,
+    "sha256": "a63a96f9bfd7140479ffe97afe03d9114ab1381a6fefae85cacfe4f0a32400bd"
+  },
+  "results/validation.json": {
+    "bytes": 188,
+    "sha256": "2c9a284a4f820bbf1cb2b9380b91208121304e2efd41fa6f087fcfc91a7da37c"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "methods": [
+    "l2",
+    "median",
+    "block",
+    "hugs",
+    "robust",
+    "geo_mask",
+    "uv_fusion",
+    "uv_shadow_guard",
+    "geo_fusion",
+    "geo_smooth",
+    "dino_ssim_soft",
+    "dino_cosine_soft",
+    "dino_cosine_hard",
+    "sam_region_median"
+  ],
+  "labels": {
+    "l2": "L2",
+    "median": "Temporal median",
+    "block": "Block-type",
+    "hugs": "HuGS-type",
+    "robust": "Robust-type",
+    "geo_mask": "Geometry mask",
+    "uv_fusion": "UV fusion",
+    "uv_shadow_guard": "UV + shadow guard",
+    "geo_fusion": "Geometry + init",
+    "geo_smooth": "Geometry + prior",
+    "dino_ssim_soft": "DINO-SSIM soft",
+    "dino_cosine_soft": "DINO-cosine soft",
+    "dino_cosine_hard": "DINO-cosine hard",
+    "sam_region_median": "SAM-region vote"
+  }
+}

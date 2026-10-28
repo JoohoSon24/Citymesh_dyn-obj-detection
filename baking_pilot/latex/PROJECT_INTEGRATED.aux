@@ -1,0 +1,111 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand*\HyPL@Entry[1]{}
+\HyPL@Entry{0<</S/D>>}
+\citation{block}
+\citation{hugs}
+\citation{robust}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Intro}{3}{section.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}문제와 연구 질문}{3}{subsection.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}범위와 용어}{3}{subsection.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Method}{3}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}영상 출처, 장면과 전처리}{3}{subsection.2.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces 최종 사용한 실제 장면. 차량 점유는 검출 기반 대리 지표다.\relax }}{3}{table.caption.2}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{tab:data}{{1}{3}{최종 사용한 실제 장면. 차량 점유는 검출 기반 대리 지표다.\relax }{table.caption.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}공통 틀: 같은 L2 오차에 어떤 관측 가중치 S를 곱하는가?}{4}{subsection.2.2}\protected@file@percent }
+\newlabel{eq:main}{{1}{4}{공통 틀: 같은 L2 오차에 어떤 관측 가중치 S를 곱하는가?}{equation.2.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces 공통 $S\times $L2 틀에서 본 기준선의 차이.\relax }}{4}{table.caption.3}\protected@file@percent }
+\newlabel{tab:s-overview}{{2}{4}{공통 $S\times $L2 틀에서 본 기준선의 차이.\relax }{table.caption.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}L2 / no-removal: 모든 관측을 사용}{4}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Block형: 차량 클래스이면 관측을 제외}{5}{subsection.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}HuGS형: 정적으로 일관된 영역만 사용}{5}{subsection.2.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Robust형: 현재 잔차로 S를 반복 갱신}{5}{subsection.2.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7}개선한 S: 원본 마스크를 공통 UV에서 투영}{6}{subsection.2.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.8}관측 선택을 공유하는 직접 UV 합성과 추가 prior}{6}{subsection.2.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{직접 UV 합성: 선택한 관측을 직접 모으는 참고 기준선.}{6}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Shadow guard: S=0의 범위를 어두운 이웃으로 확장.}{6}{section*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Geometry + prior: S는 유지하고 미관측부에 공간 제약 추가.}{6}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.9}추가 두 방법: 같은 S를 유지하고 채우는 방식을 개선}{6}{subsection.2.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Gradient harmonization: 관측값과 경계 변화량을 함께 맞추기.}{6}{section*.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Patch transfer: 실제 관측된 주변 패치로 미관측부 채우기.}{7}{section*.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.10}공통 구현: S 이외의 조건}{7}{subsection.2.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.11}평가 지표와 실험 간 차이}{7}{subsection.2.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Result}{9}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Easy: 빈 배경 관측이 다수인 장면}{9}{subsection.3.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Easy의 저장 결과(seed42). 차량 표본은16개 작은 원, 지면 기준은6년 consensus다. 검출 수는 같은 검출기를 사용한 보조 지표다.\relax }}{9}{table.caption.9}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Easy의 미적용 L2 포함 동일 위치 비교. 차량, 주차선, 명암 영역을 함께 보아 표본 점수와 넓은 지면 품질의 차이를 확인한다. 원 저장 결과에서 가져온 그림이며 추가 학습은 하지 않았다.\relax }}{9}{figure.caption.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Hard: 높은 차량 점유에서의 기존 기준선}{10}{subsection.3.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Hard의 기존 주요 기준선. 평균$\pm $표본표준편차,3seed. 각 열은 PSNR(dB). B/C의3--4회 점유 OBB는 각각4/17개다.\relax }}{10}{table.caption.11}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Hard의 추가 변형(seed42). PSNR은3--4회 점유 OBB, LPIPS는전체 채택 OBB crop 평균이다. 주요 표의3seed 평균과 구분한다.\relax }}{10}{table.caption.12}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Hard의 고정 위치 비교. 왼쪽부터 차량 학습 관측,2026 배경, L2, Block형, HuGS형, Robust형이다. B와C에서 각각4/5 및3/5 점유 표본을 사용하며 Improved와 같은 위치다. 주황선은 고정 평가 OBB다.\relax }}{11}{figure.caption.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Improved: 배경 관측 선택과 명시적 공간 prior}{12}{subsection.3.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces 동일 Hard 평가에서의 개선안. 학습형 PSNR은3seed 평균$\pm $표본표준편차, 다른 열은 평균. UV 직접 합성 두 방법은 결정적 계산1회로 표준편차가 없다.\relax }}{12}{table.caption.14}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces 동일4개 고정 차량 위치의 개선안 비교. 주황선은 평가 OBB로 시각화에만 표시했다. 모든 결과는seed42, 동일 cropㆍ동일 색 범위다. UV 합성에서 차체와 중첩 흔적은 줄지만 일부 어두운 흔적과 주변 차량은 남는다. 폴리곤 밖 인접 차량은 해당 표본 점수에 포함되지 않는다.\relax }}{12}{figure.caption.15}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces 전체 장면 비교. 윗줄B, 아랫줄C. 미적용 L2, Block형, HuGS형, Robust형, UV fusion, UV+shadow guard, Geometry+prior 순서다. 미관측 영역의 보간ㆍ그림자ㆍ주변 잔류 차량까지 포함해 보아야 한다.\relax }}{13}{figure.caption.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}추가 실험: 부자연스러운 채움을 줄이는 두 재구성 방법}{14}{subsection.3.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces 추가 채움 방법의 동일 평가 비교. 기존 학습형은3seed 평균$\pm $표본표준편차, 직접 재구성은 결정적1회다. PSNR은dB, LPIPS는전체 채택OBB의 객체 평균이다.\relax }}{14}{table.caption.17}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces 새 두 방법을 같은4개 고정 차량 위치에 추가한 비교. 원본 차량 관측,2026 배경, L2, Block형, UV+shadow guard, Gradient harmonization, Patch transfer 순서다. 주황선은 평가 OBB이며 모든 방법에 동일한 crop과 색 범위를 사용했다.\relax }}{14}{figure.caption.18}\protected@file@percent }
+\newlabel{fig:natural-crops}{{5}{14}{새 두 방법을 같은4개 고정 차량 위치에 추가한 비교. 원본 차량 관측,2026 배경, L2, Block형, UV+shadow guard, Gradient harmonization, Patch transfer 순서다. 주황선은 평가 OBB이며 모든 방법에 동일한 crop과 색 범위를 사용했다.\relax }{figure.caption.18}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces 채움 자체를 보기 위한 추가 확대. 고정 채택 OBB와 겹치는 완전 미관측 연결성분 중 장면별 최대 영역을 원본 마스크만으로 선택했다. 좌표 선정에는 방법별 출력이나 평가 오차를 사용하지 않았다. 차체 모양의 어두운 흔적과 흐림은 여전히 남아 완전 해결을 뜻하지 않는다.\relax }}{15}{figure.caption.19}\protected@file@percent }
+\newlabel{fig:natural-holes}{{6}{15}{채움 자체를 보기 위한 추가 확대. 고정 채택 OBB와 겹치는 완전 미관측 연결성분 중 장면별 최대 영역을 원본 마스크만으로 선택했다. 좌표 선정에는 방법별 출력이나 평가 오차를 사용하지 않았다. 차체 모양의 어두운 흔적과 흐림은 여전히 남아 완전 해결을 뜻하지 않는다.\relax }{figure.caption.19}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces 추가 진단(seed42). Gradient L1은2026 기준과의 인접 RGB 차분 오차(낮을수록 좋음), hole은모든 학습 관측이 제외된 픽셀, 경계는hole의3픽셀 이웃이다. 작은 부분집합이며 자연스러움의 사람 평가가 아니다.\relax }}{15}{table.caption.20}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces 추가 두 방법의 빨간 제외 마스크. 장면별2025년ㆍ20도 입력이며 위B, 아래C다. 두 방법 모두 같은 shadow-guard S를 사용해 빨간 영역이 동일하다. 차이는 마스크가 아니라 선택된 관측으로 배경을 채우는 방식이다. 회색은 valid 밖이다.\relax }}{16}{figure.caption.21}\protected@file@percent }
+\newlabel{fig:natural-masks}{{7}{16}{추가 두 방법의 빨간 제외 마스크. 장면별2025년ㆍ20도 입력이며 위B, 아래C다. 두 방법 모두 같은 shadow-guard S를 사용해 빨간 영역이 동일하다. 차이는 마스크가 아니라 선택된 관측으로 배경을 채우는 방식이다. 회색은 valid 밖이다.\relax }{figure.caption.21}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces 추가 방법을 포함한 전체 장면. L2, Block형, UV fusion, UV+shadow guard, Gradient harmonization, Patch transfer 순서이며 위Bㆍ아래C다. 국소 개선뿐 아니라 남은 어두운 흔적ㆍ평활화ㆍ잘못 복사된 질감도 함께 평가한다.\relax }}{16}{figure.caption.22}\protected@file@percent }
+\newlabel{fig:natural-full}{{8}{16}{추가 방법을 포함한 전체 장면. L2, Block형, UV fusion, UV+shadow guard, Gradient harmonization, Patch transfer 순서이며 위Bㆍ아래C다. 국소 개선뿐 아니라 남은 어두운 흔적ㆍ평활화ㆍ잘못 복사된 질감도 함께 평가한다.\relax }{figure.caption.22}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}관측 선택의 시각화: 빨간색은 제외한 관측 S=0}{18}{subsection.3.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Easy 입력의 제외 영역. 윗줄은 원본, L2, Block형, HuGS형이며 아랫줄은 Robust 기본ㆍORㆍ차량 크기ㆍ깊이 적응이다. 빨간색이 많다고 제거 품질이 높다는 의미는 아니며 주차선과 지면의 잘못된 제외도 함께 살핀다.\relax }}{18}{figure.caption.23}\protected@file@percent }
+\newlabel{fig:easy-masks}{{9}{18}{Easy 입력의 제외 영역. 윗줄은 원본, L2, Block형, HuGS형이며 아랫줄은 Robust 기본ㆍORㆍ차량 크기ㆍ깊이 적응이다. 빨간색이 많다고 제거 품질이 높다는 의미는 아니며 주차선과 지면의 잘못된 제외도 함께 살핀다.\relax }{figure.caption.23}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Hard B의 제외 영역. 원본, L2, Block형, HuGS형, 최종 Robust형, Geometry/UV fusion, UV+shadow guard 순서다. 원본 UV 마스크를 투영한 선택과 사선 영상별 독립 검출의 차이를 같은 사진에서 비교한다.\relax }}{18}{figure.caption.24}\protected@file@percent }
+\newlabel{fig:b-masks}{{10}{18}{Hard B의 제외 영역. 원본, L2, Block형, HuGS형, 최종 Robust형, Geometry/UV fusion, UV+shadow guard 순서다. 원본 UV 마스크를 투영한 선택과 사선 영상별 독립 검출의 차이를 같은 사진에서 비교한다.\relax }{figure.caption.24}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Hard C의 제외 영역. B와 같은 순서와 표시 규칙이다. Shadow guard는 차체 마스크 밖의 어두운 이웃까지 제외할 수 있다. 빨간 영역은 차량ㆍ그림자의 정답 분할이 아니라 각 방법이 실제 사용하지 않는 관측이다.\relax }}{19}{figure.caption.25}\protected@file@percent }
+\newlabel{fig:c-masks}{{11}{19}{Hard C의 제외 영역. B와 같은 순서와 표시 규칙이다. Shadow guard는 차체 마스크 밖의 어두운 이웃까지 제외할 수 있다. 빨간 영역은 차량ㆍ그림자의 정답 분할이 아니라 각 방법이 실제 사용하지 않는 관측이다.\relax }{figure.caption.25}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}해석, 한계 및 재현 범위}{20}{subsection.3.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.7}산출물과 실행 기록}{20}{subsection.3.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A}구현 세부 수식}{21}{appendix.A}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}표기와 공통 베이킹 모델}{21}{subsection.A.1}\protected@file@percent }
+\newlabel{eq:data}{{22}{21}{표기와 공통 베이킹 모델}{equation.A.22}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}공통 최적화 절차}{21}{subsection.A.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.3}미적용 기준선: L2와 시간 중앙값}{21}{subsection.A.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{L2 / no-removal.}{21}{section*.26}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{시간 중앙값.}{22}{section*.27}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.4}Block-NeRF형: 의미 클래스에 따른 관측 제외}{22}{subsection.A.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.5}NeRF-HuGS형: 특징점 지지, 잔차와 SAM 영역}{22}{subsection.A.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{특징점 일관성.}{22}{section*.28}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{색 잔차.}{22}{section*.29}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{SAM 영역 선택.}{22}{section*.30}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.6}RobustNeRF형: 잔차 기반 IRLS와 공간 문맥}{23}{subsection.A.6}\protected@file@percent }
+\newlabel{eq:robust}{{37}{23}{RobustNeRF형: 잔차 기반 IRLS와 공간 문맥}{equation.A.37}{}}
+\@writefile{toc}{\contentsline {paragraph}{OR 변형.}{23}{section*.31}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{차량 크기 변형.}{23}{section*.32}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{깊이 적응 변형.}{23}{section*.33}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.7}개선 기준선 I: UV에서 비차량 관측만 합성}{23}{subsection.A.7}\protected@file@percent }
+\newlabel{eq:fusion}{{42}{23}{개선 기준선 I: UV에서 비차량 관측만 합성}{equation.A.42}{}}
+\newlabel{eq:harmonic}{{43}{24}{개선 기준선 I: UV에서 비차량 관측만 합성}{equation.A.43}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.8}개선 기준선 II: 차량 주변의 어두운 후보 제외}{24}{subsection.A.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.9}개선 기준선 III: 마스크 투영ㆍ초기화ㆍ공간 prior}{24}{subsection.A.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Geometry mask.}{24}{section*.34}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Geometry + init.}{24}{section*.35}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Geometry + prior.}{24}{section*.36}\protected@file@percent }
+\bibcite{pdok}{1}
+\bibcite{block}{2}
+\bibcite{hugs}{3}
+\bibcite{robust}{4}
+\bibcite{sam}{5}
+\bibcite{obb}{6}
+\gdef \@abspage@last{25}

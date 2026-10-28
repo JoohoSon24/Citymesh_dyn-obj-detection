@@ -1,0 +1,48 @@
+01:54:15 MASKS industrial_b {'dino_ssim_soft': {'positive_fraction': 1.0, 'mean_weight': 50.000003814697266, 'min': 49.99999237060547, 'max': 50.00000762939453, 'fraction_weight_gt_1': 1.0}, 'dino_cosine_soft': {'positive_fraction': 1.0, 'mean_weight': 0.6407693028450012, 'min': 0.1372826248407364, 'max': 5.69655704498291, 'fraction_weight_gt_1': 0.10165613920420213}, 'dino_cosine_hard': {'positive_fraction': 0.10165613920420213, 'mean_weight': 0.10165613889694214, 'min': 0.0, 'max': 1.0, 'fraction_weight_gt_1': 0.0}, 'sam_region_median': {'positive_fraction': 0.2807314246031138, 'mean_weight': 0.2807314097881317, 'min': 0.0, 'max': 1.0, 'fraction_weight_gt_1': 0.0}}
+01:54:23 DONE industrial_b dino_ssim_soft 42 7.5
+01:54:30 DONE industrial_b dino_cosine_soft 42 7.4
+01:54:37 DONE industrial_b dino_cosine_hard 42 7.1
+01:54:44 DONE industrial_b sam_region_median 42 6.7
+01:54:51 DONE industrial_b dino_ssim_soft 43 6.8
+Traceback (most recent call last):
+  File "/root/sonjooho/baking_pilot/reference_study_v3/run_experiments.py", line 68, in <module>
+    for method in CFG['methods']:bake(name,method,seed,masks)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/root/sonjooho/baking_pilot/reference_study_v3/run_experiments.py", line 57, in bake
+    ii=torch.tensor(rng.choice(20,4,replace=False),device=D);c=ii%4;v=valid[c];resolved=F.interpolate(tex,size=(1024,1024),mode='bilinear',align_corners=True);render=F.grid_sample(resolved.expand(4,-1,-1,-1),grids[c],align_corners=True,padding_mode='zeros');pred=torch.einsum('bij,bjhw->bihw',aff[ii],render)+bias[ii,:,None,None];err=(pred-images[ii]).square().mean(1,keepdim=True);data=(err*mask[ii]*v).sum()/v.sum().clamp(min=1);color=.001*((aff-torch.eye(3,device=D)).square().mean()+bias.square().mean());loss=data+color;opt.zero_grad();loss.backward();aff.grad[8]=0;bias.grad[8]=0;opt.step()
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ^^^^^^^^^^^^^^^
+  File "/root/sonjooho/baking_pilot/.venv/lib/python3.11/site-packages/torch/_tensor.py", line 581, in backward
+    torch.autograd.backward(
+  File "/root/sonjooho/baking_pilot/.venv/lib/python3.11/site-packages/torch/autograd/__init__.py", line 347, in backward
+    _engine_run_backward(
+  File "/root/sonjooho/baking_pilot/.venv/lib/python3.11/site-packages/torch/autograd/graph.py", line 825, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt
+01:55:13 MASKS industrial_b {'dino_ssim_soft': {'positive_fraction': 1.0, 'mean_weight': 50.000003814697266, 'min': 49.99999237060547, 'max': 50.00000762939453, 'fraction_weight_gt_1': 1.0}, 'dino_cosine_soft': {'positive_fraction': 1.0, 'mean_weight': 0.6407693028450012, 'min': 0.1372826248407364, 'max': 5.69655704498291, 'fraction_weight_gt_1': 0.10165613920420213}, 'dino_cosine_hard': {'positive_fraction': 0.10165613920420213, 'mean_weight': 0.10165613889694214, 'min': 0.0, 'max': 1.0, 'fraction_weight_gt_1': 0.0}, 'sam_region_median': {'positive_fraction': 0.27011749567242144, 'mean_weight': 0.27011749148368835, 'min': 0.0, 'max': 1.0, 'fraction_weight_gt_1': 0.0}}
+01:55:13 SKIP completed industrial_b dino_ssim_soft 42
+01:55:13 SKIP completed industrial_b dino_cosine_soft 42
+01:55:13 SKIP completed industrial_b dino_cosine_hard 42
+01:55:20 DONE industrial_b sam_region_median 42 6.8
+01:55:20 SKIP completed industrial_b dino_ssim_soft 43
+01:55:26 DONE industrial_b dino_cosine_soft 43 6.6
+01:55:33 DONE industrial_b dino_cosine_hard 43 6.7
+01:55:40 DONE industrial_b sam_region_median 43 6.8
+01:55:47 DONE industrial_b dino_ssim_soft 44 7.1
+01:55:54 DONE industrial_b dino_cosine_soft 44 6.5
+01:56:00 DONE industrial_b dino_cosine_hard 44 6.7
+01:56:07 DONE industrial_b sam_region_median 44 6.6
+01:56:24 MASKS industrial_c {'dino_ssim_soft': {'positive_fraction': 1.0, 'mean_weight': 50.000003814697266, 'min': 49.99999237060547, 'max': 50.00000762939453, 'fraction_weight_gt_1': 1.0}, 'dino_cosine_soft': {'positive_fraction': 1.0, 'mean_weight': 0.6763618588447571, 'min': 0.15657681226730347, 'max': 6.236976623535156, 'fraction_weight_gt_1': 0.12478438701573247}, 'dino_cosine_hard': {'positive_fraction': 0.12478438701573247, 'mean_weight': 0.12478438764810562, 'min': 0.0, 'max': 1.0, 'fraction_weight_gt_1': 0.0}, 'sam_region_median': {'positive_fraction': 0.2765650345270131, 'mean_weight': 0.2765650451183319, 'min': 0.0, 'max': 1.0, 'fraction_weight_gt_1': 0.0}}
+01:56:31 DONE industrial_c dino_ssim_soft 42 6.6
+01:56:37 DONE industrial_c dino_cosine_soft 42 6.7
+01:56:44 DONE industrial_c dino_cosine_hard 42 6.7
+01:56:51 DONE industrial_c sam_region_median 42 6.7
+01:56:58 DONE industrial_c dino_ssim_soft 43 6.9
+01:57:05 DONE industrial_c dino_cosine_soft 43 6.8
+01:57:11 DONE industrial_c dino_cosine_hard 43 6.7
+01:57:18 DONE industrial_c sam_region_median 43 6.7
+01:57:25 DONE industrial_c dino_ssim_soft 44 6.7
+01:57:31 DONE industrial_c dino_cosine_soft 44 6.5
+01:57:38 DONE industrial_c dino_cosine_hard 44 6.7
+01:57:45 DONE industrial_c sam_region_median 44 6.6
+01:57:45 ALL TRAINING COMPLETE

@@ -1,0 +1,29 @@
+{
+  "seed": 44,
+  "updates": 600,
+  "seconds": 6.487353086471558,
+  "trace": [
+    {
+      "step": 0,
+      "data": 0.004737457260489464,
+      "color": 0.0
+    },
+    {
+      "step": 199,
+      "data": 0.0038346941582858562,
+      "color": 1.4981702634031535e-06
+    },
+    {
+      "step": 399,
+      "data": 0.003413259517401457,
+      "color": 5.984887593513122e-06
+    },
+    {
+      "step": 599,
+      "data": 0.0037906181532889605,
+      "color": 1.184891789307585e-05
+    }
+  ],
+  "mask_is_fixed": true,
+  "mask_path": "/root/sonjooho/baking_pilot/reference_study_v3/results/industrial_b/dino_cosine_soft_mask.npz"
+}

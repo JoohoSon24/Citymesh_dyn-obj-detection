@@ -1,0 +1,60 @@
+{
+  "name": "Utrecht industrial C - variable occupancy lot",
+  "lat": 52.0773,
+  "lon": 5.04895,
+  "ground_polygons": [
+    [
+      [
+        480,
+        470
+      ],
+      [
+        1450,
+        750
+      ],
+      [
+        1280,
+        1360
+      ],
+      [
+        600,
+        1180
+      ],
+      [
+        350,
+        980
+      ]
+    ]
+  ],
+  "exclude_polygons": [],
+  "crops": {
+    "cars": [
+      310,
+      350,
+      610,
+      650
+    ],
+    "background": [
+      380,
+      520,
+      680,
+      820
+    ],
+    "markings": [
+      600,
+      540,
+      900,
+      840
+    ]
+  },
+  "size_m": 120,
+  "train_years": [
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "holdout_year": 2026,
+  "selection": "Selected from source-year previews and occupancy diagnostics before method outputs. Ground ROI excludes visible roofs; results not used in selection."
+}

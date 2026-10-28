@@ -1,0 +1,114 @@
+[
+  {
+    "key": "on_the_go",
+    "name": "NeRF On-the-go",
+    "year": "CVPR 2024",
+    "paper": "https://arxiv.org/abs/2405.18715",
+    "code": "https://github.com/cvg/nerf-on-the-go",
+    "section": "§3.1–3.4, Eq. 8–11",
+    "summary": [
+      "DINOv2 특징을 작은 MLP에 넣어 픽셀별 불확실성 β를 예측하고, 비슷한 특징 사이의 β를 일관되게 만듦.",
+      "RGB 오차 대신 변형 SSIM의 밝기·대비·구조 오차 곱으로 불확실성을 학습해, 배경과 색이 비슷한 distractor도 구분하려 함.",
+      "NeRF는 1/(2β²)로 가중한 RGB 손실로 학습하며, 불확실성 학습과 NeRF 사이의 gradient를 분리하고 dilated patch sampling을 사용함."
+    ],
+    "relation": "우리 손실의 S를 이진 마스크 대신 학습된 연속 가중치로 바꾸는 직접적인 근거다. DINO가 차량 주변에서 일반화하는지와 배경의 큰 오차를 차량으로 오인하는지를 확인해야 한다.",
+    "experiment": "DINO-SSIM soft로 불확실성→S 부분만 차용했다. 고정 L2 warm-up의 box-window SSIM target을 사용하고 feature-neighbor 정규화·dilated sampler·온라인 공동 갱신은 생략했으므로 원 논문 재현이 아니다.",
+    "eq": "\\ell_{\\mathrm{modSSIM}}=(1-L)(1-C)(1-Q),\\quad\\mathcal{L}_{u}=\\frac{\\ell_{\\mathrm{modSSIM}}}{2\\beta^2}+\\lambda\\log\\beta,\\quad S=\\frac{1}{2\\beta^2}"
+  },
+  {
+    "key": "robustnerf",
+    "name": "RobustNeRF",
+    "year": "CVPR 2023",
+    "paper": "https://arxiv.org/abs/2302.00833",
+    "code": "https://github.com/google-research/multinerf/blob/main/internal/robustnerf.py",
+    "section": "§3 robust estimation / spatial filtering",
+    "summary": [
+      "동적 물체를 별도 3D 표현으로 모델링하지 않고, 정적 NeRF를 맞출 때의 큰 photometric residual을 outlier로 취급함.",
+      "잔차 분위수와 주변 픽셀·패치의 일관성을 이용해 inlier 마스크를 만들고, 반복적으로 다시 계산하는 robust estimation을 수행함.",
+      "채택된 관측만으로 정적 장면을 학습하므로 사전 정의된 차량·사람 클래스나 semantic detector 없이 distractor 영향을 줄임."
+    ],
+    "relation": "기존 파일럿의 Robust형 S가 이 계열이다. 고점유 장면에서 반복 차량의 잔차가 작아지는 실패는, 낮은 잔차가 곧 정적 배경이라는 보장이 없다는 점을 보여준다.",
+    "experiment": "기존 B/C 3-seed 결과를 유지했다. 해당 점수는 평면 baking에 옮긴 Robust형 규칙의 결과이며 RobustNeRF 전체 모델의 성능이 아니다.",
+    "eq": "a=\\mathbf{1}[\\varepsilon\\le\\tau],\\quad W=\\mathbf{1}[B_3(a)\\ge0.5],\\quad S=\\operatorname{stopgrad}\\!\\left(\\mathbf{1}[B_{16}(W)(p_8)\\ge0.6]\\right)"
+  },
+  {
+    "key": "spotless",
+    "name": "SpotLessSplats",
+    "year": "arXiv 2024 / 프로젝트 표기 TOG 2025",
+    "paper": "https://arxiv.org/abs/2406.20055",
+    "code": "https://github.com/lilygoli/SpotLessSplats",
+    "section": "§4.1–4.2",
+    "summary": [
+      "Stable Diffusion의 사전학습 특징에서 의미적으로 비슷한 픽셀을 묶어, RGB 잔차만으로 놓치는 distractor의 공간적 범위를 찾음.",
+      "공간 clustering 투표(SLS-agg) 또는 잔차의 확실한 구간만 약한 supervision으로 쓰는 특징→inlier MLP(SLS-mlp)로 관측 선택을 학습함.",
+      "점진적 masking, 여러 batch의 잔차 분포 추적, opacity reset을 대신하는 utilization-based pruning으로 3DGS 학습과 제거 규칙의 충돌을 줄임."
+    ],
+    "relation": "우리 베이킹에도 특징 기반 영역 선택과 약한 잔차 supervision은 이식할 수 있다. Gaussian의 생성·제거가 없는 고정 Texture에서는 utilization pruning과 opacity-reset 대응은 직접 적용 대상이 아니다.",
+    "experiment": "이번에는 Stable Diffusion 특징 추출 및 SLS의 bound-supervision·pruning을 구현하지 않았다. DINO 실험을 SpotLessSplats 재현 또는 대체 구현으로 부르지 않는다.",
+    "eq": "S_{\\mathrm{mlp}}=\\mathcal H(\\mathcal F;\\theta),\\qquad\\mathcal L_{\\mathrm{sup}}=\\max(U-\\mathcal H,0)+\\max(\\mathcal H-L,0)"
+  },
+  {
+    "key": "wildgaussians",
+    "name": "WildGaussians",
+    "year": "NeurIPS 2024",
+    "paper": "https://arxiv.org/abs/2407.08447",
+    "code": "https://github.com/jkulhanek/wild-gaussians",
+    "section": "§3.2–3.3, Eq. 8–11",
+    "summary": [
+      "입력 DINOv2 특징에서 affine+softplus로 불확실성 σ를 예측하고, 입력과 렌더링의 DINO cosine 차이로 학습해 외관 변화에 덜 민감하게 만듦.",
+      "3DGS의 densification을 불안정하게 하는 큰 가중 gradient를 피하려고 1/(2σ²)>1인 픽셀만 채택하는 binary mask로 바꿈.",
+      "이미지별·Gaussian별 appearance embedding과 색변환을 별도로 학습해, 조명 변화 보정과 transient 관측 제거를 함께 처리함."
+    ],
+    "relation": "우리 연도별 사진에서도 조명 차이와 차량 변화를 분리해야 한다는 근거다. 고정 Texture에는 densification이 없으므로 같은 σ의 soft/hard S를 나란히 비교할 수 있다.",
+    "experiment": "DINO-cosine soft/hard 두 변형에 같은 고정 warm-up 기반 σ를 적용했다. 원 논문의 온라인 uncertainty 갱신, Gaussian appearance, density control은 사용하지 않았다.",
+    "eq": "d=\\min(1,2-2\\cos(D,\\widehat D)),\\quad\\mathcal L_u=\\frac{d}{2\\sigma^2}+\\lambda\\log\\sigma,\\quad S=\\mathbf{1}\\!\\left[\\frac{1}{2\\sigma^2}>1\\right]"
+  },
+  {
+    "key": "gs_w",
+    "name": "GS-W (Gaussian in the Wild)",
+    "year": "ECCV 2024",
+    "paper": "https://arxiv.org/abs/2403.15704",
+    "code": "https://github.com/EastbeanZhang/Gaussian-Wild",
+    "section": "§4.2–4.5, Eq. 12–14",
+    "summary": [
+      "Gaussian마다 고유한 intrinsic appearance와 조명·날씨에 따른 dynamic appearance를 분리하고, reference-image 특징을 적응적으로 샘플링해 색을 모델링함.",
+      "Transient object는 별도 U-Net의 2D visibility map VM으로 처리하며, 가시성이 낮은 위치의 영상 손실 기여를 줄임.",
+      "VM이 모든 픽셀을 가리지 못하도록 VM을 1로 유도하는 정규화를 더함. dynamic appearance는 이동 물체 자체와 같은 개념이 아님."
+    ],
+    "relation": "우리 S를 학습된 2D visibility로 만들 수 있지만, 전부 제외하는 퇴화를 막는 규제가 필요하다. 파일럿의 전역 affine 색보정은 GS-W의 국소 appearance 모델보다 제한적이다.",
+    "experiment": "U-Net VM 및 per-Gaussian appearance는 이번 실험에서 실행하지 않았다. DINO σ와 SAM 투표는 GS-W의 visibility network 구현이 아니다.",
+    "eq": "VM=U_\\psi(I),\\quad\\mathcal L_{vm}=\\|VM-1\\|_2^2,\\quad\\mathcal L_c\\supset\\lambda_1\\|VM\\odot I_r-VM\\odot I_{gt}\\|_1"
+  },
+  {
+    "key": "robust_gs",
+    "name": "Robust Gaussian Splatting (Darmon et al.)",
+    "year": "arXiv 2404.04211, 2024",
+    "paper": "https://arxiv.org/abs/2404.04211",
+    "code": null,
+    "section": "§4.1–4.3",
+    "summary": [
+      "핵심 대상은 동적 물체 제거가 아니라 카메라 포즈 오차, motion blur, defocus blur, 영상 간 색 불일치에 강한 3DGS임.",
+      "카메라 포즈의 Gaussian 분포로 motion blur와 포즈 보정을 함께 다루고, 투영된 Gaussian의 covariance로 defocus를 보정함.",
+      "이미지별 affine 색변환으로 외관 불일치를 보정함. 차량을 식별해 제외하는 S나 transient 분리 모듈을 제안한 논문은 아님."
+    ],
+    "relation": "정합·블러·색 차이도 큰 잔차를 만들 수 있으므로 잔차를 곧 차량으로 해석하면 안 된다는 점과 관련된다. 우리 공통 정합·색보정의 필요성을 설명하는 보조 레퍼런스로 적합하다.",
+    "experiment": "새로운 동적 물체 제거 기준선으로 실행하지 않았다. 원 논문의 blur/pose 최적화는 이번 고정 homography 실험 범위와 다르다.",
+    "eq": "I_{\\mathrm{pred},i}=A_i\\,\\mathcal R(\\Gamma,\\pi_i)+b_i\\qquad\\text{(color correction; not a dynamic mask)}"
+  },
+  {
+    "key": "robust_3dgs",
+    "name": "Robust 3D Gaussian Splatting (Ungermann et al., 보충)",
+    "year": "GCPR 2024 / arXiv 2408.11697",
+    "paper": "https://arxiv.org/abs/2408.11697",
+    "code": "https://paulungermann.github.io/Robust3DGaussians/",
+    "section": "§3.1–3.3",
+    "summary": [
+      "RGB 채널별 centered residual과 작은 이웃·패치 문맥을 합쳐 distractor 후보의 공간적 단서를 만듦.",
+      "고정 임계값 대신 logistic regression의 학습 가능한 결정 경계와 마스킹 면적 정규화로 관측 채택 여부를 갱신함.",
+      "SAM object mask와 결합해 픽셀 단위의 조각난 판정을 object-aware mask로 정리하고 정적 3DGS 학습에서 distractor를 제외함."
+    ],
+    "relation": "동적 물체 제거를 뜻한 레퍼런스가 이 논문이라면 직접 관련된다. 기존 HuGS형과 SAM 사용은 같지만, 후보를 고르는 잔차·학습 규칙이 다르므로 동일 기법으로 취급하면 안 된다.",
+    "experiment": "SAM-region median은 저장된 SAM 분리 영역의 residual 투표만 차용했다. Logistic boundary와 원 논문 SAM IoU 절차는 생략했으므로 단순 영역화 ablation이다.",
+    "eq": "\\widehat S=\\operatorname{sigmoid}(W\\omega_3+b),\\quad\\mathcal L_{mask}=\\mathcal L_{GS}(\\widehat S\\odot R,\\widehat S\\odot G)+\\lambda\\operatorname{mean}(1-\\widehat S)"
+  }
+]

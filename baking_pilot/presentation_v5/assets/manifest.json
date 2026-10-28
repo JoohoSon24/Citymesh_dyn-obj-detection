@@ -1,0 +1,124 @@
+{
+  "industrial_b": {
+    "annotation": {
+      "year": 2022,
+      "poly": [
+        [
+          890.3312377929688,
+          742.9987182617188
+        ],
+        [
+          908.2144165039062,
+          683.2307739257812
+        ],
+        [
+          887.2262573242188,
+          676.9508666992188
+        ],
+        [
+          869.3430786132812,
+          736.7188110351562
+        ]
+      ],
+      "center": [
+        888.7787475585938,
+        709.9747924804688
+      ],
+      "occupancy": 4,
+      "fractions": [
+        0.7601654031702274,
+        1.0,
+        0.8511371467953136,
+        0.9131633356305996,
+        0.0
+      ],
+      "area": 1451,
+      "heldout_vehicle_fraction": 0.0,
+      "id": 0,
+      "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+    },
+    "crop": [
+      776,
+      645,
+      1000,
+      773
+    ],
+    "textures": {
+      "l2": "/root/sonjooho/baking_pilot/harder_dataset/scenes/industrial_b/results/textures/l2.png",
+      "median": "/root/sonjooho/baking_pilot/harder_dataset/scenes/industrial_b/results/textures/median.png",
+      "block": "/root/sonjooho/baking_pilot/harder_dataset/scenes/industrial_b/results/textures/block.png",
+      "hugs": "/root/sonjooho/baking_pilot/harder_dataset/scenes/industrial_b/results/textures/hugs.png",
+      "robust": "/root/sonjooho/baking_pilot/harder_dataset/scenes/industrial_b/results/textures/robust.png",
+      "geo_mask": "/root/sonjooho/baking_pilot/harder_dataset/improved_baselines/scenes/industrial_b/results/textures/geo_mask.png",
+      "uv_fusion": "/root/sonjooho/baking_pilot/harder_dataset/improved_baselines/scenes/industrial_b/results/textures/uv_fusion.png",
+      "uv_shadow_guard": "/root/sonjooho/baking_pilot/harder_dataset/improved_baselines/scenes/industrial_b/results/textures/uv_shadow_guard.png",
+      "geo_fusion": "/root/sonjooho/baking_pilot/harder_dataset/improved_baselines/scenes/industrial_b/results/textures/geo_fusion.png",
+      "geo_smooth": "/root/sonjooho/baking_pilot/harder_dataset/improved_baselines/scenes/industrial_b/results/textures/geo_smooth.png",
+      "dino_ssim_soft": "/root/sonjooho/baking_pilot/reference_study_v3/results/industrial_b/42/textures/dino_ssim_soft.png",
+      "dino_cosine_soft": "/root/sonjooho/baking_pilot/reference_study_v3/results/industrial_b/42/textures/dino_cosine_soft.png",
+      "dino_cosine_hard": "/root/sonjooho/baking_pilot/reference_study_v3/results/industrial_b/42/textures/dino_cosine_hard.png",
+      "sam_region_median": "/root/sonjooho/baking_pilot/reference_study_v3/results/industrial_b/42/textures/sam_region_median.png"
+    }
+  },
+  "industrial_c": {
+    "annotation": {
+      "year": 2021,
+      "poly": [
+        [
+          625.9586791992188,
+          800.1326904296875
+        ],
+        [
+          643.8215942382812,
+          752.3446044921875
+        ],
+        [
+          619.8634643554688,
+          743.3892822265625
+        ],
+        [
+          602.0005493164062,
+          791.1773681640625
+        ]
+      ],
+      "center": [
+        622.9110717773438,
+        771.760986328125
+      ],
+      "occupancy": 4,
+      "fractions": [
+        1.0,
+        0.31098010316875463,
+        0.9992630803242447,
+        1.0,
+        0.6352247605011054
+      ],
+      "area": 1357,
+      "heldout_vehicle_fraction": 0.0,
+      "id": 0,
+      "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+    },
+    "crop": [
+      510,
+      707,
+      734,
+      835
+    ],
+    "textures": {
+      "l2": "/root/sonjooho/baking_pilot/harder_dataset/scenes/industrial_c/results/textures/l2.png",
+      "median": "/root/sonjooho/baking_pilot/harder_dataset/scenes/industrial_c/results/textures/median.png",
+      "block": "/root/sonjooho/baking_pilot/harder_dataset/scenes/industrial_c/results/textures/block.png",
+      "hugs": "/root/sonjooho/baking_pilot/harder_dataset/scenes/industrial_c/results/textures/hugs.png",
+      "robust": "/root/sonjooho/baking_pilot/harder_dataset/scenes/industrial_c/results/textures/robust.png",
+      "geo_mask": "/root/sonjooho/baking_pilot/harder_dataset/improved_baselines/scenes/industrial_c/results/textures/geo_mask.png",
+      "uv_fusion": "/root/sonjooho/baking_pilot/harder_dataset/improved_baselines/scenes/industrial_c/results/textures/uv_fusion.png",
+      "uv_shadow_guard": "/root/sonjooho/baking_pilot/harder_dataset/improved_baselines/scenes/industrial_c/results/textures/uv_shadow_guard.png",
+      "geo_fusion": "/root/sonjooho/baking_pilot/harder_dataset/improved_baselines/scenes/industrial_c/results/textures/geo_fusion.png",
+      "geo_smooth": "/root/sonjooho/baking_pilot/harder_dataset/improved_baselines/scenes/industrial_c/results/textures/geo_smooth.png",
+      "dino_ssim_soft": "/root/sonjooho/baking_pilot/reference_study_v3/results/industrial_c/42/textures/dino_ssim_soft.png",
+      "dino_cosine_soft": "/root/sonjooho/baking_pilot/reference_study_v3/results/industrial_c/42/textures/dino_cosine_soft.png",
+      "dino_cosine_hard": "/root/sonjooho/baking_pilot/reference_study_v3/results/industrial_c/42/textures/dino_cosine_hard.png",
+      "sam_region_median": "/root/sonjooho/baking_pilot/reference_study_v3/results/industrial_c/42/textures/sam_region_median.png"
+    }
+  }
+}

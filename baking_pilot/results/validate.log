@@ -1,0 +1,9 @@
+{
+  "camera_0_inverse_max_px": 6.873167160392768e-05,
+  "camera_1_inverse_max_px": 0.00011906308975540014,
+  "camera_2_inverse_max_px": 9.760085879406688e-05,
+  "camera_3_inverse_max_px": 9.340407484614843e-05,
+  "renderer_cv2_rmse": 8.284917498713185e-07,
+  "variable_box_max_error": 0.00028187036514282227,
+  "mask_checks": "binary, finite, correct shapes, no invalid pixels"
+}

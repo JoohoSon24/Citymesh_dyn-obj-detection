@@ -1,0 +1,9 @@
+{
+  "baking_runs": 24,
+  "all_600_updates": true,
+  "all_training_masks_finite": true,
+  "metric_rows": 24,
+  "expected_runs": 24,
+  "no_training_holdout_indices": true,
+  "passed": true
+}

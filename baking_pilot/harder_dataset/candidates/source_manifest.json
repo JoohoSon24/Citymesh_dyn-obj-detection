@@ -1,0 +1,164 @@
+[
+  {
+    "scene": "industrial_a",
+    "year": 2021,
+    "lat": 52.0758,
+    "lon": 5.047,
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2021_orthoHR&styles=&crs=EPSG:4326&bbox=52.075261013295005,5.046123054763315,52.076338986705,5.047876945236684&width=1500&height=1500&format=image/png",
+    "file": "candidates/industrial_a/2021_orthoHR.png",
+    "sha256": "7fe6880d006c8fb47aad121871acc665f0e2acb84d58dbca75ec6c87b68544f1"
+  },
+  {
+    "scene": "industrial_a",
+    "year": 2022,
+    "lat": 52.0758,
+    "lon": 5.047,
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2022_orthoHR&styles=&crs=EPSG:4326&bbox=52.075261013295005,5.046123054763315,52.076338986705,5.047876945236684&width=1500&height=1500&format=image/png",
+    "file": "candidates/industrial_a/2022_orthoHR.png",
+    "sha256": "5f9ca51d1766ebb14eb190ad82c85732930444af95c757a8c6754866406cd6bd"
+  },
+  {
+    "scene": "industrial_a",
+    "year": 2023,
+    "lat": 52.0758,
+    "lon": 5.047,
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2023_orthoHR&styles=&crs=EPSG:4326&bbox=52.075261013295005,5.046123054763315,52.076338986705,5.047876945236684&width=1500&height=1500&format=image/png",
+    "file": "candidates/industrial_a/2023_orthoHR.png",
+    "sha256": "d75fb7b8f7e2aa045ac9f16054f43878c20f800d9933b73856e55a4a4a4f6da6"
+  },
+  {
+    "scene": "industrial_a",
+    "year": 2024,
+    "lat": 52.0758,
+    "lon": 5.047,
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2024_orthoHR&styles=&crs=EPSG:4326&bbox=52.075261013295005,5.046123054763315,52.076338986705,5.047876945236684&width=1500&height=1500&format=image/png",
+    "file": "candidates/industrial_a/2024_orthoHR.png",
+    "sha256": "7c6442dc0af04297824e571adc178c1b12471ea501bd91301f2524ef7c7e52c3"
+  },
+  {
+    "scene": "industrial_a",
+    "year": 2025,
+    "lat": 52.0758,
+    "lon": 5.047,
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2025_orthoHR&styles=&crs=EPSG:4326&bbox=52.075261013295005,5.046123054763315,52.076338986705,5.047876945236684&width=1500&height=1500&format=image/png",
+    "file": "candidates/industrial_a/2025_orthoHR.png",
+    "sha256": "613b20103d992967bc26d0c7d74a05d1ada3a34663b42e7a4a650285464fbbcb"
+  },
+  {
+    "scene": "industrial_a",
+    "year": 2026,
+    "lat": 52.0758,
+    "lon": 5.047,
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2026_orthoHR&styles=&crs=EPSG:4326&bbox=52.075261013295005,5.046123054763315,52.076338986705,5.047876945236684&width=1500&height=1500&format=image/png",
+    "file": "candidates/industrial_a/2026_orthoHR.png",
+    "sha256": "26cf0cfd919453e6b90085e8a1bd230fabd6e316e04535cfa290fc63825ba168"
+  },
+  {
+    "scene": "industrial_b",
+    "year": 2021,
+    "lat": 52.074,
+    "lon": 5.046,
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2021_orthoHR&styles=&crs=EPSG:4326&bbox=52.073461013295,5.045123090120231,52.074538986704994,5.04687690987977&width=1500&height=1500&format=image/png",
+    "file": "candidates/industrial_b/2021_orthoHR.png",
+    "sha256": "1b3ebd5443d111b78b443c47f1af6b3811c49f1bc5499a24891c5683f2cb2871"
+  },
+  {
+    "scene": "industrial_b",
+    "year": 2022,
+    "lat": 52.074,
+    "lon": 5.046,
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2022_orthoHR&styles=&crs=EPSG:4326&bbox=52.073461013295,5.045123090120231,52.074538986704994,5.04687690987977&width=1500&height=1500&format=image/png",
+    "file": "candidates/industrial_b/2022_orthoHR.png",
+    "sha256": "5bfe38a7ab6e858a33967df37fb6b59f3ecfdb7a45481c5345436c8755c4fd2f"
+  },
+  {
+    "scene": "industrial_b",
+    "year": 2023,
+    "lat": 52.074,
+    "lon": 5.046,
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2023_orthoHR&styles=&crs=EPSG:4326&bbox=52.073461013295,5.045123090120231,52.074538986704994,5.04687690987977&width=1500&height=1500&format=image/png",
+    "file": "candidates/industrial_b/2023_orthoHR.png",
+    "sha256": "5edbdf52421c7c84ba78d646a1fd123ceec6324358f431682ff7176cf3399ad0"
+  },
+  {
+    "scene": "industrial_b",
+    "year": 2024,
+    "lat": 52.074,
+    "lon": 5.046,
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2024_orthoHR&styles=&crs=EPSG:4326&bbox=52.073461013295,5.045123090120231,52.074538986704994,5.04687690987977&width=1500&height=1500&format=image/png",
+    "file": "candidates/industrial_b/2024_orthoHR.png",
+    "sha256": "38c34287530f1bca0364bf62bfa5cf96b1ecf7fcf17f6755cda22d294a30d569"
+  },
+  {
+    "scene": "industrial_b",
+    "year": 2025,
+    "lat": 52.074,
+    "lon": 5.046,
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2025_orthoHR&styles=&crs=EPSG:4326&bbox=52.073461013295,5.045123090120231,52.074538986704994,5.04687690987977&width=1500&height=1500&format=image/png",
+    "file": "candidates/industrial_b/2025_orthoHR.png",
+    "sha256": "21ba3dabcb5d86c1255e5c1f8e4026ae06aab212cf811465e2471c0d55323317"
+  },
+  {
+    "scene": "industrial_b",
+    "year": 2026,
+    "lat": 52.074,
+    "lon": 5.046,
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2026_orthoHR&styles=&crs=EPSG:4326&bbox=52.073461013295,5.045123090120231,52.074538986704994,5.04687690987977&width=1500&height=1500&format=image/png",
+    "file": "candidates/industrial_b/2026_orthoHR.png",
+    "sha256": "ef82827613653d5de4b1029720f13668d0bae3405a3361462db8307c88c62cab"
+  },
+  {
+    "scene": "industrial_c",
+    "year": 2021,
+    "lat": 52.0773,
+    "lon": 5.04895,
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2021_orthoHR&styles=&crs=EPSG:4326&bbox=52.076761013295005,5.04807302529638,52.077838986705,5.0498269747036195&width=1500&height=1500&format=image/png",
+    "file": "candidates/industrial_c/2021_orthoHR.png",
+    "sha256": "721ce7dc07ef794c24694469b6fcb3f7ddd2f3441c905cd932f80e05e28c8e2f"
+  },
+  {
+    "scene": "industrial_c",
+    "year": 2022,
+    "lat": 52.0773,
+    "lon": 5.04895,
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2022_orthoHR&styles=&crs=EPSG:4326&bbox=52.076761013295005,5.04807302529638,52.077838986705,5.0498269747036195&width=1500&height=1500&format=image/png",
+    "file": "candidates/industrial_c/2022_orthoHR.png",
+    "sha256": "6886afb4e502a04e242aa74b6e9d769de09bca7f50395009a8410cda001f4640"
+  },
+  {
+    "scene": "industrial_c",
+    "year": 2023,
+    "lat": 52.0773,
+    "lon": 5.04895,
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2023_orthoHR&styles=&crs=EPSG:4326&bbox=52.076761013295005,5.04807302529638,52.077838986705,5.0498269747036195&width=1500&height=1500&format=image/png",
+    "file": "candidates/industrial_c/2023_orthoHR.png",
+    "sha256": "46cbbc30bacfac9a42a9142970a869f7e6d1fa7bcb293ca6abb336d83988a28d"
+  },
+  {
+    "scene": "industrial_c",
+    "year": 2024,
+    "lat": 52.0773,
+    "lon": 5.04895,
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2024_orthoHR&styles=&crs=EPSG:4326&bbox=52.076761013295005,5.04807302529638,52.077838986705,5.0498269747036195&width=1500&height=1500&format=image/png",
+    "file": "candidates/industrial_c/2024_orthoHR.png",
+    "sha256": "3c424764f2e6f86c3cae5ebe5b484a4aca7eb024c81349714d2d02edcbe7265b"
+  },
+  {
+    "scene": "industrial_c",
+    "year": 2025,
+    "lat": 52.0773,
+    "lon": 5.04895,
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2025_orthoHR&styles=&crs=EPSG:4326&bbox=52.076761013295005,5.04807302529638,52.077838986705,5.0498269747036195&width=1500&height=1500&format=image/png",
+    "file": "candidates/industrial_c/2025_orthoHR.png",
+    "sha256": "aafd921456c6cf3efc09bb45b28acbf07c021d453088ea6c4b5be7087af8ef29"
+  },
+  {
+    "scene": "industrial_c",
+    "year": 2026,
+    "lat": 52.0773,
+    "lon": 5.04895,
+    "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2026_orthoHR&styles=&crs=EPSG:4326&bbox=52.076761013295005,5.04807302529638,52.077838986705,5.0498269747036195&width=1500&height=1500&format=image/png",
+    "file": "candidates/industrial_c/2026_orthoHR.png",
+    "sha256": "4c77bf7642a1fd6ab6f2d77f33be32971ba0b6c0a31bb4c6857501318e37c507"
+  }
+]

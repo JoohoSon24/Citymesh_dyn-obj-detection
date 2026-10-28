@@ -1,0 +1,29 @@
+{
+  "seed": 43,
+  "updates": 600,
+  "seconds": 6.678667068481445,
+  "trace": [
+    {
+      "step": 0,
+      "data": 0.0005241613835096359,
+      "color": 0.0
+    },
+    {
+      "step": 199,
+      "data": 0.0003427480987738818,
+      "color": 6.934159273441765e-07
+    },
+    {
+      "step": 399,
+      "data": 0.0002413980255369097,
+      "color": 2.3461868750018766e-06
+    },
+    {
+      "step": 599,
+      "data": 0.0001837168965721503,
+      "color": 4.2112415030715056e-06
+    }
+  ],
+  "mask_is_fixed": true,
+  "mask_path": "/root/sonjooho/baking_pilot/reference_study_v3/results/industrial_c/sam_region_median_mask.npz"
+}

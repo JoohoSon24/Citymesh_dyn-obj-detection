@@ -1,0 +1,12 @@
+{
+  "method": "uv_shadow_guard",
+  "rationale": "Original class masks miss vehicle shadows and dark adjacent foreground. Extend UV-fusion exclusion using a local relative-darkness guard near training-epoch vehicle masks.",
+  "local_window_texels": 61,
+  "near_vehicle_radius_texels": 18,
+  "relative_luminance_threshold": 0.72,
+  "harmonic_iterations": 256,
+  "basis": 512,
+  "parameters_fixed_before_variant_evaluation": true,
+  "not_shadow_ground_truth": "Guard may remove true dark pavement/markings. Report static controls and lost coverage. No 2026 pixels, annotation, or metric used in its computation.",
+  "research_context": "Exploratory follow-up motivated by retained shadow artifacts in the first new variants on the same benchmark. Not an untouched external test. No threshold grid search; all variants reported."
+}

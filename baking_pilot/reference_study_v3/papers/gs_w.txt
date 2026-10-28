@@ -1,0 +1,774 @@
+ Gaussian in the Wild: 3D Gaussian Splatting for
+        Unconstrained Image Collections
+
+    Dongbin Zhang∗ , Chuming Wang∗ , Weitao Wang, Peihao Li, Minghan Qin,
+                             and Haoqian Wang†
+
+        Tsinghua Shenzhen International Graduate School, Tsinghua University
+
+
+
+
+Fig. 1: With an unconstrained image collection input, GS-W can render novel views
+with appearance tuning, achieving state-of-the-art quality and faster rendering speed.
+
+
+
+
+        Abstract. Novel view synthesis from unconstrained in-the-wild images
+        remains a meaningful but challenging task. The photometric variation
+        and transient occluders in those unconstrained images make it difficult
+        to reconstruct the original scene accurately. Previous approaches tackle
+        the problem by introducing a global appearance feature in Neural Radi-
+        ance Fields (NeRF). However, in the real world, the unique appearance
+        of each tiny point in a scene is determined by its independent intrinsic
+        material attributes and the varying environmental impacts it receives. In-
+        spired by this fact, we propose Gaussian in the wild (GS-W), a method
+        that uses 3D Gaussian points to reconstruct the scene and introduces
+        separated intrinsic and dynamic appearance feature for each point, cap-
+        turing the unchanged scene appearance along with dynamic variation like
+        illumination and weather. Additionally, an adaptive sampling strategy is
+        presented to allow each Gaussian point to focus on the local and detailed
+        information more effectively. We also reduce the impact of transient oc-
+        cluders using a 2D visibility map. More experiments have demonstrated
+        better reconstruction quality and details of GS-W compared to NeRF-
+        based methods, with a faster rendering speed. Video results and code are
+        available at https://eastbeanzhang.github.io/GS-W/.
+
+        Keywords: Novel view synthesis · 3D Gaussian Splatting · Uncon-
+        strained image collections
+∗
+    Equal contributions.
+†
+    Corresponding author.
+2      D. Zhang et al.
+
+1   Introduction
+Novel view synthesis has long been a high-profile and complicated task in com-
+puter vision which aims to recover the 3D structure of a scene from 2D image
+collections and plays a significant role in many applications like virtual real-
+ity (VR) and autonomous driving. Recently, implicit representations, especially
+Neural Radiance Field (NeRF) [26] and its subsequent work [1,2,27] have shown
+impressive progress in rendering photorealistic images from arbitrary viewpoints.
+    Meanwhile, explicit representations have also drawn increasing attention thanks
+to their real-time rendering speed. 3D Gaussian Splatting(3DGS) [16] introduces
+3D Gaussian as a novel and flexible scene representation and designs a fast dif-
+ferentiable rendering approach, allowing real-time rendering while maintaining
+high-fidelity for view synthesis.
+    However, these aforementioned methods only focus on static scenes from
+which images are captured without transient occluders and dynamic appearance
+variation such as ever-changing sky, weather, and illumination. Unfortunately, in
+practice, input unconstrained image collections may be captured by cameras with
+different settings at different times, and typically include pedestrians or vehicles.
+The assumption of the previous methods that images must be captured in static
+scenes is severely violated, resulting in sharp performance degradation [23, 50].
+    Several recent attempts [6, 19, 23, 41] adopt a global latent embedding for
+each image, granting their model the ability to handle the appearance variations
+between images. CR-NeRF [50] proposes a new cross-ray paradigm that utilizes
+information from multiple rays to obtain colors of several pixels, achieving more
+realistic and efficient appearance modeling. Nonetheless, the methods above still
+suffer from three defects: 1) Global appearance representation: The repre-
+sentation they use to control the dynamic appearance variation is shared by the
+whole scene, which may struggle to describe local high-frequency changes. By
+contrast, in the 3D real world, every single point of the scene has its appearance
+feature which brings them unique gloss and texture in different views; 2) Blur-
+ring intrinsic and dynamic appearance: An object’s intrinsic appearance
+is determined by its own material and surface properties while dynamic appear-
+ance is affected by environmental factors like highlight and shadow. Previous
+approaches blur the two appearances together, causing confusion in applications
+such as appearance tuning; 3) High time cost: Similar to volume rendering
+based methods, most NeRF-based approaches above suffer from high training
+costs and low rendering speed due to a large amount of network evaluation.
+    To address these challenges, we propose Gaussian in the wild (GS-W), a
+method to achieve high-quality and flexible scene reconstruction for uncon-
+strained image collections. Specifically, we first use 3D Gaussian points to rep-
+resent the scene and introduce independent appearance features to each point,
+enabling their unique appearance expression. Second, the intrinsic and dynamic
+appearance is separated and an adaptive sampling strategy is presented to grant
+every point the freedom to focus on various detailed dynamic appearance in-
+formation. Additionally, the scene rendering speed is significantly accelerated
+thanks to the tile-based rasterizer.
+                                                       Gaussian in the Wild      3
+
+      Our contribution can be summarized as follows:
+ – We propose a new framework GS-W, a 3D Gaussian Splatting based method,
+   in which each Gaussian point is equipped with separated intrinsic and dy-
+   namic appearance features to enable more flexible varying appearance mod-
+   eling from unconstrained image collections.
+ – To better incorporate environmental factors from the image into the scene,
+   we propose adaptive sampling, allowing each point to sample dynamic ap-
+   pearance features more effectively from the feature maps, thereby focusing
+   on more local and detailed information.
+ – Experimental results demonstrate that our method not only outperforms the
+   state-of-the-art NeRF-based methods in terms of quality but also surpasses
+   them in rendering speed by over 1000×.
+
+2      Related Work
+2.1     3D representations
+Diverse 3D representations are developed to represent the geometric and ap-
+pearance information of three-dimensional objects or scenes, among which im-
+plicit and explicit representation are two common methods for practical ap-
+plications like 3D object generation and scene reconstruction. Implicit repre-
+sentation represents 3D data as continuous functions or fields, like occupancy
+fields [24], distance fields [29], color, and density. NeRF [26] is an outstanding
+work among them which models the scene as a continuous field of density and ra-
+diance. NeRF indicates that using MLP can represent complex scenes and render
+novel photo-realistic views with the help of volume rendering. On the contrary,
+explicit representation describes scenes by storing and manipulating 3D data
+using discrete structures like meshes [14, 15, 45], point clouds [31, 32, 40], vox-
+els [38, 47, 48] and so on. More recently, methods represented by 3DGS [16] have
+entered researchers’ vision by their real-time rendering speed while preserving
+high-resolution synthesis quality. An efficient tile-based rasterizer is introduced
+by 3DGS to splat Gaussians to the image plane and accelerate the rendering
+speed many times compared to previous methods. Many researchers are ex-
+ploring its potential by extending it to various tasks [33, 46, 52]. Several hybrid
+representations [3–5, 10, 39] are also emerging and creating more possibilities.
+
+2.2     Novel view synthesis
+Synthesizing arbitrary views of a scene using a set of 2D images is a long-standing
+problem in computer vision. Many NeRF-based methods [11, 12, 27, 34, 53] have
+achieved expressive synthesis quality [1,42,49] along with good view-consistency
+[7, 28, 43]. Mip-NeRF [1] replaces the rays with a 3D conical frustum and pro-
+poses integrated position embedding to anti-aliasing. Instant-NGP [27] intro-
+duces multi-resolution hash encoding that permits the use of a smaller net-
+work to reduce the training cost. There are also some Gaussian-based meth-
+ods [9, 22, 51, 54] contributing to this task by modifying 3DGS. For example,
+4      D. Zhang et al.
+
+to handle scenes with specular elements, Spec-Gaussian [51] departs from us-
+ing spherical harmonics and instead adopts an anisotropic spherical Gaussian
+appearance field to model each point. Since these aforementioned methods all
+assume that input images are captured in a static scene, their performance
+declines intensely when reconstructing from unconstrained photo collections.
+Thus, several attempts [6,19,23,25,36,50] are proposed to address this challeng-
+ing in-the-wild task by handling appearance variation and transient occluders.
+Other works [20,21] focus on scenes with time-varying appearances, while meth-
+ods [8, 18, 55] use physical rendering models for diverse lighting conditions. This
+field still faces some remaining issues and looks forward to advancements.
+    As one of them, our proposed method tries to push the field one step forward
+by achieving a more delicate and flexible synthesis with higher rendering speed,
+through our modifications mentioned in Sec. 4.
+
+3   Preliminaries
+3D Gaussian Splatting (3DGS) [16] is a method for reconstructing 3D scenes
+from static images with camera pose information. It uses explicit 3D Gaussian
+points GP to represent the scene and achieves real-time image rendering through
+a differentiable tile-based rasterizer. These Gaussian points’ positions X are ini-
+tialized with point clouds extracted by SFM [37] from the image set. Particularly,
+it uses 3D covariance Σ to model the impact of each Gaussian point on the color
+anisotropy of the surrounding area:
+                           G(x-X,\Sigma )=e^{-\frac {1}{2}(x-X)^T\Sigma ^{-1}(x-X) } \label {eq1}                                                                              (1)
+    For ease of optimizing the covariance Σ while maintaining its positive semi-
+definiteness, the method decomposes the covariance of each Gaussian point into a
+scaling matrix S and a rotation matrix R, which are then stored as the Gaussian
+point attributes s and r respectively, using 3D vectors and quaternions.
+                                                            \Sigma =RSS^TR^T \label {eq2}                                                                                      (2)
+    Additionally, each Gaussian point is equipped with two more attributes: opac-
+ity α and color c, with the color attribute represented by third-order spherical
+harmonic coefficients. When rendering, besides projecting each Gaussian point
+onto a grid of 16 × 16 tiles on the image plane, the 3D covariance Σ is projected
+to 2D Σ ′ using the viewing transformation W and the Jacobian of the affine
+approximation of the projective transformation J:
+                                                  \Sigma '=JW\Sigma W^TJ^T \label {eq3}                                                                                        (3)
+   Then, based on the Gaussian points sorted by the rasterizer, the color of each
+pixel is aggregated using α-blending:
+                                       \sigma _i&=G(px'-X_i,\Sigma '_i) \label {eq4}\\ C(px')&=\sum _{i\in GP_{px'}}c_i\sigma _i\prod _{j=1}^{i-1}(1-\sigma _j) \label {eq5}
+
+                                                                                                                                                                               (5)
+                                                         Gaussian in the Wild        5
+
+
+
+
+Fig. 2: An overview of the GS-W framework. We begin with a scene’s reference image
+and its camera pose P . After extracting image features via a Unet model, we reshape
+them into K feature maps and one projection feature map. Each Gaussian point GPi
+then samples features from these maps adaptively, capturing dynamic appearance fea-
+ture dfi . These features are fused with the intrinsic appearance feature sfi through a
+fusion network, decoded for Gaussian point color ci . Finally, all Gaussian points are
+rendered using a tile rasterizer.
+
+
+
+   Where px′ represents the position of a pixel, and GPpx′ denotes the sorted
+Gaussian points associated with that pixel. The final rendered image is then
+used to compute loss with reference images for training, jointly optimizing all
+Gaussian attributes. Moreover, it devises a strategy for point growth and pruning
+based on gradients and opacity.
+
+
+
+4    Method
+
+
+Based on previous analysis, aforementioned NeRF-based methods [6, 23, 50] lack
+enough attention to high-frequency and local detailed information in appear-
+ance, along with significant rendering costs due to the large number of sampling
+points. To address these issues, we utilize 3D Gaussian points to explicitly model
+the scene in Sec. 4.1 and introduce a new appearance modeling method for each
+Gaussian point in Sec. 4.2. Intrinsic and dynamic appearance features are sep-
+arated and then fused in Sec. 4.3. Additionally, when calculating the losses in
+Sec. 4.5, a visibility map is employed to reduce the impact of transient objects
+in Sec. 4.4. The whole pipeline is visualized as Fig. 2.
+6      D. Zhang et al.
+
+4.1   3D Gaussian Splatting in the Wild
+Appearance. Since 3DGS [16] is designed for reconstructing static scenes, GS-
+W abandons the conventional color modeling approach using spherical harmonic
+coefficients. Instead, in the subsequent section, we introduce a new appearance
+feature afi for each Gaussian point, adapting to variations in the reference image
+by fusing intrinsic appearance feature sfi with dynamic appearance feature dfi
+extracted from the image.
+    Transient object. Handling transient objects is also challenging for 3DGS,
+in which Gaussian points around transient object regions may receive gradients
+and move or grow, bringing the emergence of meaningless floating points and
+rendering artifacts. Therefore, a visibility map is employed to mitigate this issue
+in Sec. 4.4. In addition, we maintain the pruning and growing strategies for
+points to reconstruct buildings that are absent in the initial point cloud.
+
+4.2   Dynamic appearance features modeling
+In the real physical world, even within the same scene, most object points expe-
+rience varying environmental influences, such as light from different directions.
+Combined with unique intrinsic material properties, each point displays a dif-
+ferent color, gloss, and texture. NeRF-W [23] and Ha-NeRF [6] employ a global
+feature embedding from the reference image for the entire scene’s appearance, as-
+suming uniform environmental information across all points. CR-NeRF [50] inte-
+grates reference image features into rendered image features at the 2D level, lack-
+ing dynamic environmental information in 3D. These methods tend to roughly
+restore the global color tone of the scene and struggle to capture local details
+such as highlight and shadow. To address this, we introduce diverse information
+for each point, better aligning with real-world scenarios.
+    Projection feature map. We extract 2D features from the image Igt and
+then map each point to the 2D space for feature sampling. With the known
+camera pose of the image, the mapping relationship from 3D points to the 2D
+image can be determined. Therefore, from the image we extract a projection
+feature map F P , onto which each 3D point is projected using a projection matrix
+P , followed by the bilinear interpolation feature sampling, as illustrated below:
+
+                               \label {eq6} f_i^P=BL(\Pi _{P}(X_i),F^P)        (6)
+
+    where Xi represents the position coordinate of the i-th Gaussian point, while
+fiP ∈ R16 denotes the features sampled from the projection feature map for this
+Gaussian point, constituting a portion of its dynamic appearance feature. The
+term BL indicates the bilinear interpolation sampling.
+    By employing this method, Gaussian points along different rays can effec-
+tively capture features at their corresponding positions on the reference image.
+    K feature maps. Limited by the single-view reference image Igt , features
+sampled from the projection feature map are identical along the same ray, which
+is unreasonable under uneven lighting. Besides, since the reference image some-
+times only contains part of the scene, many points may not be projected into
+                                                                                              Gaussian in the Wild    7
+
+effective regions for obtaining valid feature samples, causing inconsistencies in
+new viewpoints. To address these issues and grant Gaussian points the freedom to
+focus on diverse information, we propose extracting additional K feature maps
+(F 1 , F 2 ...F K ) from Igt to construct a high-dimensional sampling space. Each
+Gaussian point is mapped to these maps respectively for adaptive sampling,
+allowing them to focus on high-frequency features.
+    Adaptive sampling. It is necessary to map the Gaussian points to different
+positions on K feature maps, to better focus on diverse information. Inspired by
+the motive of each Gaussian point independently learning its own attributes,
+we consider it an efficient way to allow every point to determine its sampling
+positions through self-learning. Therefore, we assign each Gaussian point with
+K learnable sampling coordinate attributes (sc1i , sc2i ...scK
+                                                             i ), enabling them to
+adaptively select the information they need to focus on. The sampling process
+using these K sampling coordinates in K feature maps is as follows:
+
+                    \label {eq7} (f_i^1,f_i^2...f_i^K)=BL((sc_i^1,sc_i^2...sc_i^K),(F^1,F^2...F^K))                  (7)
+
+   where (fi1 , fi2 ...fiK ) ∈ RK×16 represents the features sampled from K feature
+maps for the i-th Gaussian point. Next, we concatenate the sampled features
+with fiP to jointly represent the dynamic appearance feature of the Gaussian
+point as follows:
+                                  \label {eq8} df_i=f_i^P\oplus f_i^1\oplus f_i^2 \oplus ... f_i^K  (8)
+    During training, to prevent sampling coordinates from deviating beyond the
+effective sampling range, we introduce a regularization term:
+
+
+                                    \label {eq9} L_{sc}=\frac {1}{N}\sum _{i}^{N} max\{0,|sc_i|-1\}                  (9)
+
+
+    where N represents the total number of Gaussian points, and |.| denotes the
+absolute value.
+    Feature maps extraction. We utilize a Unet [35] model with ResNet [13]
+backbone to generate both the projection feature map and K feature maps. The
+Unet model takes the reference image Igt ∈ R3×H×W as input and produces
+a 2D feature map F ∈ R16(K+1)×H×W of the same spatial size. Subsequently,
+this feature map is evenly divided along the channel dimension into (K + 1)
+feature maps, each serving as one of the K feature maps (F 1 , F 2 ...F K ), and the
+projection feature map F P . We choose Unet as the feature extractor due to its
+simplicity and effectiveness in extracting features from images at the same scale.
+
+4.3    Intrinsic and dynamic appearance
+Separation of intrinsic and dynamic appearance. As mentioned before,
+an object’s appearance is influenced by both its intrinsic material as well as sur-
+face properties, and dynamic environmental factors. However, previous methods
+like Ha-NeRF primarily rely on image features, positional data, and viewing di-
+rection to decode appearance using MLPs. This implicit modeling of the scene’s
+8      D. Zhang et al.
+
+intrinsic attributes through MLPs makes it difficult to express the high-frequency
+features solely with small MLPs, thus relying on the extracted dynamic features
+to capture comprehensive information. Consequently, such blurring of features
+hinders the model’s ability to distinguish between intrinsic and dynamic appear-
+ance accurately, particularly in scenarios involving changes in illumination and
+weather conditions. To address this, we explicitly separate the scene appearance
+into two forms: intrinsic and dynamic appearance features.
+    Similar to modeling the static Gaussian points’ positions, we assign a new
+learnable intrinsic appearance attribute sfi to each Gaussian point. Meanwhile,
+the dynamic appearance features dfi are obtained by features extracted from the
+reference image.
+    Fusion of intrinsic and dynamic appearance features. After acquir-
+ing independent dynamic appearance features for each Gaussian point through
+adaptive sampling, it’s essential to combine them with the corresponding intrin-
+sic appearance features to generate a comprehensive appearance feature afi . To
+accomplish this, we design a fusion network Mf composed of two MLPs, which
+takes two appearance features and position information as inputs and produces
+a holistic appearance feature influenced by both. Specifically:
+
+                                \label {eq10} af_i=M_f(sf_i,df_i,X_i)         (10)
+
+   When rendering images, the fused appearance feature afi , along with the
+view direction ϕ, are jointly decoded by an MLP Mc to obtain the color ci of the i-
+th Gaussian point, as in Eq. (11). Finally, the Gaussian points are rendered using
+a differentiable tile rasterizer and colors are aggregated according to Eq. (5),
+producing image Ir with the appearance features of the reference image.
+
+                                     \label {eq_11} c_i=M_c(af_i,\phi )       (11)
+
+
+4.4   Transient objects handling
+
+To mitigate the impact of transient objects and prevent the occurrence of ar-
+tifacts like floating points, we employ a 2D visibility map V M ∈ R1×H×W ob-
+tained from a Unet model, facilitating accurate segmentation between transient
+and static objects. Leveraging the visibility map, we weight the loss calculation
+between the reference image Igt and the rendered image Ir , as Eq. (13). During
+training, the model often struggles to reconstruct the geometry and appearance
+of transient objects, leading to larger losses in regions containing such objects.
+Therefore, in unsupervised scenarios, the 2D visibility map tends to decrease the
+visibility of transient objects to minimize the training loss. As a result, regions
+with higher visibility receive more emphasis, while those with lower visibility are
+disregarded. Additionally, to prevent the visibility map from marking all pixels
+invisible, we introduce a regularization loss term for the visibility map:
+
+                                   \label {eq12} L_{vm}=L_2(VM,1)             (12)
+                                                                                                                                                                                                   Gaussian in the Wild      9
+
+Table 1: Quantitative results on the test set of three PhotoTourism scenes. The bold
+and the underline represent the best and second-best results, respectively. Our method
+outperforms the previous methods across all scenes on PSNR, SSIM, and LPIPS.
+
+                                                             Brandenburg Gate     Sacre Coeur       Trevi Fountain
+                                                           PSNR↑ SSIM↑ LPIPS↓ PSNR↑ SSIM↑ LPIPS↓ PSNR↑ SSIM↑ LPIPS↓
+   3DGS     19.33 0.8838 0.1317                                                                                                                                                       17.70 0.8454 0.1761   17.08 0.7139 0.2413
+ NeRF-W     24.17 0.8905 0.1670                                                                                                                                                       19.20 0.8076 0.1915   18.97 0.6984 0.2652
+ Ha-NeRF    24.04 0.8873 0.1391                                                                                                                                                       20.02 0.8012 0.1710   20.18 0.6908 0.2225
+ CR-NeRF    26.53 0.9003 0.1060                                                                                                                                                       22.07 0.8233 0.1520   21.48 0.7117 0.2069
+GS-W (Ours) 27.96 0.9319 0.0862                                                                                                                                                       23.24 0.8632 0.1300   22.91 0.8014 0.1563
+
+
+
+4.5            Optimization
+
+Similar to [16], we apply two types of the loss function, L1 and LSSIM [44], to
+calculate the pixel error between the rendered image Ir and the reference image
+Igt . Differently, a visibility map V M is incorporated to guide the supervision
+of rendered images by reference images. Moreover, we introduce the perceptual
+loss LLP IP S [56]. Therefore, the overall image loss function is represented as in
+Eq. (13), where ⊙ denotes the Hadamard product. Combining the regularization
+loss terms mentioned in Eq. (9) and Eq. (12), the total loss function is formulated
+as in Eq. (14), where λ1 , λSSIM , λLP IP S , λsc and λvm are 0.8, 0.2, 0.005, 0.001,
+0.15, respectively.
+
+
+        \label {eq13} L_c &= \lambda _{1}L_1(VM\odot I_r,VM\odot I_{gt})+\lambda _{SSIM}L_{SSIM}(VM\odot I_r,VM\odot I_{gt}) \nonumber \\ &+ \lambda _{LPIPS} L_{LPIPS}(I_r,I_{gt})
+                                                                                                                                                                                                                          (13)
+
+
+
+                                                                                                                                          \label {eq14} L=L_c+\lambda _{sc}L_{sc}+\lambda _{vm}L_{vm}                     (14)
+
+
+5      Experiments
+
+5.1            Implementation details
+
+We implement our method using Pytorch [30] and train our networks with Adam
+optimizer [17]. We set K = 3 in our experiment as the increasing K brings no
+performance improvement with meaningless computational cost. We train the
+full model on a single Nvidia RTX 3090 GPU for 70k steps and downsample all
+the images 2 times during training and evaluation, which takes approximately
+2 hours. We also perform the adaptive control of the 3D Gaussians and follow
+other hyperparameter settings similar to 3DGS [16].
+10      D. Zhang et al.
+
+Table 2: Comparison of rendering speed with one RTX 3090 GPU on three scenes
+with a resolution of 800 × 800, measured by FPS(Frames Per Second). Ours-cache
+means the appearance feature is cached for each point when synthesizing novel views.
+
+                     Brandenburg Gate      Sacre Coeur      Trevi Fountain
+        3DGS               221                268               198
+        NeRF-W            0.0518            0.0514            0.0485
+        Ha-NeRF           0.0489            0.0497            0.0498
+        CR-NeRF           0.0445            0.0447            0.0446
+        Ours               55.8              58.3               38
+        Ours-cache         221                301               197
+
+
+
+5.2   Evaluation
+
+Dataset, metrics, baseline. We evaluate our proposed method on three scenes
+from the PhotoTourism dataset: Brandenburg Gate, Sacre Coeur, and Trevi
+Fountain, which include varying appearances and transient objects. For quanti-
+tative comparison, we use PSNR, SSIM [44], and LPIPS [56] as metrics to assess
+the performance of our method. We also present rendered images generated from
+the same pose as the input view for visual inspection. To demonstrate the su-
+periority of our method, we evaluate our proposed method against 3DGS [16],
+NeRF-W [23], Ha-NeRF [6], and CR-NeRF [50].
+    Quantitative comparison. Quantitative results are shown in Tab. 1. 3DGS
+performs poorly on both PSNR and SSIM metrics, as it does not explicitly
+model the appearance variation and transient objects. NeRF-W and Ha-NeRF
+achieve moderate performance by introducing a global appearance embedding
+and anti-transient module. It’s worth noting that NeRF-W needs to optimize
+the appearance embedding of test images, thus the comparison with NeRF-W
+is unfair. CR-NeRF achieves competitive performance due to cross-ray manner.
+Utilizing an adaptive sampling strategy that allows each point to focus on local
+details, our method outperforms the baselines on three scenes in terms of PSNR,
+SSIM, and LPIPS, which verifies that we can capture more details and render
+higher-quality images.
+    Render speed. To compare the render speed of different methods during
+inference, we experiment on the three scenes by setting the image resolution to
+800 × 800 and calculating the average rendering time per image using a single
+RTX 3090 GPU. The time taken for feature extraction from the reference images
+in Ha-NeRF, CR-NeRF, and our method is included in the overall inference time.
+As shown in Tab. 2, our method achieves a significant improvement in rendering
+speed, which is 1000× faster than previous NeRF-based methods.
+    Since our method only requires one feature extraction step and can cache
+appearance feature afi for each Gaussian point, only a small MLP decoder Mc
+is needed for color decoding when synthesizing a novel view. This enables GS-W
+to achieve a 200 FPS rendering speed, comparable to 3DGS.
+                                                         Gaussian in the Wild       11
+
+
+
+
+Fig. 3: Qualitative results on the test set of three PhotoTourism scenes. GS-W recovers
+finer details of appearance(e.g. the horse sculpture in Brandenburg, the sky and clouds
+in Sacre, the light on columns, and the color of windows in Trevi). Moreover, GS-W
+reconstructs more consistent and detailed scenes (e.g. the distant tower in Branden-
+burg, the cavities in Sacre, and the distant building in Trevi).
+12      D. Zhang et al.
+
+Table 3: Ablation studies on three scenes. The bold and the underline represent the
+best and second-best results, respectively. See Sec. 5.3 for detailed descriptions.
+
+                       Brandenburg Gate     Sacre Coeur       Trevi Fountain
+                     PSNR↑ SSIM↑ LPIPS↓ PSNR↑ SSIM↑ LPIPS↓ PSNR↑ SSIM↑ LPIPS↓
+  w/o visibility map  28.64 0.9324 0.0867   23.76 0.8723 0.1234   23.03 0.8025 0.1532
+ w/o K feature maps 26.37 0.9210 0.1018     21.59 0.8521 0.1417   22.27 0.7859 0.1700
+ w/o Projection map 26.61 0.9285 0.0955     22.99 0.8635 0.1320   22.33 0.7980 0.1580
+w/o adaptive sampling 26.44 0.9219 0.0961   21.45 0.8479 0.1439   22.18 0.7866 0.1674
+   w/o separation     28.22 0.9291 0.0942   22.94 0.8520 0.1469   23.27 0.7907 0.1714
+     full (Ours)      27.96 0.9319 0.0862   23.24 0.8632 0.1300   22.91 0.8014 0.1563
+
+
+
+    Qualitative comparison. Fig. 3 presents the qualitative result for all meth-
+ods. NeRF-W and Ha-NeRF can model varying appearances from the reference
+image by introducing a global appearance embedding. CR-NeRF can reconstruct
+better geometry and model appearance variation compared with Ha-NeRF and
+NeRF-W. However, they all struggle to reconstruct the details of scenes in the
+distance and the intricate textures of the scenes, e.g. the door pillars and distant
+tower in Brandenburg, the cavity in Sacre, and the distant buildings in Trevi.
+In contrast, thanks to the higher-frequency dynamic appearance features, our
+method recovers more accurate appearance details, e.g. the horse sculpture in
+Brandenburg, the sky and clouds in Sacre, and the light on columns in Trevi.
+
+5.3   Ablation studies
+We summarize the ablation studies of our method on Brandenburg, Sacre, and
+Trevi datasets in Tab. 3 and produce qualitative results in Fig. 4 and Fig. 5 to
+validate the effectiveness of each component.
+    Without the visibility map. Removing the transient object handling mod-
+ule leads to higher metric performances but introduces artifacts in the rendered
+image due to the influence of transient objects, as depicted in Fig. 4. Since most
+test images lack dynamic objects, these artifacts may not significantly impact
+the metrics.
+    Without K feature maps or projection feature map. The removal of K
+feature maps or the projection feature map results in performance degradation.
+Especially, synthesizing novel views without the K feature maps not only reduces
+the ability to capture information from the reference image but also produces
+view-inconsistent appearances, as shown in Fig. 4.
+    Without adaptive sampling. Retaining K feature maps while keeping the
+sampling coordinates fixed for each point significantly decreases performance.
+This highlights the importance of our adaptive sampling strategy for K feature
+maps, enabling Gaussian points to adaptively focus on local and detailed fea-
+tures.
+    Without separation. We eliminate the intrinsic feature and predict the
+color of Gaussian points by the dynamic appearance feature only. The results in
+Tab. 3 show a noticeable decrease in both LPIPS and SSIM, which are more in
+                                                         Gaussian in the Wild        13
+
+
+
+
+Fig. 4: Ablation studies by visualization. The first row represents the reference images
+and the corresponding rows represent the rendered images from a novel view. Our full
+method is capable of performing view-consistent appearance and reducing artifacts.
+
+
+line with human visual perception. In Fig. 5, the absence of dynamic appearance
+features results in incomplete scene appearance. This emphasizes the significance
+of intrinsic feature in retaining essential scene characteristics. Both illustrate that
+separation is beneficial for the model to accurately comprehend and reconstruct
+sharp appearances.
+
+5.4   Appearance tuning experiment
+Since we explicitly model the scene’s appearance as unchanged intrinsic and
+varying dynamic features, we can adjust the impact of dynamic appearance fea-
+tures on intrinsic appearance by multiplying dfi by a proportional weight. We
+also compare it with Ha-NeRF and CR-NeRF by applying the same weights to
+extracted image features. Qualitative results are shown in Fig. 5. Ha-NeRF and
+CR-NeRF show odd coloration in the sky and buildings at low weights, while at
+high weights, they fail to capture the detailed highlights and enhance the style
+of sufficient illumination, resulting in darker building colors. In contrast, our
+method aligns more closely with human understanding of the physical world. As
+the weight increases from small to large, our method gradually applies extracted
+environmental impacts to the scene, e.g. appearing highlights on pillars and en-
+hancing illumination. This demonstrates the importance of dynamic features in
+capturing environmental information and explicitly separating intrinsic and dy-
+namic appearances aid the model in clearly learning and distinguishing between
+the two, thereby achieving more flexible tuning over the scene’s appearance.
+14      D. Zhang et al.
+
+
+
+
+Fig. 5: Images are rendered at the same camera pose with increasing weight of fea-
+tures extracted from the image. Our method incorporates environmental factors, like
+highlights on pillars and enhancing illumination, in a manner that is closer to human
+understanding.
+
+
+
+5.5   Limitations
+
+
+While GS-W outperforms previous methods, it still has limitations. It strug-
+gles with complex lighting variations, specular reflections, and accurately recon-
+structing textures in frequently occluded scenes, like the floor texture in the
+Brandenburg Gate scene. Additionally, it assumes known image poses when in-
+corporating appearance information from reference images. Future research may
+focus on developing new appearance modeling techniques to address these issues.
+
+
+
+6     Conclusion
+
+
+In this paper, we introduce GS-W, a method for reconstructing scenes from
+unconstrained image collections. Using 3D Gaussian points as 3D representation,
+we introduce separated intrinsic and dynamic appearance features for each point
+to effectively model scene appearance. We propose an adaptive sampling strategy
+to capture local environmental factors like highlights and utilize a visibility map
+to handle transient objects. Our approach outperforms previous NeRF-based
+methods by providing better extraction of dynamic environmental impacts from
+images and addressing slow rendering speeds. Experimental results demonstrate
+the superiority and efficiency of our method compared to previous approaches.
+                                                          Gaussian in the Wild        15
+
+Acknowledgments
+This research was funded through the National Key Research and Development
+Program of China (Project No. 2022YFB36066), partly by the Shenzhen Science
+and Technology Project under Grant (JCYJ20220818101001004).
+
+
+References
+ 1. Barron, J.T., Mildenhall, B., Tancik, M., Hedman, P., Martin-Brualla, R., Srini-
+    vasan, P.P.: Mip-nerf: A multiscale representation for anti-aliasing neural radiance
+    fields. In: Proceedings of the IEEE/CVF International Conference on Computer
+    Vision. pp. 5855–5864 (2021)
+ 2. Barron, J.T., Mildenhall, B., Verbin, D., Srinivasan, P.P., Hedman, P.: Mip-
+    nerf 360: Unbounded anti-aliased neural radiance fields. In: Proceedings of the
+    IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 5470–
+    5479 (2022)
+ 3. Cao, A., Johnson, J.: Hexplane: A fast representation for dynamic scenes. In: Pro-
+    ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recogni-
+    tion. pp. 130–141 (2023)
+ 4. Chan, E.R., Lin, C.Z., Chan, M.A., Nagano, K., Pan, B., De Mello, S., Gallo,
+    O., Guibas, L.J., Tremblay, J., Khamis, S., et al.: Efficient geometry-aware 3d
+    generative adversarial networks. In: Proceedings of the IEEE/CVF Conference on
+    Computer Vision and Pattern Recognition. pp. 16123–16133 (2022)
+ 5. Chen, A., Xu, Z., Geiger, A., Yu, J., Su, H.: Tensorf: Tensorial radiance fields. In:
+    European Conference on Computer Vision. pp. 333–350. Springer (2022)
+ 6. Chen, X., Zhang, Q., Li, X., Chen, Y., Feng, Y., Wang, X., Wang, J.: Hallucinated
+    neural radiance fields in the wild. In: Proceedings of the IEEE/CVF Conference
+    on Computer Vision and Pattern Recognition. pp. 12943–12952 (2022)
+ 7. Deng, K., Liu, A., Zhu, J.Y., Ramanan, D.: Depth-supervised nerf: Fewer views and
+    faster training for free. In: Proceedings of the IEEE/CVF Conference on Computer
+    Vision and Pattern Recognition. pp. 12882–12891 (2022)
+ 8. Engelhardt, A., Raj, A., Boss, M., Zhang, Y., Kar, A., Li, Y., Sun, D., Brualla,
+    R.M., Barron, J.T., Lensch, H., et al.: Shinobi: Shape and illumination using neu-
+    ral object decomposition via brdf optimization in-the-wild. In: Proceedings of the
+    IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 19636–
+    19646 (2024)
+ 9. Fan, Z., Wang, K., Wen, K., Zhu, Z., Xu, D., Wang, Z.: Lightgaussian: Un-
+    bounded 3d gaussian compression with 15x reduction and 200+ fps. arXiv preprint
+    arXiv:2311.17245 (2023)
+10. Fridovich-Keil, S., Meanti, G., Warburg, F.R., Recht, B., Kanazawa, A.: K-planes:
+    Explicit radiance fields in space, time, and appearance. In: Proceedings of the
+    IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 12479–
+    12488 (2023)
+11. Fridovich-Keil, S., Yu, A., Tancik, M., Chen, Q., Recht, B., Kanazawa, A.: Plenox-
+    els: Radiance fields without neural networks. In: Proceedings of the IEEE/CVF
+    Conference on Computer Vision and Pattern Recognition. pp. 5501–5510 (2022)
+12. Garbin, S.J., Kowalski, M., Johnson, M., Shotton, J., Valentin, J.: Fastnerf: High-
+    fidelity neural rendering at 200fps. In: Proceedings of the IEEE/CVF International
+    Conference on Computer Vision. pp. 14346–14355 (2021)
+16      D. Zhang et al.
+
+13. He, K., Zhang, X., Ren, S., Sun, J.: Deep residual learning for image recognition. In:
+    Proceedings of the IEEE conference on computer vision and pattern recognition.
+    pp. 770–778 (2016)
+14. Kanazawa, A., Tulsiani, S., Efros, A.A., Malik, J.: Learning category-specific mesh
+    reconstruction from image collections. In: Proceedings of the European Conference
+    on Computer Vision (ECCV). pp. 371–386 (2018)
+15. Kato, H., Ushiku, Y., Harada, T.: Neural 3d mesh renderer. In: Proceedings of
+    the IEEE conference on computer vision and pattern recognition. pp. 3907–3916
+    (2018)
+16. Kerbl, B., Kopanas, G., Leimkühler, T., Drettakis, G.: 3d gaussian splatting for
+    real-time radiance field rendering. ACM Transactions on Graphics 42(4) (2023)
+17. Kingma, D.P., Ba, J.: Adam: A method for stochastic optimization. arXiv preprint
+    arXiv:1412.6980 (2014)
+18. Kuang, Z., Olszewski, K., Chai, M., Huang, Z., Achlioptas, P., Tulyakov, S.: Neroic:
+    Neural rendering of objects from online image collections. ACM Transactions on
+    Graphics (TOG) 41(4), 1–12 (2022)
+19. Li, P., Wang, S., Yang, C., Liu, B., Qiu, W., Wang, H.: Nerf-ms: Neural radi-
+    ance fields with multi-sequence. In: Proceedings of the IEEE/CVF International
+    Conference on Computer Vision. pp. 18591–18600 (2023)
+20. Li, Z., Xian, W., Davis, A., Snavely, N.: Crowdsampling the plenoptic function. In:
+    Computer Vision–ECCV 2020: 16th European Conference, Glasgow, UK, August
+    23–28, 2020, Proceedings, Part I 16. pp. 178–196. Springer (2020)
+21. Lin, H., Wang, Q., Cai, R., Peng, S., Averbuch-Elor, H., Zhou, X., Snavely, N.: Neu-
+    ral scene chronology. In: Proceedings of the IEEE/CVF Conference on Computer
+    Vision and Pattern Recognition. pp. 20752–20761 (2023)
+22. Lu, T., Yu, M., Xu, L., Xiangli, Y., Wang, L., Lin, D., Dai, B.: Scaffold-gs: Struc-
+    tured 3d gaussians for view-adaptive rendering. arXiv preprint arXiv:2312.00109
+    (2023)
+23. Martin-Brualla, R., Radwan, N., Sajjadi, M.S., Barron, J.T., Dosovitskiy, A., Duck-
+    worth, D.: Nerf in the wild: Neural radiance fields for unconstrained photo col-
+    lections. In: Proceedings of the IEEE/CVF Conference on Computer Vision and
+    Pattern Recognition. pp. 7210–7219 (2021)
+24. Mescheder, L., Oechsle, M., Niemeyer, M., Nowozin, S., Geiger, A.: Occupancy
+    networks: Learning 3d reconstruction in function space. In: Proceedings of the
+    IEEE/CVF conference on computer vision and pattern recognition. pp. 4460–4470
+    (2019)
+25. Meshry, M., Goldman, D.B., Khamis, S., Hoppe, H., Pandey, R., Snavely, N.,
+    Martin-Brualla, R.: Neural rerendering in the wild. In: Proceedings of the
+    IEEE/CVF Conference on Computer Vision and Pattern Recognition. pp. 6878–
+    6887 (2019)
+26. Mildenhall, B., Srinivasan, P.P., Tancik, M., Barron, J.T., Ramamoorthi, R., Ng,
+    R.: Nerf: Representing scenes as neural radiance fields for view synthesis. Commu-
+    nications of the ACM 65(1), 99–106 (2021)
+27. Müller, T., Evans, A., Schied, C., Keller, A.: Instant neural graphics primitives with
+    a multiresolution hash encoding. ACM Transactions on Graphics (ToG) 41(4), 1–
+    15 (2022)
+28. Niemeyer, M., Barron, J.T., Mildenhall, B., Sajjadi, M.S., Geiger, A., Radwan, N.:
+    Regnerf: Regularizing neural radiance fields for view synthesis from sparse inputs.
+    In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern
+    Recognition. pp. 5480–5490 (2022)
+                                                           Gaussian in the Wild        17
+
+29. Park, J.J., Florence, P., Straub, J., Newcombe, R., Lovegrove, S.: Deepsdf: Learning
+    continuous signed distance functions for shape representation. In: Proceedings of
+    the IEEE/CVF conference on computer vision and pattern recognition. pp. 165–
+    174 (2019)
+30. Paszke, A., Gross, S., Massa, F., Lerer, A., Bradbury, J., Chanan, G., Killeen,
+    T., Lin, Z., Gimelshein, N., Antiga, L., et al.: Pytorch: An imperative style, high-
+    performance deep learning library. Advances in neural information processing sys-
+    tems 32 (2019)
+31. Qi, C.R., Su, H., Mo, K., Guibas, L.J.: Pointnet: Deep learning on point sets
+    for 3d classification and segmentation. In: Proceedings of the IEEE conference on
+    computer vision and pattern recognition. pp. 652–660 (2017)
+32. Qi, C.R., Yi, L., Su, H., Guibas, L.J.: Pointnet++: Deep hierarchical feature learn-
+    ing on point sets in a metric space. Advances in neural information processing
+    systems 30 (2017)
+33. Qin, M., Li, W., Zhou, J., Wang, H., Pfister, H.: Langsplat: 3d language gaussian
+    splatting. arXiv preprint arXiv:2312.16084 (2023)
+34. Reiser, C., Peng, S., Liao, Y., Geiger, A.: Kilonerf: Speeding up neural radiance
+    fields with thousands of tiny mlps. In: Proceedings of the IEEE/CVF International
+    Conference on Computer Vision. pp. 14335–14345 (2021)
+35. Ronneberger, O., Fischer, P., Brox, T.: U-net: Convolutional networks for biomed-
+    ical image segmentation. In: Medical Image Computing and Computer-Assisted
+    Intervention–MICCAI 2015: 18th International Conference, Munich, Germany, Oc-
+    tober 5-9, 2015, Proceedings, Part III 18. pp. 234–241. Springer (2015)
+36. Rudnev, V., Elgharib, M., Smith, W., Liu, L., Golyanik, V., Theobalt, C.: Nerf
+    for outdoor scene relighting. In: European Conference on Computer Vision. pp.
+    615–631. Springer (2022)
+37. Schonberger, J.L., Frahm, J.M.: Structure-from-motion revisited. In: Proceedings
+    of the IEEE conference on computer vision and pattern recognition. pp. 4104–4113
+    (2016)
+38. Schwarz, K., Sauer, A., Niemeyer, M., Liao, Y., Geiger, A.: Voxgraf: Fast 3d-aware
+    image synthesis with sparse voxel grids. Advances in Neural Information Processing
+    Systems 35, 33999–34011 (2022)
+39. Shao, R., Zheng, Z., Tu, H., Liu, B., Zhang, H., Liu, Y.: Tensor4d: Efficient neu-
+    ral 4d decomposition for high-fidelity dynamic reconstruction and rendering. In:
+    Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recog-
+    nition. pp. 16632–16642 (2023)
+40. Shi, S., Guo, C., Jiang, L., Wang, Z., Shi, J., Wang, X., Li, H.: Pv-rcnn: Point-voxel
+    feature set abstraction for 3d object detection. In: Proceedings of the IEEE/CVF
+    conference on computer vision and pattern recognition. pp. 10529–10538 (2020)
+41. Tancik, M., Casser, V., Yan, X., Pradhan, S., Mildenhall, B., Srinivasan, P.P., Bar-
+    ron, J.T., Kretzschmar, H.: Block-nerf: Scalable large scene neural view synthesis.
+    In: Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern
+    Recognition. pp. 8248–8258 (2022)
+42. Verbin, D., Hedman, P., Mildenhall, B., Zickler, T., Barron, J.T., Srinivasan, P.P.:
+    Ref-nerf: Structured view-dependent appearance for neural radiance fields. In: 2022
+    IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR). pp.
+    5481–5490. IEEE (2022)
+43. Wang, G., Chen, Z., Loy, C.C., Liu, Z.: Sparsenerf: Distilling depth ranking for
+    few-shot novel view synthesis. arXiv preprint arXiv:2303.16196 (2023)
+18      D. Zhang et al.
+
+44. Wang, Z., Bovik, A.C., Sheikh, H.R., Simoncelli, E.P.: Image quality assessment:
+    from error visibility to structural similarity. IEEE transactions on image processing
+    13(4), 600–612 (2004)
+45. Wen, C., Zhang, Y., Li, Z., Fu, Y.: Pixel2mesh++: Multi-view 3d mesh generation
+    via deformation. In: Proceedings of the IEEE/CVF international conference on
+    computer vision. pp. 1042–1051 (2019)
+46. Wu, G., Yi, T., Fang, J., Xie, L., Zhang, X., Wei, W., Liu, W., Tian, Q., Wang,
+    X.: 4d gaussian splatting for real-time dynamic scene rendering. arXiv preprint
+    arXiv:2310.08528 (2023)
+47. Wu, Z., Song, S., Khosla, A., Yu, F., Zhang, L., Tang, X., Xiao, J.: 3d shapenets: A
+    deep representation for volumetric shapes. In: Proceedings of the IEEE conference
+    on computer vision and pattern recognition. pp. 1912–1920 (2015)
+48. Xu, Y., Peng, S., Yang, C., Shen, Y., Zhou, B.: 3d-aware image synthesis via
+    learning structural and textural representations. In: Proceedings of the IEEE/CVF
+    Conference on Computer Vision and Pattern Recognition. pp. 18430–18439 (2022)
+49. Yang, J., Pavone, M., Wang, Y.: Freenerf: Improving few-shot neural rendering
+    with free frequency regularization. In: Proceedings of the IEEE/CVF Conference
+    on Computer Vision and Pattern Recognition. pp. 8254–8263 (2023)
+50. Yang, Y., Zhang, S., Huang, Z., Zhang, Y., Tan, M.: Cross-ray neural radiance fields
+    for novel-view synthesis from unconstrained image collections. In: Proceedings of
+    the IEEE/CVF International Conference on Computer Vision. pp. 15901–15911
+    (2023)
+51. Yang, Z., Gao, X., Sun, Y., Huang, Y., Lyu, X., Zhou, W., Jiao, S., Qi, X., Jin, X.:
+    Spec-gaussian: Anisotropic view-dependent appearance for 3d gaussian splatting.
+    arXiv preprint arXiv:2402.15870 (2024)
+52. Yi, T., Fang, J., Wu, G., Xie, L., Zhang, X., Liu, W., Tian, Q., Wang, X.: Gaus-
+    siandreamer: Fast generation from text to 3d gaussian splatting with point cloud
+    priors. arXiv preprint arXiv:2310.08529 (2023)
+53. Yu, A., Li, R., Tancik, M., Li, H., Ng, R., Kanazawa, A.: Plenoctrees for real-time
+    rendering of neural radiance fields. In: Proceedings of the IEEE/CVF International
+    Conference on Computer Vision. pp. 5752–5761 (2021)
+54. Yu, Z., Chen, A., Huang, B., Sattler, T., Geiger, A.: Mip-splatting: Alias-free 3d
+    gaussian splatting. arXiv preprint arXiv:2311.16493 (2023)
+55. Zhang, J., Yang, G., Tulsiani, S., Ramanan, D.: Ners: Neural reflectance surfaces
+    for sparse-view 3d reconstruction in the wild. Advances in Neural Information
+    Processing Systems 34, 29835–29847 (2021)
+56. Zhang, R., Isola, P., Efros, A.A., Shechtman, E., Wang, O.: The unreasonable
+    effectiveness of deep features as a perceptual metric. In: Proceedings of the IEEE
+    conference on computer vision and pattern recognition. pp. 586–595 (2018)
+

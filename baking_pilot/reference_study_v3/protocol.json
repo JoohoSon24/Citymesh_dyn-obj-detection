@@ -1,0 +1,29 @@
+{
+  "created_before_new_metric_evaluation": true,
+  "date": "2026-10-28",
+  "scope": "Frozen-S mechanism transfer to planar homography texture baking; not full NeRF/3DGS paper reproduction",
+  "scenes": ["industrial_b", "industrial_c"],
+  "training_years": [2021,2022,2023,2024,2025],
+  "heldout_year": 2026,
+  "training_view_indices": [0,19],
+  "seeds": [42,43,44],
+  "baking_iterations": 600,
+  "batch_size": 4,
+  "basis": 512,
+  "output": 1024,
+  "texture_lr": 0.025,
+  "color_lr": 0.001,
+  "color_ridge": 0.001,
+  "initialization": "same training-image mean as original L2",
+  "mask_source": "saved training-only L2 warmup predictions (600 updates); masks frozen during new baking",
+  "feature_model": "official DINOv2 ViT-S/14, ImageNet normalized, resized to 392x518, patch grid 28x37",
+  "uncertainty_optimization": {"seed":42,"steps":1000,"sampled_patches":4096,"optimizer":"Adam","lr":0.001,"sigma_floor":0.1,"lambda_log_prior":0.5},
+  "methods": {
+    "dino_ssim_soft": "DINO 384->64->1 ReLU/softplus MLP predicts sigma from frozen L2 modified SSIM target (1-L)(1-C)(1-structure); local 11x11 window; patch mean; S=1/(2sigma^2). Inspired by On-the-go; no feature-neighbor regularizer, no dilated sampling, no joint online updates.",
+    "dino_cosine_soft": "DINO affine+softplus sigma trained with min(1,2-2cos(DINO input,DINO warmup)) target; S=1/(2sigma^2). Soft-weight control for the next method, not a paper result.",
+    "dino_cosine_hard": "Same learned sigma as cosine-soft; bilinear sigma upsampled, S=1[1/(2sigma^2)>1]. WildGaussians-inspired masking only; no per-Gaussian appearance, densification, or online refresh.",
+    "sam_region_median": "Training warmup RMS > per-view valid median; 3x3 majority; saved disjoint SAM regions with >40% excluded votes are excluded whole. Cached SAM partition includes connected components in uncovered pixels. Inspired by object-aware masking in Robust3DGaussians; no logistic decision boundary, no exact original SAM IoU procedure."
+  },
+  "evaluation": "Existing frozen 33 OBB / 21 majority-occluded OBB, 2026 actual background, identical evaluator PSNR/LPIPS/static control. No 2026 for feature extraction, mask fitting, baking or parameter selection.",
+  "policy": "Report every prespecified method and all three seeds; no tuning from new evaluation results"
+}

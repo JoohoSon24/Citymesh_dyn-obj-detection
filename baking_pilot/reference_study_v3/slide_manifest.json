@@ -1,0 +1,154 @@
+[
+  {
+    "slide": 1,
+    "title": "Goal"
+  },
+  {
+    "slide": 2,
+    "title": "Pilot : What is the geometry?"
+  },
+  {
+    "slide": 3,
+    "title": "Two possible paths"
+  },
+  {
+    "slide": 4,
+    "title": "Main idea"
+  },
+  {
+    "slide": 5,
+    "title": "Baseline : S = 1"
+  },
+  {
+    "slide": 6,
+    "title": "S : Block-NeRF type"
+  },
+  {
+    "slide": 7,
+    "title": "S : NeRF-HuGS type"
+  },
+  {
+    "slide": 8,
+    "title": "S : RobustNeRF type"
+  },
+  {
+    "slide": 9,
+    "title": "S : Geometry mask"
+  },
+  {
+    "slide": 10,
+    "title": "Direct UV fusion"
+  },
+  {
+    "slide": 11,
+    "title": "S : Shadow guard"
+  },
+  {
+    "slide": 12,
+    "title": "Geometry : Init / Prior"
+  },
+  {
+    "slide": 13,
+    "title": "Ref : NeRF On-the-go"
+  },
+  {
+    "slide": 14,
+    "title": "Ref : RobustNeRF"
+  },
+  {
+    "slide": 15,
+    "title": "Ref : SpotLessSplats"
+  },
+  {
+    "slide": 16,
+    "title": "Ref : WildGaussians"
+  },
+  {
+    "slide": 17,
+    "title": "Ref : GS-W"
+  },
+  {
+    "slide": 18,
+    "title": "Ref : Robust Gaussian Splatting"
+  },
+  {
+    "slide": 19,
+    "title": "Ref : Robust 3DGS (distractors)"
+  },
+  {
+    "slide": 20,
+    "title": "References : What transfers?"
+  },
+  {
+    "slide": 21,
+    "title": "Experiment : Dataset"
+  },
+  {
+    "slide": 22,
+    "title": "Experiment : Baking setup"
+  },
+  {
+    "slide": 23,
+    "title": "Experiment : Evaluation"
+  },
+  {
+    "slide": 24,
+    "title": "Result : Easy scene"
+  },
+  {
+    "slide": 25,
+    "title": "Result : Easy visualization"
+  },
+  {
+    "slide": 26,
+    "title": "Result : High occupancy"
+  },
+  {
+    "slide": 27,
+    "title": "Result : Quality / Ablation"
+  },
+  {
+    "slide": 28,
+    "title": "Result : Hard visualization"
+  },
+  {
+    "slide": 29,
+    "title": "Result : Full scene"
+  },
+  {
+    "slide": 30,
+    "title": "v3 : Frozen-S transfer setup"
+  },
+  {
+    "slide": 31,
+    "title": "v3 : Quantitative results"
+  },
+  {
+    "slide": 32,
+    "title": "v3 : Mask diagnostics"
+  },
+  {
+    "slide": 33,
+    "title": "v3 : What does S select?"
+  },
+  {
+    "slide": 34,
+    "title": "v3 : Same audit locations"
+  },
+  {
+    "slide": 35,
+    "title": "v3 : Interpretation"
+  },
+  {
+    "slide": 36,
+    "title": "Discussion"
+  },
+  {
+    "slide": 37,
+    "title": "Next steps"
+  },
+  {
+    "slide": 38,
+    "title": "References"
+  }
+]

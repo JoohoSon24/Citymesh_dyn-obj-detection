@@ -1,0 +1,187 @@
+{
+  "date_utc": "2026-10-25T08:05:09Z",
+  "scene": {
+    "name": "Jaarbeurs south parking (relocated)",
+    "lat": 52.08235,
+    "lon": 5.1009,
+    "size_m": 120,
+    "train_years": [
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "holdout_year": 2026,
+    "ground_polygons": [
+      [
+        [
+          180,
+          180
+        ],
+        [
+          640,
+          180
+        ],
+        [
+          1050,
+          410
+        ],
+        [
+          1440,
+          250
+        ],
+        [
+          1440,
+          820
+        ],
+        [
+          1050,
+          920
+        ],
+        [
+          1180,
+          1250
+        ],
+        [
+          1440,
+          1370
+        ],
+        [
+          1440,
+          1450
+        ],
+        [
+          520,
+          1450
+        ]
+      ]
+    ],
+    "exclude_polygons": [],
+    "crops": {
+      "cars": [
+        230,
+        260,
+        490,
+        520
+      ],
+      "markings": [
+        460,
+        370,
+        720,
+        630
+      ],
+      "shadows": [
+        300,
+        590,
+        560,
+        850
+      ]
+    }
+  },
+  "assets": [
+    {
+      "file": "data/selected/2021_orthoHR.png",
+      "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2021_orthoHR&styles=&crs=EPSG:4326&bbox=52.081811013295,5.1000229260720555,52.082888986704994,5.101777073927945&width=1500&height=1500&format=image/png",
+      "sha256": "0dcc1cea6244daad1f3086ce80033fdf94cf699da371d09cb219c84e4c4dfcd7",
+      "decoded_format": "JPEG"
+    },
+    {
+      "file": "data/selected/2022_orthoHR.png",
+      "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2022_orthoHR&styles=&crs=EPSG:4326&bbox=52.081811013295,5.1000229260720555,52.082888986704994,5.101777073927945&width=1500&height=1500&format=image/png",
+      "sha256": "8812ea67bee8f0d6bf9caf7bc981fefba92314f784bbdbac679dd6fa93cf29bc",
+      "decoded_format": "JPEG"
+    },
+    {
+      "file": "data/selected/2023_orthoHR.png",
+      "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2023_orthoHR&styles=&crs=EPSG:4326&bbox=52.081811013295,5.1000229260720555,52.082888986704994,5.101777073927945&width=1500&height=1500&format=image/png",
+      "sha256": "bdf9512eca41bc71ff250a53e1beed59406b0e346f7e983d9d45cf78ba2b06ab",
+      "decoded_format": "JPEG"
+    },
+    {
+      "file": "data/selected/2024_orthoHR.png",
+      "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2024_orthoHR&styles=&crs=EPSG:4326&bbox=52.081811013295,5.1000229260720555,52.082888986704994,5.101777073927945&width=1500&height=1500&format=image/png",
+      "sha256": "eb4d98eece0964a997263e5556404b0e6db524e7105ed7edcc664cf3c2c0662a",
+      "decoded_format": "JPEG"
+    },
+    {
+      "file": "data/selected/2025_orthoHR.png",
+      "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2025_orthoHR&styles=&crs=EPSG:4326&bbox=52.081811013295,5.1000229260720555,52.082888986704994,5.101777073927945&width=1500&height=1500&format=image/png",
+      "sha256": "ba505ac37378c26198b9f2b125489eebc941d7555f3b846645dd599f4b84e909",
+      "decoded_format": "JPEG"
+    },
+    {
+      "file": "data/selected/2026_orthoHR.png",
+      "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2026_orthoHR&styles=&crs=EPSG:4326&bbox=52.081811013295,5.1000229260720555,52.082888986704994,5.101777073927945&width=1500&height=1500&format=image/png",
+      "sha256": "4074a9f1379f1e4eabe61c0b9aa01049631a7bb1e99d347d43078871d5056b52",
+      "decoded_format": "JPEG"
+    },
+    {
+      "file": "data/selected/2026_quickorthoHR.png",
+      "url": "https://service.pdok.nl/hwh/luchtfotorgb/wms/v1_0?service=WMS&version=1.3.0&request=GetMap&layers=2026_quickorthoHR&styles=&crs=EPSG:4326&bbox=52.081811013295,5.1000229260720555,52.082888986704994,5.101777073927945&width=1500&height=1500&format=image/png",
+      "sha256": "9250ada71e0cca4e83db28bada47dc669a0c73aa98a6684f878ec8f125d32fc5",
+      "decoded_format": "JPEG"
+    }
+  ],
+  "duplicate_check": {
+    "byte_identical": false,
+    "pixel_correlation": 0.9753141599147279,
+    "RMSE": 0.034976372594886625,
+    "SSIM": 0.8754588750195502,
+    "shared_layer_metadata_uuid": "4d8e14a9-302c-48e7-a0ee-1b23ed2a2122",
+    "decision": "Exclude quickortho from all training and consensus: independent acquisition unverified. Similar appearance and shared metadata support treating them as one epoch."
+  },
+  "weights": [
+    {
+      "file": "sam_vit_b_01ec64.pth",
+      "sha256": "ec2df62732614e57411cdcf32a23ffdf28910380d03139ee0f4fcbe91eb8c912",
+      "bytes": 375042383
+    },
+    {
+      "file": "yolo11s-obb.pt",
+      "sha256": "43fa63102922e0701501241b307420d24fc55e080816888b18bf8c6f96b1a45a",
+      "bytes": 19934534
+    }
+  ],
+  "seed": 42,
+  "device": "NVIDIA L40S-24Q",
+  "python": "3.11.17",
+  "packages": {
+    "torch": "2.5.1+cu121",
+    "torchvision": "0.20.1+cu121",
+    "numpy": "2.4.6",
+    "opencv-python": "5.0.0.93",
+    "ultralytics": "8.4.188",
+    "segment-anything": "1.0",
+    "lpips": "0.1.4",
+    "scikit-image": "0.26.0"
+  },
+  "texture_resolution": [
+    1024,
+    1024
+  ],
+  "texture_parameter_resolution": [
+    512,
+    512
+  ],
+  "texture_basis": "bilinear align_corners=True",
+  "view_resolution": [
+    768,
+    576
+  ],
+  "iterations": 600,
+  "batch_images": 4,
+  "optimizer": "Adam",
+  "texture_lr": 0.025,
+  "color_lr": 0.001,
+  "color_ridge": 0.001,
+  "initialization": "Mean of 5 aligned, exposure-normalized training epochs",
+  "huGS_preprocess": "600-iteration 512-basis common L2 bake; extra preprocessing cost, not counted as masked baking iterations",
+  "sources": {
+    "HuGS": "https://github.com/cnhaox/NeRF-HuGS/blob/master/HuGS/generate_static_mask.py",
+    "RobustNeRF_code": "https://github.com/google-research/multinerf/blob/main/internal/robustnerf.py",
+    "DOTA_YOLO": "https://docs.ultralytics.com/tasks/obb/",
+    "data": "https://www.pdok.nl/introductie/-/article/pdok-luchtfoto-rgb-open-",
+    "sam": "https://github.com/facebookresearch/segment-anything"
+  }
+}

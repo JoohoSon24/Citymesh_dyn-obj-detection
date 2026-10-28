@@ -1,0 +1,22 @@
+Loading official DINOv2 ViT-S/14
+Downloading: "https://github.com/facebookresearch/dinov2/zipball/main" to /root/.cache/torch/hub/main.zip
+/root/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/swiglu_ffn.py:51: UserWarning: xFormers is not available (SwiGLU)
+  warnings.warn("xFormers is not available (SwiGLU)")
+/root/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/attention.py:33: UserWarning: xFormers is not available (Attention)
+  warnings.warn("xFormers is not available (Attention)")
+/root/.cache/torch/hub/facebookresearch_dinov2_main/dinov2/layers/block.py:40: UserWarning: xFormers is not available (Block)
+  warnings.warn("xFormers is not available (Block)")
+Downloading: "https://dl.fbaipublicfiles.com/dinov2/dinov2_vits14/dinov2_vits14_pretrain.pth" to /root/.cache/torch/hub/checkpoints/dinov2_vits14_pretrain.pth
+  0%|          | 0.00/84.2M [00:00<?, ?B/s]  7%|▋         | 5.88M/84.2M [00:00<00:01, 56.5MB/s] 16%|█▌        | 13.5M/84.2M [00:00<00:01, 66.7MB/s] 24%|██▎       | 19.9M/84.2M [00:00<00:01, 48.0MB/s] 30%|██▉       | 24.9M/84.2M [00:00<00:01, 35.0MB/s] 34%|███▍      | 28.8M/84.2M [00:00<00:02, 27.2MB/s] 38%|███▊      | 31.9M/84.2M [00:01<00:02, 23.6MB/s] 41%|████      | 34.5M/84.2M [00:01<00:02, 23.3MB/s] 44%|████▍     | 37.0M/84.2M [00:01<00:02, 22.6MB/s] 47%|████▋     | 39.4M/84.2M [00:01<00:02, 20.4MB/s] 50%|████▉     | 41.8M/84.2M [00:01<00:02, 20.4MB/s] 52%|█████▏    | 43.8M/84.2M [00:01<00:02, 20.2MB/s] 54%|█████▍    | 45.9M/84.2M [00:01<00:02, 19.7MB/s] 57%|█████▋    | 47.9M/84.2M [00:01<00:01, 19.2MB/s] 59%|█████▉    | 50.0M/84.2M [00:02<00:01, 20.0MB/s] 62%|██████▏   | 52.0M/84.2M [00:02<00:01, 19.7MB/s] 64%|██████▍   | 54.0M/84.2M [00:02<00:01, 19.3MB/s] 66%|██████▋   | 55.9M/84.2M [00:02<00:01, 18.4MB/s] 69%|██████▊   | 57.8M/84.2M [00:02<00:01, 18.6MB/s] 71%|███████   | 59.6M/84.2M [00:02<00:01, 18.7MB/s] 73%|███████▎  | 61.5M/84.2M [00:02<00:01, 18.8MB/s] 75%|███████▌  | 63.4M/84.2M [00:02<00:01, 19.0MB/s] 78%|███████▊  | 65.2M/84.2M [00:02<00:01, 18.2MB/s] 80%|████████  | 67.5M/84.2M [00:03<00:00, 19.5MB/s] 82%|████████▏ | 69.4M/84.2M [00:03<00:00, 18.9MB/s] 85%|████████▍ | 71.4M/84.2M [00:03<00:00, 18.4MB/s] 87%|████████▋ | 73.2M/84.2M [00:03<00:00, 18.5MB/s] 89%|████████▉ | 75.1M/84.2M [00:03<00:00, 18.5MB/s] 91%|█████████▏| 77.0M/84.2M [00:03<00:00, 18.7MB/s] 94%|█████████▎| 78.9M/84.2M [00:03<00:00, 18.8MB/s] 96%|█████████▌| 80.8M/84.2M [00:03<00:00, 19.0MB/s] 98%|█████████▊| 82.6M/84.2M [00:03<00:00, 19.0MB/s]100%|██████████| 84.2M/84.2M [00:03<00:00, 22.2MB/s]
+industrial_b warmup shape (20, 576, 768, 3)
+industrial_b 0
+industrial_b 5
+industrial_b 10
+industrial_b 15
+DONE industrial_b
+industrial_c warmup shape (20, 576, 768, 3)
+industrial_c 0
+industrial_c 5
+industrial_c 10
+industrial_c 15
+DONE industrial_c

@@ -1,0 +1,41 @@
+{
+  "steps": 2500,
+  "unfilled_pixels": 73109,
+  "hole_pixels": 127635,
+  "donor_centers": 28542,
+  "seconds": 62.66619086265564,
+  "protocol": {
+    "status": "Fixed before new evaluation; exploratory follow-up on the existing benchmark",
+    "train_years": [
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "heldout": 2026,
+    "base": "training-only UV fusion + fixed shadow guard",
+    "gradient_harmonize": {
+      "gradient_weight": 2.0,
+      "fidelity": "background_count/5",
+      "guidance": "channelwise median of same-epoch adjacent gradients with both endpoints accepted",
+      "cg_rtol": 1e-05,
+      "cg_maxiter": 160
+    },
+    "patch_transfer": {
+      "patch_size": 21,
+      "donor_stride": 5,
+      "search_radius": 160,
+      "minimum_known_context_fraction": 0.15,
+      "maximum_patch_steps": 2500,
+      "boundary_feather_width": 3,
+      "donor_requirement": "all patch pixels have at least one accepted training observation",
+      "offset_correction": "per-channel boundary median difference, clamped +/-0.12",
+      "fill_domain": "zero accepted observations only"
+    },
+    "output": "same 512 bilinear basis, 1024 final",
+    "evaluation": "unchanged 33 OBB, 21 majority-occupied, actual heldout 2026, same metrics; report both methods even if worse"
+  },
+  "train_slice": "[:5]",
+  "heldout_used": false
+}

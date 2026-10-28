@@ -1,0 +1,22 @@
+{
+  "scenes": {
+    "industrial_b": {
+      "known_fusion_max_error": 0.0,
+      "baseline_metric_recalculation_error": 0.0,
+      "annotation_sha256": "fba0681f123a34876764736297ac8392b5c14c89ddda71aa8cc8cb8b64e7904e",
+      "no_observation_fraction": 0.11455535888671875,
+      "learned_runs": 9,
+      "deterministic_fusion_runs": 2
+    },
+    "industrial_c": {
+      "known_fusion_max_error": 0.0,
+      "baseline_metric_recalculation_error": 0.0,
+      "annotation_sha256": "42c0cc62e8db799b7b11b9479951b93fbeadadafd33be9eaf9d18d975d0cbd6c",
+      "no_observation_fraction": 0.05442619323730469,
+      "learned_runs": 9,
+      "deterministic_fusion_runs": 2
+    }
+  },
+  "evaluation": "22 new metric rows; unchanged frozen evaluation footprints and metric formula; 18 matched 600-update bakes + 4 deterministic fusions",
+  "protocol_sha256": "9a2cbc92d9ddd3e2f8b8a1a7619cc8ab7483060f78e44dad742a2cab62f65f7a"
+}

@@ -1,0 +1,27 @@
+{
+  "scene": "industrial_c",
+  "source_vehicle_counts_roi": [
+    164,
+    155,
+    167,
+    143,
+    153,
+    119
+  ],
+  "vehicle_area_fraction_per_train_epoch": [
+    0.5049551546567541,
+    0.512300924189203,
+    0.5453296047471269,
+    0.46096238447634963,
+    0.5263035842171674
+  ],
+  "train_occupancy_histogram_among_ever_vehicle": {
+    "1": 0.18503577971852742,
+    "2": 0.18523706630955414,
+    "3": 0.21361436775470968,
+    "4": 0.20547663843177205,
+    "5": 0.2106361477854367
+  },
+  "ever_vehicle_fraction_roi": 0.8301810865191147,
+  "all_train_occluded_fraction_roi": 0.17486614602871467
+}

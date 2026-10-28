@@ -1,0 +1,20 @@
+[
+  {
+    "scene": "industrial_b",
+    "center": [
+      867,
+      469
+    ],
+    "component_pixels": 362,
+    "selection": "largest zero-support component inside frozen accepted OBB, independent of output"
+  },
+  {
+    "scene": "industrial_c",
+    "center": [
+      662,
+      782
+    ],
+    "component_pixels": 480,
+    "selection": "largest zero-support component inside frozen accepted OBB, independent of output"
+  }
+]

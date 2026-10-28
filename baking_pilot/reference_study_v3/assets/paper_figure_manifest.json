@@ -1,0 +1,79 @@
+{
+  "on_the_go": {
+    "pdf_page": 3,
+    "crop_pt": [
+      49,
+      61,
+      287,
+      204
+    ],
+    "caption": "Fig. 2: DINO uncertainty pipeline",
+    "source": "papers/on_the_go.pdf"
+  },
+  "robustnerf": {
+    "pdf_page": 4,
+    "crop_pt": [
+      49,
+      66,
+      288,
+      204
+    ],
+    "caption": "Fig. 3: residual spatial structure",
+    "source": "papers/robustnerf.pdf"
+  },
+  "spotless": {
+    "pdf_page": 2,
+    "crop_pt": [
+      316,
+      77,
+      562,
+      141
+    ],
+    "caption": "Fig. 2: semantic clustering and masking",
+    "source": "papers/spotless.pdf"
+  },
+  "wildgaussians": {
+    "pdf_page": 3,
+    "crop_pt": [
+      107,
+      72,
+      504,
+      218
+    ],
+    "caption": "Fig. 2: appearance + DINO uncertainty",
+    "source": "papers/wildgaussians.pdf"
+  },
+  "gs_w": {
+    "pdf_page": 5,
+    "crop_pt": [
+      133,
+      114,
+      483,
+      315
+    ],
+    "caption": "Fig. 2: architecture",
+    "source": "papers/gs_w.pdf"
+  },
+  "robust_gs": {
+    "pdf_page": 1,
+    "crop_pt": [
+      33,
+      151,
+      381,
+      265
+    ],
+    "caption": "Fig. 1: noisy captures and robust reconstruction",
+    "source": "papers/robust_gs.pdf"
+  },
+  "robust_3dgs": {
+    "pdf_page": 5,
+    "crop_pt": [
+      133,
+      114,
+      483,
+      210
+    ],
+    "caption": "Fig. 2: residual mask + SAM objects",
+    "source": "papers/robust_3dgs.pdf"
+  }
+}

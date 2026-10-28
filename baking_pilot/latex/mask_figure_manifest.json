@@ -1,0 +1,124 @@
+{
+  "easy": {
+    "view_index": 17,
+    "year": 2025,
+    "camera_tilt": 20,
+    "red_alpha": 0.55,
+    "masks": {
+      "No removal (L2) | excluded 0.0%": {
+        "path": "/root/sonjooho/baking_pilot/results/l2_fit.npz",
+        "sha256": "710bf9b50f500995788882d2c5b625c09bd1e9b538f6a00a06d3d76bb9d89aab",
+        "excluded_valid_fraction": 0.0
+      },
+      "Block | excluded 31.3%": {
+        "path": "/root/sonjooho/baking_pilot/results/block_fit.npz",
+        "sha256": "fcffcdb622cb9f556a7e7b06c5779c12a41a5d5d73071e39f3621be5286e2f86",
+        "excluded_valid_fraction": 0.31290483145257947
+      },
+      "HuGS | excluded 0.3%": {
+        "path": "/root/sonjooho/baking_pilot/results/hugs_fit.npz",
+        "sha256": "962bd7d61d78a55c968d78c25d773d00b57fb2ed02ad12edfbaa29b29b5903ac",
+        "excluded_valid_fraction": 0.003477702751380275
+      },
+      "Robust (final S) | excluded 54.3%": {
+        "path": "/root/sonjooho/baking_pilot/results/robust_fit.npz",
+        "sha256": "b47e9faf8ae7035651293469f73ea28174935698d97a566974c1f5f80f646b22",
+        "excluded_valid_fraction": 0.5426657148283743
+      },
+      "Robust OR (final S) | excluded 41.8%": {
+        "path": "/root/sonjooho/baking_pilot/results/robust_or_fit.npz",
+        "sha256": "be8ddb5ccaf8701cdb6cbee4d4cd8bfc05a4228ae60f0063fa34c9116d39122b",
+        "excluded_valid_fraction": 0.41759940269964047
+      },
+      "Robust car (final S) | excluded 56.8%": {
+        "path": "/root/sonjooho/baking_pilot/results/robust_car_fit.npz",
+        "sha256": "c2f635ddc43300aa8cbba70a0ce830b204e81ca3569c0a8c556d7885508ffe79",
+        "excluded_valid_fraction": 0.5677267874802701
+      },
+      "Robust depth (final S) | excluded 56.5%": {
+        "path": "/root/sonjooho/baking_pilot/results/robust_depth_fit.npz",
+        "sha256": "6dbb81cdccbbfc50033670d1ded5cf482243e7ec2aab45dbb90e73d707bbb1b1",
+        "excluded_valid_fraction": 0.5649171180257652
+      }
+    },
+    "figure": "/root/sonjooho/baking_pilot/latex/assets/easy_exclusion_masks.jpg"
+  },
+  "industrial_b": {
+    "view_index": 17,
+    "year": 2025,
+    "camera_tilt": 20,
+    "red_alpha": 0.55,
+    "masks": {
+      "No removal (L2) | excluded 0.0%": {
+        "path": "/root/sonjooho/baking_pilot/harder_dataset/scenes/industrial_b/results/l2_fit.npz",
+        "sha256": "28f9946c9670823ae6fcfa52e91f545cac3e7f8cf02bf5d6080a465516985786",
+        "excluded_valid_fraction": 0.0
+      },
+      "Block | excluded 38.3%": {
+        "path": "/root/sonjooho/baking_pilot/harder_dataset/scenes/industrial_b/results/block_fit.npz",
+        "sha256": "b372d8ef2000e2309a97bdafd5facb84551a15fdb82701b84606072c84e0a963",
+        "excluded_valid_fraction": 0.3825276546136868
+      },
+      "HuGS | excluded 29.9%": {
+        "path": "/root/sonjooho/baking_pilot/harder_dataset/scenes/industrial_b/results/hugs_fit.npz",
+        "sha256": "25c243f82f1cd93bab0fe1491e85aaa087fcb09dd3cf062b3b531322df8a8fa0",
+        "excluded_valid_fraction": 0.2993640584987589
+      },
+      "Robust (final S) | excluded 59.0%": {
+        "path": "/root/sonjooho/baking_pilot/harder_dataset/scenes/industrial_b/results/robust_fit.npz",
+        "sha256": "ab269282116196361b1e888d7aecfa22b6cfddc0b78b5864a243404b40f2aead",
+        "excluded_valid_fraction": 0.5902532632116683
+      },
+      "Geometry / UV fusion | excluded 36.1%": {
+        "path": "/root/sonjooho/baking_pilot/harder_dataset/improved_baselines/scenes/industrial_b/results/geo_mask_fit.npz",
+        "sha256": "f736f73f19a2c98fec7628bd1a8674dcbec18b0cda484c16a48658e3b3753ff5",
+        "excluded_valid_fraction": 0.3611538637867009
+      },
+      "UV + shadow guard | excluded 37.2%": {
+        "path": "/root/sonjooho/baking_pilot/harder_dataset/improved_baselines/scenes/industrial_b/results/uv_shadow_guard_fit.npz",
+        "sha256": "07f2bd04457464830b55b8011b95995a8acb2247d8f4287e79d5e22a5e3a596a",
+        "excluded_valid_fraction": 0.372448211046127
+      }
+    },
+    "figure": "/root/sonjooho/baking_pilot/latex/assets/industrial_b_exclusion_masks.jpg"
+  },
+  "industrial_c": {
+    "view_index": 17,
+    "year": 2025,
+    "camera_tilt": 20,
+    "red_alpha": 0.55,
+    "masks": {
+      "No removal (L2) | excluded 0.0%": {
+        "path": "/root/sonjooho/baking_pilot/harder_dataset/scenes/industrial_c/results/l2_fit.npz",
+        "sha256": "5adff457f6ad462581e77b74bcaebd78975228b47ccb634fa9b3b1a73921accf",
+        "excluded_valid_fraction": 0.0
+      },
+      "Block | excluded 25.9%": {
+        "path": "/root/sonjooho/baking_pilot/harder_dataset/scenes/industrial_c/results/block_fit.npz",
+        "sha256": "13ac315aa65a83f23c267c1f3b3b256094526c8adbf2b02630f451269977c2c2",
+        "excluded_valid_fraction": 0.25882688113591856
+      },
+      "HuGS | excluded 30.3%": {
+        "path": "/root/sonjooho/baking_pilot/harder_dataset/scenes/industrial_c/results/hugs_fit.npz",
+        "sha256": "822801f2cd2f62d0b4cc32e8978baeaa596fa9446b353a8f7102da0e814441ee",
+        "excluded_valid_fraction": 0.30286795863433036
+      },
+      "Robust (final S) | excluded 56.3%": {
+        "path": "/root/sonjooho/baking_pilot/harder_dataset/scenes/industrial_c/results/robust_fit.npz",
+        "sha256": "766cc73282dbabdf57637338a4c25f6816cadcd4590def1541a1a0e82977fda6",
+        "excluded_valid_fraction": 0.5634598885301303
+      },
+      "Geometry / UV fusion | excluded 24.4%": {
+        "path": "/root/sonjooho/baking_pilot/harder_dataset/improved_baselines/scenes/industrial_c/results/geo_mask_fit.npz",
+        "sha256": "f5a540ac7d6a550be6dcd1610fb4043b0b235fcea5906dd69f97fb61aa707d11",
+        "excluded_valid_fraction": 0.24358982755571856
+      },
+      "UV + shadow guard | excluded 25.1%": {
+        "path": "/root/sonjooho/baking_pilot/harder_dataset/improved_baselines/scenes/industrial_c/results/uv_shadow_guard_fit.npz",
+        "sha256": "cef7cb3f3ef27b957e2b62de58abe1ac088e1b25182cfdcc99932917a14a6aab",
+        "excluded_valid_fraction": 0.25064347324919606
+      }
+    },
+    "figure": "/root/sonjooho/baking_pilot/latex/assets/industrial_c_exclusion_masks.jpg"
+  }
+}

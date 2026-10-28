@@ -1,0 +1,103 @@
+{
+  "seed": 42,
+  "iterations": 600,
+  "seconds": 7.527637958526611,
+  "trace": [
+    {
+      "step": 0,
+      "data": 0.0032839286141097546,
+      "color": 0.0,
+      "tv": 8.781607175478712e-05,
+      "anchor": 0.0,
+      "active": 0.6583420038223267
+    },
+    {
+      "step": 100,
+      "data": 0.00280600693076849,
+      "color": 3.1006899803287524e-07,
+      "tv": 7.734655810054392e-05,
+      "anchor": 1.688948259470635e-06,
+      "active": 0.5962767004966736
+    },
+    {
+      "step": 200,
+      "data": 0.001491016591899097,
+      "color": 7.525808882746787e-07,
+      "tv": 7.913931767689064e-05,
+      "anchor": 1.8558047258920851e-06,
+      "active": 0.7072309851646423
+    },
+    {
+      "step": 300,
+      "data": 0.001936929882504046,
+      "color": 1.4760322528672987e-06,
+      "tv": 8.711438567843288e-05,
+      "anchor": 1.8899933138527558e-06,
+      "active": 0.6643781065940857
+    },
+    {
+      "step": 400,
+      "data": 0.0022717921528965235,
+      "color": 2.5113654373853933e-06,
+      "tv": 8.054857607930899e-05,
+      "anchor": 1.9202839212084655e-06,
+      "active": 0.6521985530853271
+    },
+    {
+      "step": 500,
+      "data": 0.0021048933267593384,
+      "color": 3.622137683123583e-06,
+      "tv": 8.007464930415154e-05,
+      "anchor": 1.8258353975397767e-06,
+      "active": 0.6456175446510315
+    },
+    {
+      "step": 599,
+      "data": 0.0026660591829568148,
+      "color": 5.098223937238799e-06,
+      "tv": 8.539992995793e-05,
+      "anchor": 1.8752679125100258e-06,
+      "active": 0.6248870491981506
+    }
+  ],
+  "initialization": "training-only UV fusion",
+  "protocol": {
+    "created_before_new_method_evaluation": true,
+    "objective": "Remove minority-background foreground bias and inverse-baking artifacts with geometry-consistent semantic masks, UV background fusion, and explicit spatial prior.",
+    "train_years": [
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "heldout_year": 2026,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "methods": {
+      "uv_fusion": "Median of non-vehicle training observations in UV; harmonic interpolation only where count=0; resolve through common 512 basis; no optimizer.",
+      "geo_mask": "Original mean initialization and baking, replacing per-oblique-view detections with projected source-epoch masks.",
+      "geo_fusion": "geo_mask with UV fusion initialization; otherwise original baking.",
+      "geo_smooth": "geo_fusion plus confidence-weighted anisotropic TV and anchor on no-observation initialization."
+    },
+    "mask_interpolation_threshold": 0.05,
+    "harmonic_iterations": 256,
+    "harmonic_kernel": "four-neighbor Laplace average; observed texels fixed",
+    "texture_basis": 512,
+    "output_resolution": 1024,
+    "iterations": 600,
+    "batch_images": 4,
+    "texture_lr": 0.025,
+    "color_lr": 0.001,
+    "color_ridge": 0.001,
+    "tv_lambda": 0.01,
+    "tv_weight": "1/(1+background_observation_count), on 512 grid",
+    "unobserved_anchor_lambda": 0.05,
+    "anchor_domain": "confidence < 0.01 after area-resampling observed_count/5 to 512",
+    "selection": "Fixed a priori from training coverage and known numerical failures; no 2026 pixels/annotation used in fusion, optimization, or hyperparameter selection.",
+    "evaluation": "Reuse frozen 33 full OBB footprints, 21 majority-occluded footprints and 2026 actual observed background; identical metrics to previous harder_dataset experiment."
+  }
+}

@@ -1,0 +1,13 @@
+\begin{table}[htbp]\centering\scriptsize
+\caption{Easy의 저장 결과(seed42). 차량 표본은16개 작은 원, 지면 기준은6년 consensus다. 검출 수는 같은 검출기를 사용한 보조 지표다.}
+\begin{tabular}{lrrrrrr}\toprule
+방법 & 차량 표본 & 지면 PSNR & 지면 SSIM & 지면 LPIPS & 2026 정적 & 검출 수\\\midrule
+L2 (no-removal) & 27.27 & 30.38 & 0.920 & 0.038 & 27.18 & 9 \\
+Temporal median & 35.69 & 37.57 & 0.974 & 0.013 & 29.12 & 0 \\
+Block-type & 31.56 & 30.85 & 0.934 & 0.033 & 27.30 & 0 \\
+HuGS-type & 32.81 & 32.45 & 0.931 & 0.032 & 27.90 & 0 \\
+Robust (base) & 38.02 & 28.06 & 0.882 & 0.062 & 26.81 & 18 \\
+Robust (OR) & 38.09 & 29.96 & 0.904 & 0.045 & 27.78 & 3 \\
+Robust (car) & 38.12 & 29.90 & 0.903 & 0.046 & 27.23 & 7 \\
+Robust (depth) & 37.78 & 29.03 & 0.896 & 0.053 & 27.21 & 11 \\ \\[-6pt]\bottomrule\end{tabular}
+\end{table}

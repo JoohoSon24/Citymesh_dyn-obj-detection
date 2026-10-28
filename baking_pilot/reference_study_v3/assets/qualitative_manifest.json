@@ -1,0 +1,94 @@
+[
+  {
+    "scene": "industrial_b",
+    "annotation": {
+      "year": 2022,
+      "poly": [
+        [
+          890.3312377929688,
+          742.9987182617188
+        ],
+        [
+          908.2144165039062,
+          683.2307739257812
+        ],
+        [
+          887.2262573242188,
+          676.9508666992188
+        ],
+        [
+          869.3430786132812,
+          736.7188110351562
+        ]
+      ],
+      "center": [
+        888.7787475585938,
+        709.9747924804688
+      ],
+      "occupancy": 4,
+      "fractions": [
+        0.7601654031702274,
+        1.0,
+        0.8511371467953136,
+        0.9131633356305996,
+        0.0
+      ],
+      "area": 1451,
+      "heldout_vehicle_fraction": 0.0,
+      "id": 0,
+      "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+    },
+    "crop": [
+      824,
+      645,
+      952,
+      773
+    ]
+  },
+  {
+    "scene": "industrial_c",
+    "annotation": {
+      "year": 2021,
+      "poly": [
+        [
+          625.9586791992188,
+          800.1326904296875
+        ],
+        [
+          643.8215942382812,
+          752.3446044921875
+        ],
+        [
+          619.8634643554688,
+          743.3892822265625
+        ],
+        [
+          602.0005493164062,
+          791.1773681640625
+        ]
+      ],
+      "center": [
+        622.9110717773438,
+        771.760986328125
+      ],
+      "occupancy": 4,
+      "fractions": [
+        1.0,
+        0.31098010316875463,
+        0.9992630803242447,
+        1.0,
+        0.6352247605011054
+      ],
+      "area": 1357,
+      "heldout_vehicle_fraction": 0.0,
+      "id": 0,
+      "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+    },
+    "crop": [
+      558,
+      707,
+      686,
+      835
+    ]
+  }
+]

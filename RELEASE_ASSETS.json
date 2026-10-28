@@ -1,0 +1,42 @@
+{
+  "tag": "snapshot-2026-10-28",
+  "repository": "JoohoSon24/Citymesh_dyn-obj-detection",
+  "assets": [
+    {
+      "name": "citymesh-data-01.tar.gz",
+      "bytes": 446513998,
+      "sha256": "0c9be6e1c8350712d8aa036a3b5115f6b0a47a5cc11a99fe47eae448411b8c4c",
+      "files": 324
+    },
+    {
+      "name": "citymesh-data-02.tar.gz",
+      "bytes": 434341831,
+      "sha256": "54a812be3c1b7201ef7392f732981c020a372fa950b73d99e4f5242229cba244",
+      "files": 11
+    },
+    {
+      "name": "citymesh-data-03.tar.gz",
+      "bytes": 481397698,
+      "sha256": "667ca1d9224cebbd418511a29e1702408bd32da112876c1dc98ebb2c3ab92255",
+      "files": 35
+    },
+    {
+      "name": "citymesh-data-04.tar.gz",
+      "bytes": 487800304,
+      "sha256": "707b0659ecf7d5c6e1f10f27bc0c7c0b0a01502b39e2d2796735eea99a3c0284",
+      "files": 49
+    },
+    {
+      "name": "citymesh-data-05.tar.gz",
+      "bytes": 444499370,
+      "sha256": "f3038d3cf8c220c0104e540f536bed89637a609a30a3616ba071f64cd528493b",
+      "files": 61
+    },
+    {
+      "name": "citymesh-data-06.tar.gz",
+      "bytes": 366602701,
+      "sha256": "f9149b03067c9a1fe0cb5fba6e2d4f0b9df91f8cddbc44e95e2fd0235d7f36dc",
+      "files": 2
+    }
+  ]
+}

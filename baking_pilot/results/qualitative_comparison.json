@@ -1,0 +1,50 @@
+{
+  "columns": [
+    {
+      "key": "input",
+      "label": "2025 input / cars"
+    },
+    {
+      "key": "reference",
+      "label": "2022 observed background"
+    },
+    {
+      "key": "l2",
+      "label": "No removal (L2; S=1)"
+    },
+    {
+      "key": "block",
+      "label": "Block-style S"
+    },
+    {
+      "key": "hugs",
+      "label": "HuGS-style S"
+    },
+    {
+      "key": "robust",
+      "label": "Robust-style S"
+    }
+  ],
+  "crops": {
+    "cars": [
+      230,
+      260,
+      490,
+      520
+    ],
+    "markings": [
+      460,
+      370,
+      720,
+      630
+    ],
+    "shadows": [
+      300,
+      590,
+      560,
+      850
+    ]
+  },
+  "baseline": "Saved final l2.png; no dynamic removal mask (S=1 on valid). Same baking optimizer, initialization, color model and basis as other methods.",
+  "display": "Identical crop coordinates and scale per row. No per-method exposure adjustment or retouching. Orange border marks no-removal baseline."
+}

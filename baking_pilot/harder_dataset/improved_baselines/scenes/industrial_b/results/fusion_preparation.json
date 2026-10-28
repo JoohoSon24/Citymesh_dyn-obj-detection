@@ -1,0 +1,10 @@
+{
+  "train_epochs": 5,
+  "source_slice": "[:5]",
+  "mask_slice": "[:5]",
+  "unobserved_fraction_full": 0.11455535888671875,
+  "observed_fraction_full": 0.8854446411132812,
+  "source_sha256": "f54015388c4dcf488568bbf15dd6e5116b101fab5b53e89ec85b1c84c5c5a887",
+  "harmonic_iterations": 256,
+  "hole_fill": "training-neighbor spatial interpolation; uncertain, not measured background"
+}

@@ -1,0 +1,27 @@
+{
+  "scene": "old_easy",
+  "source_vehicle_counts_roi": [
+    3,
+    0,
+    0,
+    0,
+    223,
+    59
+  ],
+  "vehicle_area_fraction_per_train_epoch": [
+    0.00592967886077949,
+    0.0,
+    0.0,
+    0.0,
+    0.40185845501117107
+  ],
+  "train_occupancy_histogram_among_ever_vehicle": {
+    "1": 0.9914510037396045,
+    "2": 0.008548996260395542,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0
+  },
+  "ever_vehicle_fraction_roi": 0.4043315053447978,
+  "all_train_occluded_fraction_roi": 0.0
+}

@@ -1,0 +1,689 @@
+{
+  "reference": "Aligned, common exposure-normalized 2026 actual image; excluded from baking initialization/loss/SfM/SAM/warmup",
+  "annotations": {
+    "selection_before_final_method_comparison": true,
+    "proposal_source": "Training DOTA whole-vehicle OBB, not circular centers",
+    "occupancy_definition": "Number of train epochs with >=55% detected vehicle coverage of this fixed footprint; detector proxy, partial-car overlap not exact slot occupancy.",
+    "reference": "Actual common-normalized 2026 observation",
+    "accepted": [
+      {
+        "year": 2022,
+        "poly": [
+          [
+            890.3312377929688,
+            742.9987182617188
+          ],
+          [
+            908.2144165039062,
+            683.2307739257812
+          ],
+          [
+            887.2262573242188,
+            676.9508666992188
+          ],
+          [
+            869.3430786132812,
+            736.7188110351562
+          ]
+        ],
+        "center": [
+          888.7787475585938,
+          709.9747924804688
+        ],
+        "occupancy": 4,
+        "fractions": [
+          0.7601654031702274,
+          1.0,
+          0.8511371467953136,
+          0.9131633356305996,
+          0.0
+        ],
+        "area": 1451,
+        "heldout_vehicle_fraction": 0.0,
+        "id": 0,
+        "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+      },
+      {
+        "year": 2021,
+        "poly": [
+          [
+            194.24166870117188,
+            605.4302978515625
+          ],
+          [
+            206.16616821289062,
+            564.4730224609375
+          ],
+          [
+            186.18740844726562,
+            558.65625
+          ],
+          [
+            174.26290893554688,
+            599.613525390625
+          ]
+        ],
+        "center": [
+          190.21453857421875,
+          582.0432739257812
+        ],
+        "occupancy": 4,
+        "fractions": [
+          1.0,
+          0.9958071278825996,
+          0.8983228511530398,
+          0.9350104821802935,
+          0.0
+        ],
+        "area": 954,
+        "heldout_vehicle_fraction": 0.0,
+        "id": 1,
+        "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+      },
+      {
+        "year": 2023,
+        "poly": [
+          [
+            178.44972229003906,
+            647.8128051757812
+          ],
+          [
+            187.72630310058594,
+            610.0935668945312
+          ],
+          [
+            167.95530700683594,
+            605.2311401367188
+          ],
+          [
+            158.67872619628906,
+            642.9503784179688
+          ]
+        ],
+        "center": [
+          173.2025146484375,
+          626.52197265625
+        ],
+        "occupancy": 4,
+        "fractions": [
+          0.9347568208778173,
+          0.8540925266903915,
+          1.0,
+          1.0,
+          0.0
+        ],
+        "area": 843,
+        "heldout_vehicle_fraction": 0.0,
+        "id": 2,
+        "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+      },
+      {
+        "year": 2025,
+        "poly": [
+          [
+            899.705322265625,
+            430.3639831542969
+          ],
+          [
+            904.8509521484375,
+            411.1716003417969
+          ],
+          [
+            865.1558837890625,
+            400.5290222167969
+          ],
+          [
+            860.01025390625,
+            419.7214050292969
+          ]
+        ],
+        "center": [
+          882.4306030273438,
+          415.4465026855469
+        ],
+        "occupancy": 3,
+        "fractions": [
+          0.5029239766081871,
+          0.0,
+          0.991812865497076,
+          0.9730994152046784,
+          1.0
+        ],
+        "area": 855,
+        "heldout_vehicle_fraction": 0.0,
+        "id": 3,
+        "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+      },
+      {
+        "year": 2021,
+        "poly": [
+          [
+            870.77392578125,
+            483.8982849121094
+          ],
+          [
+            882.9744873046875,
+            444.1718444824219
+          ],
+          [
+            863.9541015625,
+            438.3304138183594
+          ],
+          [
+            851.7535400390625,
+            478.0568542480469
+          ]
+        ],
+        "center": [
+          867.364013671875,
+          461.1143493652344
+        ],
+        "occupancy": 5,
+        "fractions": [
+          1.0,
+          1.0,
+          0.8883826879271071,
+          0.5535307517084282,
+          0.8132118451025057
+        ],
+        "area": 878,
+        "heldout_vehicle_fraction": 0.0,
+        "id": 5,
+        "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+      },
+      {
+        "year": 2022,
+        "poly": [
+          [
+            78.10821533203125,
+            530.3350830078125
+          ],
+          [
+            84.3905029296875,
+            510.9851989746094
+          ],
+          [
+            41.42308807373047,
+            497.0350341796875
+          ],
+          [
+            35.14080047607422,
+            516.3849487304688
+          ]
+        ],
+        "center": [
+          59.765655517578125,
+          513.68505859375
+        ],
+        "occupancy": 2,
+        "fractions": [
+          0.1894093686354379,
+          1.0,
+          0.9775967413441955,
+          0.15173116089613034,
+          0.0
+        ],
+        "area": 982,
+        "heldout_vehicle_fraction": 0.0,
+        "id": 6,
+        "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+      },
+      {
+        "year": 2023,
+        "poly": [
+          [
+            499.2227478027344,
+            626.9710693359375
+          ],
+          [
+            505.1278381347656,
+            606.9407958984375
+          ],
+          [
+            463.5631408691406,
+            594.6871337890625
+          ],
+          [
+            457.6580505371094,
+            614.7174072265625
+          ]
+        ],
+        "center": [
+          481.3929443359375,
+          610.8291015625
+        ],
+        "occupancy": 2,
+        "fractions": [
+          0.3364102564102564,
+          0.7917948717948718,
+          1.0,
+          0.0,
+          0.08205128205128205
+        ],
+        "area": 975,
+        "heldout_vehicle_fraction": 0.0,
+        "id": 7,
+        "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+      },
+      {
+        "year": 2025,
+        "poly": [
+          [
+            815.3618774414062,
+            383.06640625
+          ],
+          [
+            820.5056762695312,
+            362.71441650390625
+          ],
+          [
+            780.9959106445312,
+            352.728759765625
+          ],
+          [
+            775.8521118164062,
+            373.08074951171875
+          ]
+        ],
+        "center": [
+          798.1788940429688,
+          367.8975830078125
+        ],
+        "occupancy": 2,
+        "fractions": [
+          0.792016806722689,
+          0.0,
+          0.07247899159663866,
+          0.011554621848739496,
+          1.0
+        ],
+        "area": 952,
+        "heldout_vehicle_fraction": 0.0,
+        "id": 8,
+        "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+      },
+      {
+        "year": 2024,
+        "poly": [
+          [
+            855.31591796875,
+            397.0755310058594
+          ],
+          [
+            859.7137451171875,
+            379.1476745605469
+          ],
+          [
+            821.6151123046875,
+            369.8017883300781
+          ],
+          [
+            817.21728515625,
+            387.7296447753906
+          ]
+        ],
+        "center": [
+          838.4655151367188,
+          383.43865966796875
+        ],
+        "occupancy": 2,
+        "fractions": [
+          0.0,
+          0.0,
+          0.2701664532650448,
+          1.0,
+          0.7900128040973111
+        ],
+        "area": 781,
+        "heldout_vehicle_fraction": 0.0,
+        "id": 9,
+        "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+      },
+      {
+        "year": 2021,
+        "poly": [
+          [
+            462.05731201171875,
+            683.4656982421875
+          ],
+          [
+            471.02813720703125,
+            648.4444580078125
+          ],
+          [
+            454.494873046875,
+            644.2093505859375
+          ],
+          [
+            445.5240478515625,
+            679.2305908203125
+          ]
+        ],
+        "center": [
+          458.2760925292969,
+          663.8375244140625
+        ],
+        "occupancy": 2,
+        "fractions": [
+          1.0,
+          0.0,
+          0.0,
+          0.0,
+          0.9371345029239766
+        ],
+        "area": 684,
+        "heldout_vehicle_fraction": 0.0,
+        "id": 10,
+        "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+      },
+      {
+        "year": 2025,
+        "poly": [
+          [
+            147.86988830566406,
+            579.5772705078125
+          ],
+          [
+            153.7559051513672,
+            558.1741943359375
+          ],
+          [
+            111.11012268066406,
+            546.4462890625
+          ],
+          [
+            105.22410583496094,
+            567.849365234375
+          ]
+        ],
+        "center": [
+          129.49000549316406,
+          563.0117797851562
+        ],
+        "occupancy": 1,
+        "fractions": [
+          0.41159135559921417,
+          0.48428290766208254,
+          0.10903732809430255,
+          0.0,
+          1.0
+        ],
+        "area": 1018,
+        "heldout_vehicle_fraction": 0.0,
+        "id": 12,
+        "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+      },
+      {
+        "year": 2025,
+        "poly": [
+          [
+            462.611572265625,
+            722.7520141601562
+          ],
+          [
+            473.14996337890625,
+            681.5968627929688
+          ],
+          [
+            454.13861083984375,
+            676.7286987304688
+          ],
+          [
+            443.6002197265625,
+            717.8838500976562
+          ]
+        ],
+        "center": [
+          458.3750915527344,
+          699.7403564453125
+        ],
+        "occupancy": 1,
+        "fractions": [
+          0.11731843575418995,
+          0.0,
+          0.1564245810055866,
+          0.0,
+          1.0
+        ],
+        "area": 895,
+        "heldout_vehicle_fraction": 0.0,
+        "id": 13,
+        "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+      },
+      {
+        "year": 2023,
+        "poly": [
+          [
+            126.55752563476562,
+            541.4426879882812
+          ],
+          [
+            131.5364990234375,
+            522.5228881835938
+          ],
+          [
+            91.0770263671875,
+            511.87554931640625
+          ],
+          [
+            86.09805297851562,
+            530.7953491210938
+          ]
+        ],
+        "center": [
+          108.81727600097656,
+          526.6591186523438
+        ],
+        "occupancy": 1,
+        "fractions": [
+          0.096,
+          0.004571428571428572,
+          1.0,
+          0.006857142857142857,
+          0.3565714285714286
+        ],
+        "area": 875,
+        "heldout_vehicle_fraction": 0.0,
+        "id": 14,
+        "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+      },
+      {
+        "year": 2023,
+        "poly": [
+          [
+            595.2015380859375,
+            678.2186279296875
+          ],
+          [
+            600.9189453125,
+            660.46484375
+          ],
+          [
+            564.9268798828125,
+            648.8739013671875
+          ],
+          [
+            559.20947265625,
+            666.627685546875
+          ]
+        ],
+        "center": [
+          580.064208984375,
+          663.5462646484375
+        ],
+        "occupancy": 1,
+        "fractions": [
+          0.03145478374836173,
+          0.1363040629095675,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "area": 763,
+        "heldout_vehicle_fraction": 0.0,
+        "id": 15,
+        "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+      },
+      {
+        "year": 2023,
+        "poly": [
+          [
+            965.9400024414062,
+            535.6539306640625
+          ],
+          [
+            977.7359008789062,
+            500.1587219238281
+          ],
+          [
+            959.7586059570312,
+            494.1844787597656
+          ],
+          [
+            947.9627075195312,
+            529.6796875
+          ]
+        ],
+        "center": [
+          962.8493041992188,
+          514.919189453125
+        ],
+        "occupancy": 1,
+        "fractions": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.027777777777777776
+        ],
+        "area": 756,
+        "heldout_vehicle_fraction": 0.0,
+        "id": 16,
+        "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+      },
+      {
+        "year": 2023,
+        "poly": [
+          [
+            978.9505615234375,
+            494.6761169433594
+          ],
+          [
+            988.9544677734375,
+            458.4936828613281
+          ],
+          [
+            970.2821044921875,
+            453.3310852050781
+          ],
+          [
+            960.2781982421875,
+            489.5135192871094
+          ]
+        ],
+        "center": [
+          974.6163330078125,
+          474.00360107421875
+        ],
+        "occupancy": 1,
+        "fractions": [
+          0.0,
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "area": 753,
+        "heldout_vehicle_fraction": 0.0,
+        "id": 17,
+        "verification": "Assistant inspected input-only six-year contact sheet; 2026 footprint shows background, no obvious vehicle. Not independently human verified."
+      }
+    ],
+    "rejected": [
+      {
+        "year": 2022,
+        "poly": [
+          [
+            245.981689453125,
+            525.0055541992188
+          ],
+          [
+            257.98358154296875,
+            484.70880126953125
+          ],
+          [
+            238.1441650390625,
+            478.79986572265625
+          ],
+          [
+            226.14227294921875,
+            519.0966186523438
+          ]
+        ],
+        "center": [
+          242.06292724609375,
+          501.9027099609375
+        ],
+        "occupancy": 5,
+        "fractions": [
+          1.0,
+          1.0,
+          0.993421052631579,
+          0.9967105263157895,
+          0.6798245614035088
+        ],
+        "area": 912,
+        "heldout_vehicle_fraction": 0.0,
+        "id": 4,
+        "reason": "2026 footprint still contains a dark vehicle (detector missed it)."
+      },
+      {
+        "year": 2025,
+        "poly": [
+          [
+            516.6642456054688,
+            613.1859130859375
+          ],
+          [
+            530.3687133789062,
+            571.8917236328125
+          ],
+          [
+            509.4233703613281,
+            564.9405517578125
+          ],
+          [
+            495.7189636230469,
+            606.2347412109375
+          ]
+        ],
+        "center": [
+          513.0438232421875,
+          589.063232421875
+        ],
+        "occupancy": 1,
+        "fractions": [
+          0.0,
+          0.19540229885057472,
+          0.07758620689655173,
+          0.0,
+          1.0
+        ],
+        "area": 1044,
+        "heldout_vehicle_fraction": 0.0,
+        "id": 11,
+        "reason": "2026 footprint contains a tire/material stack, not clean background."
+      }
+    ]
+  },
+  "main_metric": "PSNR on verified whole-vehicle OBB footprints, stratified by detected training occupancy. No temporal median used as GT.",
+  "bias": "Proposals and occupancy use same DOTA detector as Block; assistant visually verifies 2026 background and cars. Not independent human labels. 2026 illumination/scene change may affect error.",
+  "seeds": [
+    42,
+    43,
+    44
+  ],
+  "repeat_scope": "Masks/SfM/SAM from seed42 shared; only baking batch order changes in repeated runs.",
+  "static_control_pixels": 27665,
+  "clear_proxy_pixels": 99771
+}

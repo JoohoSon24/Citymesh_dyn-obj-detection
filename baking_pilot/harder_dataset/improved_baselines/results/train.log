@@ -1,0 +1,146 @@
+05:12:05 industrial_b prepared UV masks and fusion 0.11455535888671875
+05:12:08 industrial_b geo_mask 42 {'step': 0, 'data': 0.0033282828517258167, 'color': 0.0, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6583420038223267}
+05:12:08 industrial_b geo_mask 42 {'step': 100, 'data': 0.002772573847323656, 'color': 3.3218455541828007e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.5962767004966736}
+05:12:09 industrial_b geo_mask 42 {'step': 200, 'data': 0.001489625428803265, 'color': 8.21190894839674e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7072309851646423}
+05:12:10 industrial_b geo_mask 42 {'step': 300, 'data': 0.0019258331740275025, 'color': 1.6046985820139525e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6643781065940857}
+05:12:11 industrial_b geo_mask 42 {'step': 400, 'data': 0.002254716120660305, 'color': 2.7243631848250516e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6521985530853271}
+05:12:12 industrial_b geo_mask 42 {'step': 500, 'data': 0.002085080137476325, 'color': 3.904796813003486e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6456175446510315}
+05:12:12 industrial_b geo_mask 42 {'step': 599, 'data': 0.002645920729264617, 'color': 5.464916284836363e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6248870491981506}
+05:12:13 finished industrial_b geo_mask 42 6.4
+05:12:15 industrial_b geo_fusion 42 {'step': 0, 'data': 0.0032839286141097546, 'color': 0.0, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6583420038223267}
+05:12:16 industrial_b geo_fusion 42 {'step': 100, 'data': 0.002775066765025258, 'color': 3.193273414581199e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.5962767004966736}
+05:12:16 industrial_b geo_fusion 42 {'step': 200, 'data': 0.0014903623377904296, 'color': 7.794656085025053e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7072309851646423}
+05:12:17 industrial_b geo_fusion 42 {'step': 300, 'data': 0.0019392890390008688, 'color': 1.5235418686643243e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6643781065940857}
+05:12:18 industrial_b geo_fusion 42 {'step': 400, 'data': 0.002256866544485092, 'color': 2.6028963020507945e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6521985530853271}
+05:12:19 industrial_b geo_fusion 42 {'step': 500, 'data': 0.00208744453266263, 'color': 3.7561237604677444e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6456175446510315}
+05:12:20 industrial_b geo_fusion 42 {'step': 599, 'data': 0.002646571956574917, 'color': 5.300777502270648e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6248870491981506}
+05:12:20 finished industrial_b geo_fusion 42 5.5
+05:12:22 industrial_b geo_smooth 42 {'step': 0, 'data': 0.0032839286141097546, 'color': 0.0, 'tv': 8.781607175478712e-05, 'anchor': 0.0, 'active': 0.6583420038223267}
+05:12:23 industrial_b geo_smooth 42 {'step': 100, 'data': 0.00280600693076849, 'color': 3.1006899803287524e-07, 'tv': 7.734655810054392e-05, 'anchor': 1.688948259470635e-06, 'active': 0.5962767004966736}
+05:12:24 industrial_b geo_smooth 42 {'step': 200, 'data': 0.001491016591899097, 'color': 7.525808882746787e-07, 'tv': 7.913931767689064e-05, 'anchor': 1.8558047258920851e-06, 'active': 0.7072309851646423}
+05:12:25 industrial_b geo_smooth 42 {'step': 300, 'data': 0.001936929882504046, 'color': 1.4760322528672987e-06, 'tv': 8.711438567843288e-05, 'anchor': 1.8899933138527558e-06, 'active': 0.6643781065940857}
+05:12:27 industrial_b geo_smooth 42 {'step': 400, 'data': 0.0022717921528965235, 'color': 2.5113654373853933e-06, 'tv': 8.054857607930899e-05, 'anchor': 1.9202839212084655e-06, 'active': 0.6521985530853271}
+05:12:28 industrial_b geo_smooth 42 {'step': 500, 'data': 0.0021048933267593384, 'color': 3.622137683123583e-06, 'tv': 8.007464930415154e-05, 'anchor': 1.8258353975397767e-06, 'active': 0.6456175446510315}
+05:12:29 industrial_b geo_smooth 42 {'step': 599, 'data': 0.0026660591829568148, 'color': 5.098223937238799e-06, 'tv': 8.539992995793e-05, 'anchor': 1.8752679125100258e-06, 'active': 0.6248870491981506}
+05:12:30 finished industrial_b geo_smooth 42 7.5
+05:12:31 industrial_b geo_mask 43 {'step': 0, 'data': 0.004287270363420248, 'color': 0.0, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6103219389915466}
+05:12:32 industrial_b geo_mask 43 {'step': 100, 'data': 0.004610483068972826, 'color': 2.421471378966089e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6353753209114075}
+05:12:33 industrial_b geo_mask 43 {'step': 200, 'data': 0.0012529118685051799, 'color': 5.41488020644465e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6880167722702026}
+05:12:34 industrial_b geo_mask 43 {'step': 300, 'data': 0.0015620785998180509, 'color': 1.2075954600732075e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6498908400535583}
+05:12:34 industrial_b geo_mask 43 {'step': 400, 'data': 0.0014242271427065134, 'color': 2.008707269851584e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6602909564971924}
+05:12:35 industrial_b geo_mask 43 {'step': 500, 'data': 0.002620384795591235, 'color': 3.0576118206226965e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6414559483528137}
+05:12:36 industrial_b geo_mask 43 {'step': 599, 'data': 0.0016428171657025814, 'color': 4.270862973498879e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6522508263587952}
+05:12:37 finished industrial_b geo_mask 43 5.5
+05:12:38 industrial_b geo_fusion 43 {'step': 0, 'data': 0.004366068635135889, 'color': 0.0, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6103219389915466}
+05:12:39 industrial_b geo_fusion 43 {'step': 100, 'data': 0.0045965188182890415, 'color': 2.480906005075667e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6353753209114075}
+05:12:40 industrial_b geo_fusion 43 {'step': 200, 'data': 0.0012526855571195483, 'color': 5.51945447568869e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6880167722702026}
+05:12:41 industrial_b geo_fusion 43 {'step': 300, 'data': 0.0015623673098161817, 'color': 1.2190827192171128e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6498908400535583}
+05:12:42 industrial_b geo_fusion 43 {'step': 400, 'data': 0.0014242989709600806, 'color': 2.0406343992362963e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6602909564971924}
+05:12:43 industrial_b geo_fusion 43 {'step': 500, 'data': 0.002617657883092761, 'color': 3.1064437280292623e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6414559483528137}
+05:12:43 industrial_b geo_fusion 43 {'step': 599, 'data': 0.001640143571421504, 'color': 4.336005076766014e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6522508263587952}
+05:12:44 finished industrial_b geo_fusion 43 5.7
+05:12:46 industrial_b geo_smooth 43 {'step': 0, 'data': 0.004366068635135889, 'color': 0.0, 'tv': 8.781607175478712e-05, 'anchor': 0.0, 'active': 0.6103219389915466}
+05:12:47 industrial_b geo_smooth 43 {'step': 100, 'data': 0.004636296071112156, 'color': 2.418081521682325e-07, 'tv': 7.542000093962997e-05, 'anchor': 1.6642483160467236e-06, 'active': 0.6353753209114075}
+05:12:48 industrial_b geo_smooth 43 {'step': 200, 'data': 0.0012602380011230707, 'color': 5.309251491780742e-07, 'tv': 7.360289600910619e-05, 'anchor': 1.8206252434538328e-06, 'active': 0.6880167722702026}
+05:12:50 industrial_b geo_smooth 43 {'step': 300, 'data': 0.0015663824742659926, 'color': 1.181063112198899e-06, 'tv': 8.191266533685848e-05, 'anchor': 1.8296158259545336e-06, 'active': 0.6498908400535583}
+05:12:51 industrial_b geo_smooth 43 {'step': 400, 'data': 0.0014255136484280229, 'color': 1.9665797026391374e-06, 'tv': 8.137767144944519e-05, 'anchor': 1.8274109834237606e-06, 'active': 0.6602909564971924}
+05:12:52 industrial_b geo_smooth 43 {'step': 500, 'data': 0.002654243726283312, 'color': 2.9893647024437087e-06, 'tv': 8.030451863305643e-05, 'anchor': 1.91705430552247e-06, 'active': 0.6414559483528137}
+05:12:53 industrial_b geo_smooth 43 {'step': 599, 'data': 0.0016458992613479495, 'color': 4.171105047134915e-06, 'tv': 8.42374938656576e-05, 'anchor': 1.802889187274559e-06, 'active': 0.6522508263587952}
+05:12:54 finished industrial_b geo_smooth 43 7.9
+05:12:55 industrial_b geo_mask 44 {'step': 0, 'data': 0.003390607889741659, 'color': 0.0, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6566374897956848}
+05:12:56 industrial_b geo_mask 44 {'step': 100, 'data': 0.002023793989792466, 'color': 3.0883421686667134e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6518273949623108}
+05:12:56 industrial_b geo_mask 44 {'step': 200, 'data': 0.002399667864665389, 'color': 7.658634899598837e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6774585843086243}
+05:12:57 industrial_b geo_mask 44 {'step': 300, 'data': 0.001971128163859248, 'color': 1.5908075283732614e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6545409560203552}
+05:12:58 industrial_b geo_mask 44 {'step': 400, 'data': 0.002135019749403, 'color': 2.6514107958064415e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6535787582397461}
+05:12:59 industrial_b geo_mask 44 {'step': 500, 'data': 0.0026355134323239326, 'color': 3.9241926970134955e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6433096528053284}
+05:12:59 industrial_b geo_mask 44 {'step': 599, 'data': 0.0018943940522149205, 'color': 5.533107014343841e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6912208199501038}
+05:13:00 finished industrial_b geo_mask 44 4.9
+05:13:02 industrial_b geo_fusion 44 {'step': 0, 'data': 0.0027853362262248993, 'color': 0.0, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6566374897956848}
+05:13:02 industrial_b geo_fusion 44 {'step': 100, 'data': 0.0020249870140105486, 'color': 3.230721574709605e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6518273949623108}
+05:13:03 industrial_b geo_fusion 44 {'step': 200, 'data': 0.0024007309693843126, 'color': 8.079086342149822e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6774585843086243}
+05:13:04 industrial_b geo_fusion 44 {'step': 300, 'data': 0.0019683330319821835, 'color': 1.6662601183270453e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6545409560203552}
+05:13:05 industrial_b geo_fusion 44 {'step': 400, 'data': 0.002130469074472785, 'color': 2.7558694455365185e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6535787582397461}
+05:13:06 industrial_b geo_fusion 44 {'step': 500, 'data': 0.0026314780116081238, 'color': 4.055304543726379e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6433096528053284}
+05:13:07 industrial_b geo_fusion 44 {'step': 599, 'data': 0.0018833779031410813, 'color': 5.685144969902467e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.6912208199501038}
+05:13:07 finished industrial_b geo_fusion 44 5.6
+05:13:09 industrial_b geo_smooth 44 {'step': 0, 'data': 0.0027853362262248993, 'color': 0.0, 'tv': 8.781607175478712e-05, 'anchor': 0.0, 'active': 0.6566374897956848}
+05:13:10 industrial_b geo_smooth 44 {'step': 100, 'data': 0.002034396631643176, 'color': 3.1141240697252215e-07, 'tv': 7.753864338155836e-05, 'anchor': 1.6271002323264838e-06, 'active': 0.6518273949623108}
+05:13:11 industrial_b geo_smooth 44 {'step': 200, 'data': 0.0024240894708782434, 'color': 7.726837338850601e-07, 'tv': 7.729500066488981e-05, 'anchor': 1.8712191831582459e-06, 'active': 0.6774585843086243}
+05:13:12 industrial_b geo_smooth 44 {'step': 300, 'data': 0.001981678418815136, 'color': 1.6010783383535454e-06, 'tv': 7.95084415585734e-05, 'anchor': 1.9294407138659153e-06, 'active': 0.6545409560203552}
+05:13:14 industrial_b geo_smooth 44 {'step': 400, 'data': 0.002140962751582265, 'color': 2.6525003704591654e-06, 'tv': 7.822720363037661e-05, 'anchor': 1.9189840259059565e-06, 'active': 0.6535787582397461}
+05:13:15 industrial_b geo_smooth 44 {'step': 500, 'data': 0.0026605557650327682, 'color': 3.898587237927131e-06, 'tv': 7.728906348347664e-05, 'anchor': 1.8750699837255524e-06, 'active': 0.6433096528053284}
+05:13:16 industrial_b geo_smooth 44 {'step': 599, 'data': 0.001895004534162581, 'color': 5.46364253750653e-06, 'tv': 8.48005511215888e-05, 'anchor': 1.8507998902350664e-06, 'active': 0.6912208199501038}
+05:13:17 finished industrial_b geo_smooth 44 7.7
+05:13:24 industrial_c prepared UV masks and fusion 0.05442619323730469
+05:13:25 industrial_c geo_mask 42 {'step': 0, 'data': 0.004430417437106371, 'color': 0.0, 'tv': 0.0, 'anchor': 0.0, 'active': 0.8032295107841492}
+05:13:26 industrial_c geo_mask 42 {'step': 100, 'data': 0.004003706853836775, 'color': 2.5026406547112856e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7818045020103455}
+05:13:27 industrial_c geo_mask 42 {'step': 200, 'data': 0.0025164454709738493, 'color': 8.187714115592826e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.8006958961486816}
+05:13:28 industrial_c geo_mask 42 {'step': 300, 'data': 0.003560624085366726, 'color': 1.565544039294764e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.8349180221557617}
+05:13:29 industrial_c geo_mask 42 {'step': 400, 'data': 0.003910314291715622, 'color': 2.6920831714960514e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7937970757484436}
+05:13:29 industrial_c geo_mask 42 {'step': 500, 'data': 0.0035736081190407276, 'color': 3.757138756554923e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7727023363113403}
+05:13:30 industrial_c geo_mask 42 {'step': 599, 'data': 0.004735391587018967, 'color': 5.1017200348724145e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7844201922416687}
+05:13:31 finished industrial_c geo_mask 42 5.7
+05:13:33 industrial_c geo_fusion 42 {'step': 0, 'data': 0.0051576667465269566, 'color': 0.0, 'tv': 0.0, 'anchor': 0.0, 'active': 0.8032295107841492}
+05:13:34 industrial_c geo_fusion 42 {'step': 100, 'data': 0.003988558426499367, 'color': 3.0870521072756674e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7818045020103455}
+05:13:34 industrial_c geo_fusion 42 {'step': 200, 'data': 0.002523195929825306, 'color': 9.279374353354797e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.8006958961486816}
+05:13:35 industrial_c geo_fusion 42 {'step': 300, 'data': 0.003564406419172883, 'color': 1.6705795360394404e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.8349180221557617}
+05:13:36 industrial_c geo_fusion 42 {'step': 400, 'data': 0.003904596669599414, 'color': 2.7967166715825442e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7937970757484436}
+05:13:37 industrial_c geo_fusion 42 {'step': 500, 'data': 0.0035710143856704235, 'color': 3.841288616968086e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7727023363113403}
+05:13:38 industrial_c geo_fusion 42 {'step': 599, 'data': 0.0047272550873458385, 'color': 5.168720235815272e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7844201922416687}
+05:13:39 finished industrial_c geo_fusion 42 5.8
+05:13:40 industrial_c geo_smooth 42 {'step': 0, 'data': 0.0051576667465269566, 'color': 0.0, 'tv': 7.274701056303456e-05, 'anchor': 0.0, 'active': 0.8032295107841492}
+05:13:42 industrial_c geo_smooth 42 {'step': 100, 'data': 0.0040119425393640995, 'color': 3.0611198553742724e-07, 'tv': 6.23390733380802e-05, 'anchor': 6.869651087981765e-07, 'active': 0.7818045020103455}
+05:13:42 industrial_c geo_smooth 42 {'step': 200, 'data': 0.002522458555176854, 'color': 9.148239996648044e-07, 'tv': 6.221894727787003e-05, 'anchor': 6.866691251161683e-07, 'active': 0.8006958961486816}
+05:13:43 industrial_c geo_smooth 42 {'step': 300, 'data': 0.0035512582398951054, 'color': 1.6386535435231053e-06, 'tv': 7.026997627690434e-05, 'anchor': 6.685549465146323e-07, 'active': 0.8349180221557617}
+05:13:44 industrial_c geo_smooth 42 {'step': 400, 'data': 0.003915972542017698, 'color': 2.7247319849266205e-06, 'tv': 6.251192098716274e-05, 'anchor': 7.033995075289567e-07, 'active': 0.7937970757484436}
+05:13:45 industrial_c geo_smooth 42 {'step': 500, 'data': 0.0035834515001624823, 'color': 3.7149757190491073e-06, 'tv': 6.386965105775744e-05, 'anchor': 6.756469019819633e-07, 'active': 0.7727023363113403}
+05:13:46 industrial_c geo_smooth 42 {'step': 599, 'data': 0.004750244785100222, 'color': 4.968534540239489e-06, 'tv': 6.875186954857782e-05, 'anchor': 7.144189453356375e-07, 'active': 0.7844201922416687}
+05:13:47 finished industrial_c geo_smooth 42 6.7
+05:13:49 industrial_c geo_mask 43 {'step': 0, 'data': 0.005262177903205156, 'color': 0.0, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7885833382606506}
+05:13:50 industrial_c geo_mask 43 {'step': 100, 'data': 0.007205297239124775, 'color': 1.73008743331593e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7975765466690063}
+05:13:51 industrial_c geo_mask 43 {'step': 200, 'data': 0.002409566193819046, 'color': 5.944050371908816e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.8053138852119446}
+05:13:51 industrial_c geo_mask 43 {'step': 300, 'data': 0.0024790747556835413, 'color': 1.3277236803332926e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7884814143180847}
+05:13:52 industrial_c geo_mask 43 {'step': 400, 'data': 0.0025926062371581793, 'color': 2.27404416364152e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7933841347694397}
+05:13:53 industrial_c geo_mask 43 {'step': 500, 'data': 0.004402537830173969, 'color': 3.352726025696029e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.8010266423225403}
+05:13:54 industrial_c geo_mask 43 {'step': 599, 'data': 0.0028218820225447416, 'color': 4.572192210616777e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.8073027729988098}
+05:13:55 finished industrial_c geo_mask 43 5.8
+05:13:57 industrial_c geo_fusion 43 {'step': 0, 'data': 0.00565046863630414, 'color': 0.0, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7885833382606506}
+05:13:57 industrial_c geo_fusion 43 {'step': 100, 'data': 0.007214192766696215, 'color': 1.7246267702830664e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7975765466690063}
+05:13:58 industrial_c geo_fusion 43 {'step': 200, 'data': 0.0024096991401165724, 'color': 5.956295012765622e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.8053138852119446}
+05:13:59 industrial_c geo_fusion 43 {'step': 300, 'data': 0.0024782842956483364, 'color': 1.324770892097149e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7884814143180847}
+05:14:00 industrial_c geo_fusion 43 {'step': 400, 'data': 0.002590007847175002, 'color': 2.2735289348929655e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7933841347694397}
+05:14:01 industrial_c geo_fusion 43 {'step': 500, 'data': 0.004404095467180014, 'color': 3.3545904898346635e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.8010266423225403}
+05:14:02 industrial_c geo_fusion 43 {'step': 599, 'data': 0.002821956528350711, 'color': 4.5758738451695535e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.8073027729988098}
+05:14:03 finished industrial_c geo_fusion 43 5.9
+05:14:04 industrial_c geo_smooth 43 {'step': 0, 'data': 0.00565046863630414, 'color': 0.0, 'tv': 7.274701056303456e-05, 'anchor': 0.0, 'active': 0.7885833382606506}
+05:14:05 industrial_c geo_smooth 43 {'step': 100, 'data': 0.007247050292789936, 'color': 1.7143516117812396e-07, 'tv': 6.001722067594528e-05, 'anchor': 7.138631303860166e-07, 'active': 0.7975765466690063}
+05:14:07 industrial_c geo_smooth 43 {'step': 200, 'data': 0.002412376692518592, 'color': 5.895062713534571e-07, 'tv': 5.8379162510391325e-05, 'anchor': 7.170806952672137e-07, 'active': 0.8053138852119446}
+05:14:08 industrial_c geo_smooth 43 {'step': 300, 'data': 0.0024746833369135857, 'color': 1.3026735814491985e-06, 'tv': 6.542642222484574e-05, 'anchor': 6.536983505611715e-07, 'active': 0.7884814143180847}
+05:14:09 industrial_c geo_smooth 43 {'step': 400, 'data': 0.002585179405286908, 'color': 2.222751390945632e-06, 'tv': 6.425036553991958e-05, 'anchor': 6.682830075988022e-07, 'active': 0.7933841347694397}
+05:14:10 industrial_c geo_smooth 43 {'step': 500, 'data': 0.0044371760450303555, 'color': 3.2596944947727025e-06, 'tv': 6.24672684352845e-05, 'anchor': 6.792801627852896e-07, 'active': 0.8010266423225403}
+05:14:12 industrial_c geo_smooth 43 {'step': 599, 'data': 0.0028190836310386658, 'color': 4.423447990120621e-06, 'tv': 6.838143599452451e-05, 'anchor': 6.698589913867181e-07, 'active': 0.8073027729988098}
+05:14:12 finished industrial_c geo_smooth 43 8.0
+05:14:14 industrial_c geo_mask 44 {'step': 0, 'data': 0.004245966672897339, 'color': 0.0, 'tv': 0.0, 'anchor': 0.0, 'active': 0.8060758113861084}
+05:14:15 industrial_c geo_mask 44 {'step': 100, 'data': 0.003225738415494561, 'color': 2.9937598355900263e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7806068062782288}
+05:14:16 industrial_c geo_mask 44 {'step': 200, 'data': 0.0038012720178812742, 'color': 7.434719009324908e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7902408838272095}
+05:14:17 industrial_c geo_mask 44 {'step': 300, 'data': 0.003185437060892582, 'color': 1.824784931159229e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7785796523094177}
+05:14:17 industrial_c geo_mask 44 {'step': 400, 'data': 0.0035128595773130655, 'color': 2.973019491037121e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.8034436702728271}
+05:14:18 industrial_c geo_mask 44 {'step': 500, 'data': 0.004275718703866005, 'color': 3.995713996118866e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.79874587059021}
+05:14:19 industrial_c geo_mask 44 {'step': 599, 'data': 0.0032965154387056828, 'color': 5.393309038481675e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.8259634375572205}
+05:14:20 finished industrial_c geo_mask 44 5.9
+05:14:22 industrial_c geo_fusion 44 {'step': 0, 'data': 0.004447190556675196, 'color': 0.0, 'tv': 0.0, 'anchor': 0.0, 'active': 0.8060758113861084}
+05:14:23 industrial_c geo_fusion 44 {'step': 100, 'data': 0.0032331941183656454, 'color': 2.9074459462208324e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7806068062782288}
+05:14:23 industrial_c geo_fusion 44 {'step': 200, 'data': 0.0038027253467589617, 'color': 7.256179515024996e-07, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7902408838272095}
+05:14:24 industrial_c geo_fusion 44 {'step': 300, 'data': 0.0031851863022893667, 'color': 1.7985130398301408e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.7785796523094177}
+05:14:25 industrial_c geo_fusion 44 {'step': 400, 'data': 0.0035155629739165306, 'color': 2.943588242487749e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.8034436702728271}
+05:14:26 industrial_c geo_fusion 44 {'step': 500, 'data': 0.004276879597455263, 'color': 3.96863515561563e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.79874587059021}
+05:14:27 industrial_c geo_fusion 44 {'step': 599, 'data': 0.00329858367331326, 'color': 5.374159627535846e-06, 'tv': 0.0, 'anchor': 0.0, 'active': 0.8259634375572205}
+05:14:28 finished industrial_c geo_fusion 44 5.8
+05:14:29 industrial_c geo_smooth 44 {'step': 0, 'data': 0.004447190556675196, 'color': 0.0, 'tv': 7.274701056303456e-05, 'anchor': 0.0, 'active': 0.8060758113861084}
+05:14:31 industrial_c geo_smooth 44 {'step': 100, 'data': 0.003238660516217351, 'color': 2.900827951179963e-07, 'tv': 6.217361806193367e-05, 'anchor': 6.572378765667963e-07, 'active': 0.7806068062782288}
+05:14:32 industrial_c geo_smooth 44 {'step': 200, 'data': 0.003816746873781085, 'color': 7.194142881417065e-07, 'tv': 6.002467853249982e-05, 'anchor': 6.868381206004415e-07, 'active': 0.7902408838272095}
+05:14:33 industrial_c geo_smooth 44 {'step': 300, 'data': 0.0031925207003951073, 'color': 1.7709791109155049e-06, 'tv': 6.16817269474268e-05, 'anchor': 7.06547609752306e-07, 'active': 0.7785796523094177}
+05:14:34 industrial_c geo_smooth 44 {'step': 400, 'data': 0.0035222347360104322, 'color': 2.883943807319156e-06, 'tv': 6.026691698934883e-05, 'anchor': 6.832552799096447e-07, 'active': 0.8034436702728271}
+05:14:35 industrial_c geo_smooth 44 {'step': 500, 'data': 0.004298456013202667, 'color': 3.875079073623056e-06, 'tv': 6.003355156281032e-05, 'anchor': 7.135512873901462e-07, 'active': 0.79874587059021}
+05:14:37 industrial_c geo_smooth 44 {'step': 599, 'data': 0.003304149489849806, 'color': 5.204894932830939e-06, 'tv': 6.758575909771025e-05, 'anchor': 6.87058843595878e-07, 'active': 0.8259634375572205}
+05:14:37 finished industrial_c geo_smooth 44 7.9

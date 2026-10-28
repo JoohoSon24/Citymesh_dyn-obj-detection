@@ -1,0 +1,11 @@
+\begin{table}[htbp]\centering\small
+\caption{Hard의 추가 변형(seed42). PSNR은3--4회 점유 OBB, LPIPS는전체 채택 OBB crop 평균이다. 주요 표의3seed 평균과 구분한다.}
+\begin{tabular}{lrrrr}\toprule & \multicolumn{2}{c}{B} & \multicolumn{2}{c}{C}\\ 방법 & PSNR & LPIPS & PSNR & LPIPS\\\midrule
+L2 (no-removal) & 18.93 & 0.147 & 18.87 & 0.335 \\
+Temporal median & 18.48 & 0.119 & 18.85 & 0.338 \\
+Block-type & 19.70 & 0.135 & 21.17 & 0.162 \\
+HuGS-type & 18.12 & 0.129 & 20.97 & 0.174 \\
+Robust (base) & 14.69 & 0.176 & 16.09 & 0.334 \\
+Robust (OR) & 14.59 & 0.179 & 16.32 & 0.329 \\
+Robust (car) & 14.04 & 0.189 & 18.38 & 0.277 \\
+Robust (depth) & 14.23 & 0.175 & 16.74 & 0.299 \\\bottomrule\end{tabular}\end{table}

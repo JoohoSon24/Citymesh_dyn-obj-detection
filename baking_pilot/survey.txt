@@ -1,0 +1,509 @@
+NeRF의 Outlier 제거와 오라클 함수 S
+일반 정의 → 유형별 정의 → 적응형 S (RobustNeRF) → 베이킹 적용
+참조: RobustNeRF (Sabour et al., CVPR 2023) §3.1–3.2          | 정리일 2026‑10‑24
+
+
+
+
+1. 문제: 왜 outlier를 제거해야 하는가
+
+NeRF는 모든 학습 픽셀에 대해 L2 재구성 손실을 최소화한다.
+                                  XX                  2
+                       Lrgb (θ) =    C(r; θ) − Ci (r) 2                                            (3)
+                                                i   r
+
+이 손실에는 두 가지 취약점이 있다.
+
+ • 시점 의존 항의 악용: 일시적(transient) 객체가 찍힌 픽셀을 모델이 “이 방향에서 보면 이 색”이라는
+  view‑dependent radiance로 암기해 버리는 지역 최적해가 존재한다.
+
+ • L2(최소제곱)의 민감성: 오차를 제곱으로 벌점화하므로 큰 잔차를 가진 소수 픽셀(outlier)이 해를 끌어당긴
+  다.
+
+결과적으로 사람, 차량, 하늘 같은 multi‑view 일관성이 없는 픽셀이 ghosting, floater, 잘못된 형상으로 나타
+난다. 가장 직접적인 해법은 “이 픽셀은 학습에서 빼라”고 알려주는 외부 판정기를 두는 것이다.
+
+
+
+2. 일반 정의: 오라클 함수 S
+
+RobustNeRF는 이 외부 판정기를 오라클 S로 추상화하고, 식 (3)을 다음으로 대체한다.
+
+  일반형 (RobustNeRF 식 (4))
+
+                          r,i                                     2
+                         Loracle (θ) = Si (r) · C(r; θ) − Ci (r) 2 ,     Si = S(Ci )
+
+  S를 사전학습된 의미 분할 네트워크 fϕ 로 구현하면,
+                                                                                             
+                ŷi (r) = arg max softmax fϕ (Ci ) k (r),       Si (r) = 1 − ⊮ ŷi (r) ∈ Kdist
+                              k
+
+   • fϕ : 사전학습 분할 네트워크. ϕ는 고정(NeRF 학습 중 갱신하지 않음).
+   • Kdist : distractor로 간주할 클래스 집합. 사람이 미리 정한다.
+
+
+  부호 규약
+
+  본문은 “S가 outlier 여부를 지정한다”고 쓰지만, S는 손실에 곱해지므로 실제로는 Si (r) = 1이 inlier(유
+  지), Si (r) = 0이 outlier(제외)여야 식이 성립한다. 아래 레퍼런스 중 URF의 하늘 마스크는 반대로
+  S = 1이 “하늘”을 뜻하므로 읽을 때 주의.
+
+이 일반형에서 실제로 바꿀 수 있는 자유도는 세 가지다.
+
+     자유도                 선택지
+
+     fϕ (어떤 모델)          DeepLab v3, DeepLabv3+, MediaPipe Selfie Segmentation 등
+     Kdist (무엇을 제거)      사람, 하늘, 비‑전경(배경) 등
+     S의 형태와 쓰임           이미지 단위 0/1 / 픽셀 단위 0/1 / soft [0, 1]; 손실 가중 또는 보조 손실
+
+
+                                                        1
+3. Outlier 유형에 따라 S가 달라진다
+
+어떤 픽셀이 “outlier”인지는 장면과 과제에 따라 다르다. 따라서 S는 하나로 고정되지 않고, 제거 대상에 맞춰
+다르게 설계되어 왔다.
+
+
+      Outlier 유형                   왜 문제인가                                 S의 대응
+
+      움직이는 사람/객체                   이 미 지 마 다 위 치 가 달 라 multi‑             해당 클래스 픽셀/이미지를 손실에
+                                   view 일관성 위반                            서 제외
+      동적 객체 (클래스 기반)               차량·보행자 등 “움직일 수 있는” 클                  movable 클래스 전체를 panoptic
+                                   래스는 대개 실제로 움직임                         분할로 마스킹
+      동적 객체 (일관성 기반)               클래스와 무관하게 여러 장에서 반                     SfM 매칭 빈도·색 잔차로 정적 영
+                                   복 관측되지 않음                              역을 찾고 SAM으로 확장
+      하늘                           광선이 불투명 표면과 교차하지 않                     제외 대신 별도 모델(환경맵)로 넘
+                                   아 밀도 지도 신호가 약함                         기고 밀도를 0으로 유도
+      관심 대상 외 배경                   단일 시점 데이터에서 전경/배경 분                    soft 전경 확률로 NeRF 투명도 α를
+                                   리 불가                                   지도
+
+
+
+4. 레퍼런스별 S 구조
+
+4.1   NeRF in the Wild (NeRF‑W, Martin‑Brualla et al., CVPR 2021)
+
+제거 대상: 관광지 사진의 사람 등 일시적 가림(transient occluder), 저품질 이미지.
+fϕ : DeepLab v3 (Chen et al., 2017) + 이미지 품질 평가 NIMA (Talebi & Milanfar, 2018).
+S의 형태: 이미지 단위 필터. 데이터셋 구축 단계에서 가림이 심하거나 품질이 낮은 사진을 제외.
+                                                 h P                   i                  
+       mi (r) = ⊮ ŷiDLv3 (r) ∈ Ktransient , Si = ⊮ |Ω|
+                                                     1
+                                                        r m i (r) < τ occ · ⊮ NIMA(Ci ) > τq
+
+
+
+  학습 손실 자체에는 분할 마스크가 들어가지 않는다. 학습 중 transient 처리는 transient head와 불확실
+  성 βi (r)로 비지도 방식으로 한다. 임계값 τocc , τq 와 정확한 클래스 목록은 본문에서 확인되지 않아 기호로
+  표기했다(보충자료 확인 필요). RobustNeRF의 “사람 픽셀 제거”라는 서술은 다소 단순화된 표현이다.
+
+
+
+4.2   Urban Radiance Fields (URF, Rematas et al., CVPR 2022)
+
+Street View 도시 장면. S를 두 가지 목적으로 사용한다.
+
+(a) 사람 제거
+fϕ : DeepLabv3+ (Chen et al., ECCV 2018, “Encoder‑decoder with atrous separable convolution”).
+가장 두드러진 이동 클래스인 사람 픽셀을 마스킹.
+                                                               X        h                                   i
+        person                                                              person                          2
+      Si         (r) = 1 − ⊮ ŷiDLv3+ (r) = person ,    Lrgb =       Er∼Ii Si      (r) C(r; βi ) − Cigt (r) 2
+                                                                 i
+
+
+(b) 하늘 분리
+fϕ : 사전학습 의미 분할 모델(해당 문장에 별도 인용 없음; (a)와 같은 모델로 보는 것이 자연스러움). 사전학습
+데이터셋은 명시되지 않음.
+                                                                       h       Z tf          i
+                        sky                                            sky
+                       Si (r) = ⊮ ŷi (r) = sky ,      Lseg (θ) = Er∼Ii Si (r)      w(t)2 dt
+                                                                                  tn
+
+
+                                                         2
+                                              Z tf
+                                C(r; βi ) =          w(t) Γ(βi ) c(t) dt + csky (d)
+                                               tn
+
+하늘 픽셀은 버려지지 않는다. 광선 위 밀도를 0으로 밀어 넣고, 색은 방향만 입력받는 환경맵 csky (d)가 설명하
+도록 넘긴다. 여기서는 S = 1이 “하늘”이므로 일반형과 부호가 반대다.
+
+
+4.3   LOLNeRF (Rebain et al., CVPR 2022)
+
+제거 대상: 단일 시점 얼굴 데이터에서 얼굴(전경)이 아닌 영역.
+fϕ : MediaPipe Selfie Segmentation, λmask = 1.0.
+S의 형태: soft 전경 확률 SI (p) ∈ [0, 1]. 손실에서 픽셀을 지우지 않고 NeRF 투명도를 지도하는 보조 손실로 사
+용.                                               h                    2 i
+                                 Lmask = Ek, p∈Ik α(p | zk ) − SI (p)
+                                                                    
+                          C(p|z) = α(p|z) CNeRF (p|z) + 1 − α(p|z) Cbg (dp |z)
+
+얼굴 외 영역은 저용량 배경 모델 Cbg 가 담당한다. RobustNeRF의 “얼굴 외 픽셀 무시”는 이 구조를 근사적으
+로 서술한 것이다.
+
+
+4.4   Block‑NeRF (Tancik et al., CVPR 2022) — 동적 객체, 클래스 기반
+
+제거 대상: 도시 규모 주행 데이터(수개월에 걸쳐 수집)의 차량, 보행자 등 움직일 수 있는(movable) 객체. 서로
+다른 시점·날짜에 찍힌 영상에서 장면 형상이 일관된다는 가정을 이 객체들이 깨기 때문이다.
+fϕ : Panoptic‑DeepLab (Cheng et al., CVPR 2020).
+S의 형태: 픽셀 단위 0/1. 마스킹된 영역은 학습에서 무시된다.
+                                                                   XX                                 2
+          Simov (r) = 1 − ⊮ ŷiPDL (r) ∈ Kmovable ,         Lrgb =           Simov (r) C(r; θ) − Ci (r) 2
+                                                                     i   r
+
+
+ • 같은 분할 마스크를 COLMAP 특징점 추출에도 적용해, 포즈 추정 단계에서도 동적 객체를 배제한다. 즉 S가
+     NeRF 손실과 SfM 전처리 양쪽에 쓰인다.
+ • 실제로 정지해 있는 주차 차량도 movable 클래스이면 제거된다. “지금 움직이는가”가 아니라 “움직일 수 있
+     는 클래스인가”로 판정하기 때문이다.
+
+
+  논문은 마스킹할 클래스 목록과 마스킹 손실 식을 명시하지 않는다(위 식은 “학습 중 무시”를 식 (4) 형태로
+  쓴 것). 저자들이 밝힌 한계로, 차량은 지워져도 차량 그림자는 남는 경우가 많다. 그림자는 분할 클래스가
+  아니기 때문에 클래스 기반 S로는 잡히지 않는다.
+
+
+
+4.5   NeRF‑HuGS (Chen et al., CVPR 2024) — 동적 객체, 일관성 기반
+
+제거 대상: 클래스와 무관한 모든 transient/동적 객체. 사전 정의된 Kdist 없이, 여러 이미지에서 일관되게 관측
+되는가로 정적/동적을 판정한다.
+fϕ : 휴리스틱 두 개 + Segment Anything (SAM). 잔차 계산용으로 짧게 학습한 Nerfacto(약 5k iteration)를
+사용.
+S의 형태: 픽셀 단위 0/1 정적 맵 Mi (1 = 정적, 0 = 동적).
+
+(1) SfM 휴리스틱 — 정적 물체의 특징점은 많은 이미지에서 매칭된다.
+                    n                         o SAM (point prompt)
+                                    nj
+                Xi = xji xji ∈ Fi , NiI ≥ TSfM −−−−−−−−−−−−−→ HiSfM
+
+nji : 특징점 j가 이미지 집합에서 매칭된 횟수, NI : 전체 이미지 수.
+
+
+                                                          3
+(2) 색 잔차 휴리스틱 — 짧게 학습한 NeRF는 정적 영역부터 먼저 맞춘다.
+
+ϵ(r) = Ĉ(r) − C(r) 2 ,      HiCR = {r | Ri (r) ≤ mean(Ri )},              ĤiCR = {r | Ri (r) ≤ quantile(Ri , TCR )}
+
+(3) 결합 및 SAM 분할
+                                                               [                 |mji ∩ Hi |
+                   Hi = HiSfM ∪ HiCR ∩ ĤiCR ,          Mi =         mji   s.t.                 ≥ Tm
+                                                                 j                   |mji |
+
+mji : SAM이 만든 j번째 후보 마스크. 합집합으로 두 휴리스틱의 누락을 보완하고, 잔차 상한 ĤiCR 과의 교집합으
+로 SfM/SAM이 잘못 정적으로 분류한 transient를 걸러낸다.
+
+(4) NeRF 손실
+                                                    
+               L(r) = Mi (r) · Lrecon Ĉ(r), C(r)           (Lrecon : MSE 또는 Charbonnier)
+
+최종 형태가 RobustNeRF 식 (4)와 정확히 같다. 차이는 S를 만드는 방법뿐이다.
+
+  임계값 TSfM , TCR , Tm 의 수치는 확인한 본문(arXiv v1)에서 찾지 못해 기호로 남겼다. HuGS는 Robust‑
+  NeRF 이후(2024) 연구로, 잔차 기반 판정(RobustNeRF의 아이디어)과 분할 모델(오라클 아이디어)을 결
+  합한 형태로 볼 수 있다.
+
+
+
+5. 종합
+
+
+ 레퍼런스            fϕ (모델)              제거 대상 K               S 형태                   사용 방식
+
+ NeRF‑W          DeepLab v3           사람 등                  이미지 단위 0/1             데이터셋 필터링 (학습 손실에는 미포
+                 (+NIMA)              transient, 저품                                함)
+                                      질
+
+ URF (a)         DeepLabv3+           person                픽셀 0/1                 Lrgb 가중 (식 (4)와 동일 구조)
+
+ URF (b)         사전학습 분할 모델           sky                   픽셀 0/1 (부호             Lseg 로 밀도 억제 + csky 로 이관
+                                                            반대)
+
+ LOLNeRF         MediaPipe Selfie     비‑전경(배경)              soft [0, 1]            Lmask 로 α 지도 + Cbg
+                 Seg.
+
+ Block‑NeRF      Panoptic‑            movable 객체            픽셀 0/1                 학습에서 무시 + COLMAP 특징점에서
+                 DeepLab              (차량, 보행자                                     도 제외
+                                      등)
+
+ NeRF‑HuGS       SfM 매칭 빈도 +          클래스 무관 동              픽셀 0/1                 식 (4)와 동일한 손실 가중
+                 색 잔차 + SAM           적/transient
+
+
+  한계와 RobustNeRF로의 연결
+
+  NeRF‑W, URF, LOLNeRF, Block‑NeRF는 모두 Kdist , 즉 무엇이 distractor인지를 미리 정해야 한다. 분
+  할 모델이 모르는 클래스이거나 장면마다 달라지는 임의의 distractor(풍선, 장난감, 가방, 그림자 등)에는
+  오라클을 만들 수 없다. Block‑NeRF의 “그림자 잔존”이 그 대표적 증상이다.
+                                                  
+   오라클 S(Ci ) (의미 기반, 사전 정의) −→ 잔차 기반 가중치 ω ϵi (r) (robust loss, 사전 정의 불필요)
+
+  RobustNeRF는 이 문제를 풀기 위해 의미 분할 대신 학습 중 잔차의 크기와 공간적 분포로 outlier를 판정
+  하는 robust loss를 제안한다. 이후 NeRF‑HuGS는 이 잔차 신호에 multi‑view 일관성(SfM)과 클래스
+  무관 분할(SAM)을 결합해, 사전 정의 없이 오라클 S를 스스로 구성하는 방향으로 확장했다.
+
+
+                                                        4
+6. RobustNeRF: 고정된 S에서 적응형 S (t) 로
+
+6.1   무엇이 달라지는가
+
+1–5절의 S는 모두 학습 전에 한 번 계산되어 고정된다. 입력은 원본 이미지 Ci 뿐이고, NeRF가 무엇을 배웠는지
+와 무관하다.
+                                                                         (t)        (t−1) 
+                              Si = Sϕ (Ci )            −→               Si     = ω ϵi
+                              |    {z    }                              |        {z       }
+                        고정 오라클: 이미지만 보고 판정                          적응형: 현재 모델의 잔차를 보고 판정
+
+RobustNeRF는 S를 현재 모델의 재구성 잔차로 매 반복 다시 계산한다. 사전학습 모델도, 클래스 목록 Kdist 도
+필요 없다.
+
+
+6.2   IRLS: 어떤 픽셀을 믿을지 반복해서 갱신
+
+                                                               2
+        L(t) (r) =     ω ϵ(t−1) (r)     · C(r; θ(t) ) − Ci (r) 2 ,      ϵ(t−1) (r) = C(r; θ(t−1) ) − Ci (r) 2   (7)
+                       |    {z      }    |         {z          }
+                     이전 모델로 계산한 신뢰도           현재 모델의 예측 오차
+
+반복 재가중 최소제곱(IRLS)의 순서는 다음과 같다: 현재 모델로 예측 → 실제 사진과 비교해 잔차 계산 → 잔차
+로 가중치 ω 결정 → ω를 고정하고 θ 갱신 → 반복. ω는 이번 업데이트에서 함께 미분하는 대상이 아니라 이전 추
+정으로 정해지는 값이다. 이 형태는 식 (4)에서 Si (r)를 ω(ϵ(t−1) (r))로 바꾼 것과 같다.
+
+다만 IRLS만으로는 아직 덜 배운 디테일과 진짜 outlier가 구분되지 않는다. 둘 다 잔차가 크기 때문이다. 핵심
+은 ω를 어떻게 정하느냐에 있다.
+
+
+6.3   핵심 단서: outlier는 공간적으로 뭉쳐 있다
+
+
+      관측                                             학습 중 잔차의 공간적 모양
+
+      아직 배우지 못한 텍스처, 글자, 가는 무늬                       작은 점이나 가는 선처럼 국소적. 주변은 대부분 잘 맞
+                                                     음
+      제거해야 할 방해물(사람, 차 등)                            넓고 연결된 영역에 걸쳐 잔차가 큼
+
+
+판단 원리: “이 픽셀은 오차가 크지만 주변은 잘 맞는다 ⇒ 아직 못 배운 디테일일 수 있다.” 이는 항상 성립하는
+법칙이 아니라 이 방법이 의도적으로 넣은 귀납적 편향(inductive bias)이다.
+
+
+6.4   3단계 판정 (식 (8)–(10))
+
+(1) 잔차 하위 50%를 임시 inlier로 선택 (trimmed LS)
+                                                   
+                                 ω̃(r) = ⊮ ϵ(r) ≤ Tϵ ,        Tϵ = Medianr {ϵ(r)}                               (8)
+
+여기서 멈추면 큰 잔차를 가진 실제 디테일도 함께 버려진다.
+
+(2) 3 × 3 확산: 주변이 잘 맞으면 고립된 큰 잔차도 살린다
+                                                             
+                                 W(r) = ⊮ (ω̃ ⊛ B3×3 )(r) ≥ T⊛ ,               T⊛ = 0.5                         (9)
+
+예: 중앙 픽셀만 0이고 주변 8개가 1이면 평균은 8/9 ≥ 0.5이므로 중앙도 inlier로 복귀한다. 가는 무늬 위의 고
+립된 큰 잔차가 보호된다.
+
+
+
+
+                                                          5
+(3) 패치 단위 판정: 더 넓은 맥락
+                                  h                  i
+                       ω R8 (r) = ⊮ Es∼R16 (r) W(s) ≥ TR ,     TR = 0.6         (10)
+
+학습 단위는 8 × 8 패치 R8 , 판단에 참고하는 주변은 16 × 16 영역 R16 이다. 학습 초기에는 디테일 주변도 덜 학
+습되어 있을 수 있어서 더 넓은 맥락이 필요하다. 중앙값은 초기 마스크의 기준일 뿐이므로, 최종적으로 “잔차 하
+위 50%만 학습한다”는 뜻은 아니다.
+
+  식 표기 주의
+
+  CVPR 게재본의 식 (9), (10)은 위처럼 평균의 임계값 비교만 있다. arXiv 렌더링에는 ω̃(r) | (· · · ) ≥ T 처럼
+  정의되지 않은 “|” 기호가 보이며, 이를 논리 OR로 읽으면 “자기 잔차가 작거나 주변이 좋으면 포함”이 된
+  다. OR이 없으면 3 × 3 확산은 양방향 평활화가 되어, 잔차가 작아도 주변이 대부분 outlier인 픽셀(방해물
+  내부의 우연히 맞은 픽셀)은 제외된다.
+
+
+
+6.5   기존 robust loss와의 차이
+
+
+      기존 robust loss (Huber, Geman–McClure        RobustNeRF
+      등)
+
+      각 픽셀의 잔차 크기만 보고 영향 조절                       잔차 크기 + 주변의 공간 구조를 함께 판단
+      큰 잔차를 연속적으로 감쇠 ⇒ 디테일도 약하게                   최종적으로 0/1 마스크 ⇒ 포함된 디테일은 일반
+      학습                                          L2로 제대로 학습
+      디테일과 outlier의 잔차가 비슷하면 구분 불가                작은 디테일 vs. 넓은 방해물의 공간 스케일 차
+                                                  이로 구분
+
+
+  요약
+
+  큰 잔차를 모두 약하게 배우지 말고, 공간적 맥락으로 배울 대상을 고른 뒤 그 대상은 제대로 배운다. 텍스
+  처와 글자 같은 국소적 고주파 디테일은 넓은 패치로 보면 주변이 맞으므로 살아남고, 넓게 뭉친 방해물은
+  패치 전체가 탈락한다. 즉 RobustNeRF의 S는 “방해물의 공간 스케일 > 디테일의 공간 스케일”이라는 가
+  정 위에 서 있으며, 그 스케일을 정하는 것이 3 × 3, 8 × 8, 16 × 16이라는 필터 크기다.
+
+
+
+7. 우리 베이킹(CityMesh)에의 적용 방안
+
+설정. 항공 영상 {Ii }와 재구성된 도시 메쉬 M이 주어지고, 텍스처 T 를 미분 가능 렌더러 R로 최적화한다고 두
+면 베이킹 손실은 식 (4)와 같은 꼴이 된다.
+                               XX                                  2
+                  Lbake (T ) =    Si (r) R(M, T ; πi )(r) − Ii (r) 2
+                                   i   r
+
+따라서 1–6절의 S 설계를 그대로 가져올 수 있다. 여기서 주된 이동 객체는 차량이다.
+
+
+7.1   방안 1: RobustNeRF 방식 차용 + 차량 크기에 맞춘 필터
+
+RobustNeRF의 3 × 3, 8 × 8, 16 × 16은 NeRF 벤치마크 해상도에서 “사람/물체 크기 > 디테일 크기”가 되도록
+정한 값이다. 우리는 방해물이 대부분 차량이므로, 필터 크기를 차량의 화면상 크기에 맞추는 것이 자연스럽다.
+차량 길이를 Lcar ≈ 4.5 m, 카메라 초점거리를 f (픽셀), 깊이를 D라 하면,
+                           D                l L m lL f m
+                                               car   car
+                     GSD =   [m/px], kcar =        =     [px]
+                           f                 GSD     D
+
+                                              6
+                               R8 → Rk/2 ,      R16 → Rk ,       k ≈ kcar
+
+ • 판단 영역 Rk 가 차량 한 대를 덮을 정도면, 차량 내부 패치는 주변 대부분이 outlier라 탈락하고, 도로 표시
+   선·간판 글자처럼 가늘고 국소적인 고잔차는 살아남는다.
+
+ • 주의: 차선, 횡단보도처럼 차량보다 넓게 뻗은 고잔차 텍스처는 같은 기준으로 잘못 탈락할 수 있다. 학습 초
+   기의 잔차 분포를 확인해 TR 를 조정해야 한다.
+
+
+7.2   방안 2: S를 “차량 판별기”로 정의 (휴리스틱)
+
+Block‑NeRF처럼 검출/분할 모델로 차량을 직접 지우는 방식이다.
+                                                                     
+                                 Si (r) = 1 − ⊮ r ∈ MaskRCNNcar (Ii )
+
+구현은 간단하지만 클래스 기반 오라클의 한계를 그대로 가진다.
+
+ • 주차 차량 문제: 정지 차량은 여러 장에서 일관되게 관측되므로 정적 장면의 일부일 수 있는데, 클래스 기반
+   S는 모두 지운다. 지운 자리를 채울 다른 시점 텍스처가 없으면 구멍이 생긴다.
+
+ • 그림자, 버스, 트럭 등 클래스 밖 방해물은 놓친다(Block‑NeRF의 그림자 잔존과 같은 문제).
+ • 참고 사례: Yang et al. (2021)은 UAV 사선 영상 메쉬에서 Mask R‑CNN 검출 후, 메쉬 삼각형을 다른 시점
+   으로 투영해 차량이 몇 시점에서 같은 자리에 있는지로 이동/단기 정차/정지를 나눈다(7.3 (b) 참고). 순수 판
+   별기보다 multi‑view 기하를 함께 쓰는 쪽이 낫다는 근거다.
+
+
+7.3   방안 3 (컨트리뷰션 후보): geometry‑aware S
+
+NeRF 계열의 S는 모두 RGB(또는 RGB에서 나온 잔차·특징)만으로 판정한다. 기하가 바로 추정 대상이라 믿을
+수 없기 때문이다. 반면 우리는 메쉬 M을 이미 갖고 있고, 각 시점의 렌더 깊이 D̂i (r), 법선, 지면 대비 높이, 시
+점 간 픽셀 대응을 기하적으로 얻을 수 있다. 이 정보를 S에 넣는 것이 우리 설정에서만 가능한 확장이다.
+
+관련 레퍼런스
+
+
+ 레퍼런스                   기하 단서                 판정 방식
+
+ (a) Waechter et al.,   메쉬 면 단위               면 F 를 보는 각 시점의 평균색 ci 에 가우시안을 맞추고, 값이 6 ×
+ ECCV 2014 (메쉬 텍        multi‑view 대응         10−3 미만인 시점을 반복 제거(최대 10회). 남은 시점만 텍스처 후
+ 스처링)                                         보로 사용. 메쉬로 재구성되지 않은 보행자 같은 가림을 거르기 위
+                                              한 장치
+
+ (b) Yang et al.,       메쉬 삼각형을 다른 시점         차량 마스크 영역이 다른 시점에서도 차량으로 덮인 비율 n1 /nk :
+ Remote Sensing         에 투영                  < 0.05 이동, < 0.85 단기 정차, 그 외는 색 히스토그램 일치율
+ 2021 (UAV 사선 영상)                             ≥ 0.8이면 정지. 이동 차량은 텍스처만 지우고, 단기 정차는 텍스처
+                                              를 지우고 메쉬를 평탄화
+
+ (c) Removert (Kim      깊이(range) 가시성         지도 점이 현재 관측보다 앞에 있어 관측 광선을 가리면 동적으로
+ & Kim, IROS 2020)                            판정. 여러 해상도의 range image로 제거한 뒤 정적 점을 복원
+                                              (revert)
+
+ (d) ERASOR (Lim et     지면 대비 높이              동적 객체는 대부분 지면에 닿아 있다는 가정. 영역별 높이 범위
+ al., RA‑L 2021)                              ∆h의 지도/관측 비가 < 0.2이면 동적 후보, 지면 평면 적합 후 지면
+                                              이 아닌 점 제거
+
+
+제안 formulation (후보, 검증 전)
+
+
+                                                   7
+ (i) 깊이로 필터 크기를 픽셀마다 정한다. 7.1의 D에 메쉬 렌더 깊이를 넣으면 사선 영상에서도 위치마다 차량의
+ 화면 크기가 달라지는 것을 반영할 수 있다.
+                     lL f m                                       h                       i
+                       car
+            ki (r) =          ⇒                         ωi (r) = ⊮ Es∼Rki (r) (r) W(s) ≥ TR
+                      D̂i (r)
+
+ (ii) 잔차를 메쉬 표면으로 올려 시점 간 일관성을 본다 (Waechter, Yang 방식의 일반화). 픽셀 r이 맞는 면을
+ F (r)라 하면,
+                                                                   {j ∈ V(F (r)) : ϵj (F (r)) > Tϵ }
+                   ϵ̄F = Medianj∈V(F ) ϵj (F ),         ρi (r) =
+                                                                             |V(F (r))|
+ V(F )는 면 F 를 보는 시점 집합이다. 잔차가 모든 시점에서 크면(ρ ≈ 1) 아직 못 배운 정적 디테일이고, 일부 시
+ 점에서만 크면(ρ 작음) 그 시점에만 있던 차량일 가능성이 높다. 2D 공간 스케일 대신 3D 시점 일관성으로 디테
+ 일과 방해물을 가르는 셈이다.
+
+ (iii) 지면 근접 높이 prior (ERASOR 방식). 메쉬에서 면의 지면 대비 높이 h(F )를 구하면 차량이 놓일 수 있는
+ 높이 범위 [0, hcar ](hcar ≈ 2 m) 밖의 고잔차는 차량이 아니라 디테일로 본다.
+
+ (iv) 결합.
+                                                                                           
+                    Si (r) = 1 −        1 − ωi (r)     · ⊮ ρi (r) < Tρ · ⊮ 0 ≤ h(F (r)) ≤ hcar
+                                      |    {z      }     |     {z     } |         {z           }
+                                   (i) 차량 크기 패치 outlier (ii) 일부 시점에만 존재           (iii) 지면 근처
+
+ 세 조건을 모두 만족할 때만 제외한다. 각 항은 독립적으로 끄고 켤 수 있으므로 ablation이 쉽다.
+
+    가정과 확인할 점
+
+     • 메쉬가 차량을 포함하지 않는다고 가정했다. 생성형 메쉬에 차량 형상이 들어가 있으면, 차량 자리의 렌
+       더 깊이가 도로보다 얕아지므로 (c)처럼 깊이 차이를 직접 단서로 쓸 수 있다.
+     • 시점 수가 적은(few‑shot) 설정에서는 |V(F )|가 작아 ρ가 불안정하다. Waechter 방식처럼 최소 시점
+       수(예: 4) 미만이면 (ii)를 끄는 규칙이 필요하다.
+     • (ii)의 시점 간 비교는 노출·색 보정 차이에 민감하다. URF의 시점별 affine 색 보정을 먼저 적용하는 것
+       이 안전하다.
+     • 위 formulation은 레퍼런스들의 아이디어를 우리 설정에 맞춰 조합한 제안이며 실험으로 검증되지 않
+       았다.
+
+
+ 참고문헌
+
+ [1] S. Sabour et al., “RobustNeRF: Ignoring Distractors with Robust Losses,” CVPR 2023.
+ [2] R. Martin‑Brualla et al., “NeRF in the Wild: Neural Radiance Fields for Unconstrained Photo Collections,”
+    CVPR 2021.
+ [3] K. Rematas et al., “Urban Radiance Fields,” CVPR 2022 (arXiv:2111.14643).
+ [4] D. Rebain et al., “LOLNeRF: Learn from One Look,” CVPR 2022 (arXiv:2111.09996).
+ [5] L.‑C. Chen et al., “Rethinking Atrous Convolution for Semantic Image Segmentation” (DeepLab v3), arXiv:1706.05587,
+    2017.
+ [6] L.‑C. Chen et al., “Encoder‑Decoder with Atrous Separable Convolution for Semantic Image Segmentation”
+    (DeepLabv3+), ECCV 2018.
+ [7] H. Talebi, P. Milanfar, “NIMA: Neural Image Assessment,” IEEE TIP 2018.
+ [8] M. Tancik et al., “Block‑NeRF: Scalable Large Scene Neural View Synthesis,” CVPR 2022 (arXiv:2202.05263).
+ [9] B. Cheng et al., “Panoptic‑DeepLab: A Simple, Strong, and Fast Baseline for Bottom‑Up Panoptic Segmen‑
+    tation,” CVPR 2020.
+[10] J. Chen et al., “NeRF‑HuGS: Improved Neural Radiance Fields in Non‑static Scenes Using Heuristics‑Guided
+    Segmentation,” CVPR 2024 (arXiv:2403.17537).
+
+
+
+                                                           8
+[11] A. Kirillov et al., “Segment Anything,” ICCV 2023.
+[12] M. Waechter, N. Moehrle, M. Goesele, “Let There Be Color! Large‑Scale Texturing of 3D Reconstructions,”
+    ECCV 2014.
+[13] C. Yang, F. Zhang, Y. Gao, Z. Mao, L. Li, X. Huang, “Moving Car Recognition and Removal for 3D Urban
+    Modelling Using Oblique Images,” Remote Sensing 13(17):3458, 2021.
+[14] G. Kim, A. Kim, “Remove, then Revert: Static Point Cloud Map Construction using Multiresolution Range
+    Images,” IROS 2020.
+[15] H. Lim, S. Hwang, H. Myung, “ERASOR: Egocentric Ratio of Pseudo Occupancy‑based Dynamic Object
+    Removal for Static 3D Point Cloud Map Building,” IEEE RA‑L 2021.
+
+
+
+
+                                                          9
+
