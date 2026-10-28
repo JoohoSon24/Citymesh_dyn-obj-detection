@@ -1,0 +1,114 @@
+name: Import CityMesh project snapshot
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/import-snapshot.yml]
+permissions:
+  contents: write
+concurrency:
+  group: citymesh-initial-import
+  cancel-in-progress: false
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      TRANSFER_URL: https://whenever-cosmetics-male-preliminary.trycloudflare.com
+      TRANSFER_MANIFEST_SHA: c72f24bd7c9ccdba093631b15aaaf0715f96f9eda316ec3fe27c65ff01fa98ff
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Download and verify prepared project snapshot
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import concurrent.futures,hashlib,json,os,time,urllib.request
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])/'citymesh-import';root.mkdir(exist_ok=True)
+          base=os.environ['TRANSFER_URL'].rstrip('/')
+          raw=urllib.request.urlopen(base+'/transfer_manifest.json',timeout=90).read()
+          if hashlib.sha256(raw).hexdigest()!=os.environ['TRANSFER_MANIFEST_SHA']:raise RuntimeError('Transfer manifest checksum mismatch')
+          manifest=json.loads(raw);(root/'transfer_manifest.json').write_bytes(raw)
+          def download(item):
+            dest=root/item['name']
+            for attempt in range(5):
+              try:
+                h=hashlib.sha256();count=0
+                print('Downloading',item['name'],'attempt',attempt+1,flush=True)
+                with urllib.request.urlopen(base+'/'+item['name'],timeout=180) as response,dest.open('wb') as out:
+                  for block in iter(lambda:response.read(4*1024**2),b''):
+                    out.write(block);h.update(block);count+=len(block)
+                if count!=item['bytes'] or h.hexdigest()!=item['sha256']:raise RuntimeError('File checksum mismatch: '+item['name'])
+                print('Verified',item['name'],count,flush=True);return
+              except Exception:
+                if attempt==4:raise
+                time.sleep(5*(attempt+1))
+          with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:list(pool.map(download,manifest['files']))
+          print('All files verified',flush=True)
+          PY
+      - name: Import source, documents, presentations and final result images
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import tarfile,os,hashlib,json
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])/'citymesh-import';work=Path(os.environ['GITHUB_WORKSPACE'])
+          with tarfile.open(root/'citymesh-core.tar.gz','r:gz') as archive:archive.extractall(work,filter='data')
+          manifest=json.loads((work/'UPLOAD_MANIFEST.json').read_text());checked=0
+          for item in manifest['files']:
+            if item['storage']!='git':continue
+            p=work/item['path']
+            if item.get('type')=='symlink':
+              if not p.is_symlink() or os.readlink(p)!=item['target']:raise RuntimeError('Symlink mismatch: '+item['path'])
+            else:
+              if hashlib.sha256(p.read_bytes()).hexdigest()!=item['sha256']:raise RuntimeError('Import mismatch: '+item['path'])
+            checked+=1
+          print('Verified Git files and portable links:',checked)
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add --all
+          if ! git diff --cached --quiet; then
+            git commit -m 'Upload CityMesh baking code, reports, presentations and result images'
+            git push origin HEAD:main
+          fi
+      - name: Publish large experiment data and model snapshot
+        shell: bash
+        run: |
+          root="$RUNNER_TEMP/citymesh-import"
+          tag="snapshot-2026-10-28"
+          cat > "$RUNNER_TEMP/citymesh-release-notes.md" <<'NOTES'
+          # CityMesh experiment-data snapshot
+
+          Large arrays, model weights, external reference-code snapshots, videos and bundled artifacts from `/root/sonjooho`.
+
+          Source, PPT, Markdown reports, metrics and ordinary final-result images are available in the main branch. These archives restore the remaining files at their original relative paths. Virtual environments, Python caches and nested Git histories are excluded.
+
+          Restore from the repository root with `python3 scripts/restore_release_assets.py`. Archive SHA-256 values are in `RELEASE_ASSETS.json`; per-file checksums and storage locations are in `UPLOAD_MANIFEST.json`.
+
+          The published comparisons are planar homography texture-baking experiments and mechanism transfers, not full NeRF/3DGS reproductions. Original imagery/model/paper/third-party code rights and license conditions remain applicable.
+          NOTES
+          if ! gh release view "$tag" >/dev/null 2>&1; then
+            gh release create "$tag" --target "$(git rev-parse HEAD)" --draft --title 'CityMesh experiment snapshot — 2026-10-28' --notes-file "$RUNNER_TEMP/citymesh-release-notes.md"
+          fi
+          for asset in "$root"/citymesh-data-*.tar.gz; do
+            gh release upload "$tag" "$asset" --clobber
+          done
+          gh release edit "$tag" --draft=false
+      - name: Verify release and remove one-time importer
+        shell: bash
+        run: |
+          gh release view snapshot-2026-10-28 --json url,assets > "$RUNNER_TEMP/citymesh-release.json"
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          release=json.loads((Path(os.environ['RUNNER_TEMP'])/'citymesh-release.json').read_text());expected=json.loads(Path('RELEASE_ASSETS.json').read_text())['assets'];actual={x['name']:x for x in release['assets']}
+          for item in expected:
+            if item['name'] not in actual or actual[item['name']]['size']!=item['bytes']:raise RuntimeError('Missing or incomplete release asset: '+item['name'])
+          print('Verified release:',release['url'],'assets:',len(expected),flush=True)
+          PY
+          git rm .github/workflows/import-snapshot.yml
+          git commit -m 'Finish verified snapshot import and remove one-time transfer workflow'
+          git push origin HEAD:main
